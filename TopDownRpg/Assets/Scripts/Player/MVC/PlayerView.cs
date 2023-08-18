@@ -21,6 +21,9 @@ public class PlayerView : MonoBehaviour
 
     public float VerticalInput;
 
+    public Transform AttackPoint;
+
+
    
 
     
@@ -45,5 +48,9 @@ public class PlayerView : MonoBehaviour
         currentPlayerState.OnStateEnter();
     }
 
-    
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(AttackPoint.position, PlayerModel.AttackRadius);
+    }
+
 }
