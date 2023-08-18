@@ -23,6 +23,13 @@ public class PlayerState : MonoBehaviour
         playerView.HorizontalInput = Input.GetAxisRaw("Horizontal");
         playerView.VerticalInput = Input.GetAxisRaw("Vertical");
         changeLookDirectionBasedOnInput();
+        playerAttackCheck();
+
+
+    }
+
+    private void playerAttackCheck()
+    {
         if (Time.time >= nextSwingTime)
         {
             if (Input.GetMouseButton(0))
@@ -35,9 +42,7 @@ public class PlayerState : MonoBehaviour
                 playerView.PlayerAnimator.SetBool("IsAttacking", false);
             }
         }
-        
     }
-
 
     private void changeLookDirectionBasedOnInput()
     {
