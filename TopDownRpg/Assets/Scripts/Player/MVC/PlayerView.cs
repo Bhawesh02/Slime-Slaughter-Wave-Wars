@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class PlayerView : MonoBehaviour
 {
-    [SerializeField]
-    private PlayerModel playerModel;
+    public PlayerModel PlayerModel;
 
     public PlayerController PlayerController { get; private set; }
     public Rigidbody2D PlayerRigidBody { get; private set; }
@@ -33,7 +32,7 @@ public class PlayerView : MonoBehaviour
     }
     private void Start()
     {
-        PlayerController = new(playerModel, this);
+        PlayerController = new(PlayerModel, this);
         PlayerController.ChangeLookDirection(LookDirection.Down);
         ChangeState(PlayerIdelState);
     }

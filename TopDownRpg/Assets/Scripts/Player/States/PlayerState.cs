@@ -1,4 +1,5 @@
 
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerView))]
@@ -6,6 +7,8 @@ public class PlayerState : MonoBehaviour
 {
     protected PlayerView playerView;
     protected PlayerController playerController;
+
+    protected float nextSwingTime;
     private void Awake()
     {
         playerView = GetComponent<PlayerView>();
@@ -13,13 +16,28 @@ public class PlayerState : MonoBehaviour
     private void Start()
     {
         playerController = playerView.PlayerController;
+        nextSwingTime = Time.time;
     }
     public virtual void Update()
     {
         playerView.HorizontalInput = Input.GetAxisRaw("Horizontal");
         playerView.VerticalInput = Input.GetAxisRaw("Vertical");
         changeLookDirectionBasedOnInput();
+        if (Time.time >= nextSwingTime)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                playerController.PlayerAttack();
+                nextSwingTime = Time.time + playerView.PlayerModel.SwingRate;
+            }
+            else
+            {
+                playerView.PlayerAnimator.SetBool("IsAttacking", false);
+            }
+        }
+        
     }
+
 
     private void changeLookDirectionBasedOnInput()
     {
@@ -55,6 +73,7 @@ public class PlayerState : MonoBehaviour
 
 public enum LookDirection
 {
+    Null,
     Down,
     Up,
     Left,

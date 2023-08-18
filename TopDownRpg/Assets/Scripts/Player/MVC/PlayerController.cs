@@ -1,4 +1,6 @@
 
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerController
@@ -36,7 +38,6 @@ public class PlayerController
             case LookDirection.Right:
                 setAnimatorDirectionBoolTrue("IsLookingHrizontal");
                 playerView.PlayerSpriteRenderer.flipX = false;
-
                 break;
         }
         playerModel.CurrentLookDirection = direction;
@@ -50,5 +51,11 @@ public class PlayerController
             else
                 playerView.PlayerAnimator.SetBool(playerModel.AnimationDirectionBools[i], false);
         }
+    }
+
+    public void PlayerAttack()
+    {
+        playerView.PlayerAnimator.SetBool("IsAttacking", true);
+
     }
 }

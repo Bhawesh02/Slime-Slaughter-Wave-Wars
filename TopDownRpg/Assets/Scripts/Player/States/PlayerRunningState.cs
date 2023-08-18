@@ -17,7 +17,6 @@ public class PlayerRunningState : PlayerState
         base.Update();
         if (playerView.HorizontalInput == 0 && playerView.VerticalInput == 0)
             playerView.ChangeState(playerView.PlayerIdelState);
-        
         playerController.MovePlayer(playerView.HorizontalInput, playerView.VerticalInput);
     }
 
