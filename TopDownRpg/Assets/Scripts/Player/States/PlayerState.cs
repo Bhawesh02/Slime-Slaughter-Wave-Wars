@@ -18,7 +18,31 @@ public class PlayerState : MonoBehaviour
     {
         playerView.HorizontalInput = Input.GetAxisRaw("Horizontal");
         playerView.VerticalInput = Input.GetAxisRaw("Vertical");
+        changeLookDirectionBasedOnInput();
     }
+
+    private void changeLookDirectionBasedOnInput()
+    {
+        if (playerView.HorizontalInput != 0)
+        {
+            if (playerView.HorizontalInput == 1)
+                playerController.ChangeLookDirection(LookDirection.Right);
+            else
+                playerController.ChangeLookDirection(LookDirection.Left);
+        }
+        else
+        {
+            if (playerView.VerticalInput == 1)
+            {
+                playerController.ChangeLookDirection(LookDirection.Up);
+            }
+            else if (playerView.VerticalInput == -1)
+            {
+                playerController.ChangeLookDirection(LookDirection.Down);
+            }
+        }
+    }
+
     public virtual void OnStateEnter()
     {
         this.enabled = true;
