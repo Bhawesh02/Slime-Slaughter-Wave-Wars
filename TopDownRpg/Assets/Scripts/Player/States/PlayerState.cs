@@ -25,6 +25,7 @@ public class PlayerState : MonoBehaviour
         changeLookDirectionBasedOnInput();
         playerAttackCheck();
 
+
     }
 
     private void playerAttackCheck()

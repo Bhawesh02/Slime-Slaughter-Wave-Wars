@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerController
 {
@@ -26,17 +27,23 @@ public class PlayerController
         {
             case LookDirection.Down:
                 setAnimatorDirectionBoolTrue("IsLookingDown");
+                playerView.AttackPoint.position = new(playerView.transform.position.x + playerView.PlayerModel.AttackPointDownXOffset, playerView.transform.position.y + playerView.PlayerModel.AttackPointDownYOffset);
                 break;
             case LookDirection.Up:
                 setAnimatorDirectionBoolTrue("IsLookingUp");
+                playerView.AttackPoint.position = new(playerView.transform.position.x + playerView.PlayerModel.AttackPointUpXOffset, playerView.transform.position.y + playerView.PlayerModel.AttackPointUpYOffset);
 
                 break;
             case LookDirection.Left:
                 setAnimatorDirectionBoolTrue("IsLookingHrizontal");
+                playerView.AttackPoint.position = new(playerView.transform.position.x + playerView.PlayerModel.AttackPointLeftXOffset, playerView.transform.position.y + playerView.PlayerModel.AttackPointLeftYOffset);
+
                 playerView.PlayerSpriteRenderer.flipX = true;
                 break;
             case LookDirection.Right:
                 setAnimatorDirectionBoolTrue("IsLookingHrizontal");
+                playerView.AttackPoint.position = new(playerView.transform.position.x + playerView.PlayerModel.AttackPointRightXOffset, playerView.transform.position.y + playerView.PlayerModel.AttackPointRightYOffset);
+
                 playerView.PlayerSpriteRenderer.flipX = false;
                 break;
         }
