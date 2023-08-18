@@ -17,21 +17,7 @@ public class PlayerRunningState : PlayerState
         base.Update();
         if (playerView.HorizontalInput == 0 && playerView.VerticalInput == 0)
             playerView.ChangeState(playerView.PlayerIdelState);
-        if(playerView.HorizontalInput == 0)
-        {
-            if(playerView.VerticalInput == 1)
-            {
-                playerController.ChangeLookDirection(LookDirection.Up);
-            }
-            else if(playerView.VerticalInput == -1)
-            {
-                playerController.ChangeLookDirection(LookDirection.Down);
-            }
-        }
-        else if(playerView.HorizontalInput == 1)
-            playerController.ChangeLookDirection(LookDirection.Right);
-        else
-            playerController.ChangeLookDirection(LookDirection.Left);
+        
         playerController.MovePlayer(playerView.HorizontalInput, playerView.VerticalInput);
     }
 
