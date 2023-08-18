@@ -9,6 +9,8 @@ public class PlayerView : MonoBehaviour
     private PlayerController playerController;
     public Rigidbody2D PlayerRigidBody { get; private set; }
 
+    public Animator PlayerAnimator { get; private set; }
+
     private float horizontalInput;
 
     private float verticalInput;
@@ -17,6 +19,7 @@ public class PlayerView : MonoBehaviour
     {
         playerController = new(playerModel,this);
         PlayerRigidBody = GetComponent<Rigidbody2D>();
+        PlayerAnimator = GetComponent<Animator>();
     }
 
     void Update()
