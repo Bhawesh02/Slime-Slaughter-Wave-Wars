@@ -9,6 +9,10 @@ public class PlayerView : MonoBehaviour
     private PlayerController playerController;
     public Rigidbody2D PlayerRigidBody { get; private set; }
 
+    private float horizontalInput;
+
+    private float verticalInput;
+
     void Start()
     {
         playerController = new(playerModel,this);
@@ -17,16 +21,10 @@ public class PlayerView : MonoBehaviour
 
     void Update()
     {
-        playerMovement();
-    }
-
-    private void playerMovement()
-    {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Vertical");
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
 
         playerController.MovePlayer(horizontalInput, verticalInput);
-        
-        
     }
+
 }
