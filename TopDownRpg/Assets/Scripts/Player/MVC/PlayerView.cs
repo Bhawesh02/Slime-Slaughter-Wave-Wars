@@ -9,6 +9,8 @@ public class PlayerView : MonoBehaviour
     public PlayerController PlayerController { get; private set; }
     public Rigidbody2D PlayerRigidBody { get; private set; }
 
+    public SpriteRenderer PlayerSpriteRenderer { get; private set; }
+
     public Animator PlayerAnimator { get; private set; }
 
     public PlayerIdelState PlayerIdelState;
@@ -20,15 +22,19 @@ public class PlayerView : MonoBehaviour
 
     public float VerticalInput;
 
+   
+
+    
     private void Awake()
     {
         PlayerRigidBody = GetComponent<Rigidbody2D>();
         PlayerAnimator = GetComponent<Animator>();
+        PlayerSpriteRenderer = GetComponent<SpriteRenderer>();
     }
     private void Start()
     {
         PlayerController = new(playerModel, this);
-        PlayerAnimator.SetBool("IsLookingDown",true);
+        PlayerController.ChangeLookDirection(LookDirection.Down);
         ChangeState(PlayerIdelState);
     }
 
@@ -39,4 +45,6 @@ public class PlayerView : MonoBehaviour
         currentPlayerState = playerState;
         currentPlayerState.OnStateEnter();
     }
+
+    
 }

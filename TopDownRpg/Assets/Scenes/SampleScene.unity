@@ -1286,6 +1286,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerModel:
     MovementSpeed: 500
+    AnimationDirectionBools:
+    - IsLookingDown
+    - IsLookingUp
+    - IsLookingHrizontal
+    CurrentLookDirection: 0
   PlayerIdelState: {fileID: 632836198}
   PlayerRunningState: {fileID: 632836197}
   currentPlayerState: {fileID: 0}

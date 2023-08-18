@@ -28,3 +28,11 @@ public class PlayerState : MonoBehaviour
         this.enabled = false;
     }
 }
+
+public enum LookDirection
+{
+    Down,
+    Up,
+    Left,
+    Right
+}
