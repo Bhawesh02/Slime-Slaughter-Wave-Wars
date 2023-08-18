@@ -1,29 +1,19 @@
 
 using UnityEngine;
 
-public class PlayerController 
+public class PlayerController
 {
     private PlayerModel playerModel;
     private PlayerView playerView;
-   public PlayerController(PlayerModel playerModel,PlayerView playerView)
+    public PlayerController(PlayerModel playerModel, PlayerView playerView)
     {
         this.playerModel = playerModel;
         this.playerView = playerView;
     }
 
-    public void MoveUp()
+    public void MovePlayer(float horizontalInput, float verticalInput)
     {
-        playerView.transform.Translate(playerModel.MovementSpeed * Time.deltaTime * Vector2.up);
+        Vector2 movement = new(horizontalInput, verticalInput);
+        playerView.PlayerRigidBody.velocity = playerModel.MovementSpeed * Time.deltaTime * movement;
     }
-    public void MoveDown() {
-        playerView.transform.Translate(playerModel.MovementSpeed * Time.deltaTime * Vector2.down);
-
-    }
-    public void MoveLeft() {
-        playerView.transform.Translate(playerModel.MovementSpeed * Time.deltaTime * Vector2.left);
-    }
-    public void MoveRight() {
-        playerView.transform.Translate(playerModel.MovementSpeed * Time.deltaTime * Vector2.right);
-    }
-
 }
