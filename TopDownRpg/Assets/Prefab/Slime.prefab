@@ -227,8 +227,8 @@ MonoBehaviour:
     Health: 50
     MovementSpeed: 0.2
     ObstacelDetectionRadius: 0.5
-    TargetDetectionRadius: 0.8
-    TargetReachedThersold: 0.15
+    ChaseRadius: 0.8
+    FightRadius: 0.12
     ColliderSize: 0.1
     DetectionDelay: 0.05
     ObstacleLayerMask:
@@ -238,7 +238,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 8
     Obstacles: []
-    PlayerTarget: {fileID: 0}
+    PlayerTransform: {fileID: 0}
   ChaseState: {fileID: 2874163973500269455}
   IdelState: {fileID: 365721401762067813}
   FightState: {fileID: 512595200922185987}
