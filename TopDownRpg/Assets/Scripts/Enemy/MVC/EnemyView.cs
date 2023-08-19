@@ -8,9 +8,15 @@ public class EnemyView : MonoBehaviour, IDamageable
     public EnemyModel Model { get { return model; } }
     public EnemyController Controller;
 
+    public EnemyChaseState ChaseState;
+    public EnemyIdelState IdelState;
+    public EnemyFightState FightState;
+    public EnemyState CurrentState { get;private set; }
+
     public Animator GetAnimator { get; private set; }
 
     private float nextDetectionTime;
+
     private void Awake()
     {
         Controller = new(this, Model);
@@ -19,6 +25,7 @@ public class EnemyView : MonoBehaviour, IDamageable
     private void Start()
     {
         nextDetectionTime = Time.time;
+        ChangeState(IdelState);
     }
     private void Update()
     {
@@ -33,7 +40,12 @@ public class EnemyView : MonoBehaviour, IDamageable
     {
         Controller.ReduceHealth();
     }
-
+    public void ChangeState(EnemyState state)
+    {
+        CurrentState?.OnStateExit();
+        CurrentState = state;
+        CurrentState.OnStateEnter();
+    }
     public void EnemyDied()
     {
         Destroy(gameObject);
