@@ -17,6 +17,8 @@ public class EnemyView : MonoBehaviour, IDamageable
 
     private float nextDetectionTime;
 
+    public bool ShowGizmos;
+
     private void Awake()
     {
         Controller = new(this, Model);
@@ -25,7 +27,7 @@ public class EnemyView : MonoBehaviour, IDamageable
     private void Start()
     {
         nextDetectionTime = Time.time;
-        ChangeState(IdelState);
+        ChangeState(ChaseState);
     }
     private void Update()
     {
@@ -52,6 +54,8 @@ public class EnemyView : MonoBehaviour, IDamageable
     }
     private void OnDrawGizmos()
     {
+        if (!ShowGizmos)
+            return;
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, Model.ObstacelDetectionRadius);
         Gizmos.color = Color.blue;

@@ -1,14 +1,11 @@
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using UnityEngine;
 public class EnemyController
 {
     private EnemyView enemyView;
     private EnemyModel enemyModel;
-    private Transform playerTarget = null;
-    private Collider2D[] obstacles = null;
+    
     public EnemyController(EnemyView enemyView, EnemyModel enemyModel)
     {
         this.enemyView = enemyView;
@@ -17,7 +14,7 @@ public class EnemyController
 
     public void DetectObstacelsAndPlayer()
     {
-        obstacles = Physics2D.OverlapCircleAll(enemyView.transform.position, enemyModel.ObstacelDetectionRadius, enemyModel.ObstacleLayerMask);
+        enemyModel.Obstacles = Physics2D.OverlapCircleAll(enemyView.transform.position, enemyModel.ObstacelDetectionRadius, enemyModel.ObstacleLayerMask);
 
         PlayerDetect();
     }
@@ -30,22 +27,22 @@ public class EnemyController
 
         if (playerCollider == null)
         {
-            playerTarget = null;
+            enemyModel.PlayerTarget = null;
             return;
         }
-        playerTarget = playerCollider.transform;
+        enemyModel.PlayerTarget = playerCollider.transform;
         CheckIfPlayerIsInSight();
     }
 
     private void CheckIfPlayerIsInSight()
     {
-        Vector2 direction = (playerTarget.position - enemyView.transform.position).normalized;
-        Vector2 position = (Vector2)(enemyView.transform.position) + direction * enemyModel.RayCastOffset ;
+        Vector2 direction = (enemyModel.PlayerTarget.position - enemyView.transform.position).normalized;
+        Vector2 position = (Vector2)(enemyView.transform.position) + direction * enemyModel.ColliderSize ;
         RaycastHit2D hit = Physics2D.Raycast(position, direction,enemyModel.TargetDetectionRadius);
         
-        if(hit.collider.gameObject != playerTarget.gameObject)
+        if(hit.collider.gameObject != enemyModel.PlayerTarget.gameObject)
         {
-            playerTarget = null;
+            enemyModel.PlayerTarget = null;
             return;
         }
     }
@@ -57,12 +54,12 @@ public class EnemyController
         if (!Application.isPlaying)
             return;
         Gizmos.color = Color.green;
-        if (playerTarget != null)
-            Gizmos.DrawSphere(playerTarget.position, 0.02f);
-        if (obstacles == null)
+        if (enemyModel.PlayerTarget != null)
+            Gizmos.DrawSphere(enemyModel.PlayerTarget.position, 0.02f);
+        if (enemyModel.Obstacles == null)
             return;
         Gizmos.color = Color.red;
-        foreach (Collider2D col in obstacles)
+        foreach (Collider2D col in enemyModel.Obstacles)
         {
             Gizmos.DrawSphere(col.transform.position, 0.02f);
         }
