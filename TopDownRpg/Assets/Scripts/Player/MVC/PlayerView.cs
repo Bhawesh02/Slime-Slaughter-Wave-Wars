@@ -23,7 +23,7 @@ public class PlayerView : MonoBehaviour
 
     public Transform AttackPoint;
 
-
+    private float nextSwingTime;
    
 
     
@@ -38,9 +38,53 @@ public class PlayerView : MonoBehaviour
         PlayerController = new(PlayerModel, this);
         PlayerController.ChangeLookDirection(LookDirection.Down);
         ChangeState(PlayerIdelState);
+        nextSwingTime = Time.time;
     }
 
-   
+    private void Update()
+    {
+        HorizontalInput = Input.GetAxisRaw("Horizontal");
+        VerticalInput = Input.GetAxisRaw("Vertical");
+        changeLookDirectionBasedOnInput();
+        playerAttackCheck();
+    }
+    private void playerAttackCheck()
+    {
+        if (Time.time >= nextSwingTime)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                PlayerController.PlayerAttack();
+                nextSwingTime = Time.time + PlayerModel.SwingRate;
+            }
+            else
+            {
+                PlayerAnimator.SetBool("IsAttacking", false);
+            }
+        }
+    }
+
+    private void changeLookDirectionBasedOnInput()
+    {
+        if (HorizontalInput != 0)
+        {
+            if (HorizontalInput == 1)
+                PlayerController.ChangeLookDirection(LookDirection.Right);
+            else
+                PlayerController.ChangeLookDirection(LookDirection.Left);
+        }
+        else
+        {
+            if (VerticalInput == 1)
+            {
+                PlayerController.ChangeLookDirection(LookDirection.Up);
+            }
+            else if (VerticalInput == -1)
+            {
+                PlayerController.ChangeLookDirection(LookDirection.Down);
+            }
+        }
+    }
     public void ChangeState(PlayerState playerState)
     {
         currentPlayerState?.OnStateExit();
