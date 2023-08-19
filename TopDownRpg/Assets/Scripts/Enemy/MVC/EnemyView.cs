@@ -15,7 +15,10 @@ public class EnemyView : MonoBehaviour, IDamageable
 
     public Animator GetAnimator { get; private set; }
 
+    public Rigidbody2D GetRigidbody {  get; private set; }
+
     private float nextDetectionTime;
+
 
     public bool ShowGizmos;
 
@@ -23,17 +26,18 @@ public class EnemyView : MonoBehaviour, IDamageable
     {
         Controller = new(this, Model);
         GetAnimator = GetComponent<Animator>();
+        GetRigidbody = GetComponent<Rigidbody2D>();
     }
     private void Start()
     {
         nextDetectionTime = Time.time;
-        ChangeState(ChaseState);
+        ChangeState(IdelState);
     }
     private void Update()
     {
         if(Time.time >= nextDetectionTime) 
         { 
-            Controller.DetectObstacelsAndPlayer();
+            Controller.PlayerDetect();
             nextDetectionTime = Time.time + Model.DetectionDelay;
         }
     }

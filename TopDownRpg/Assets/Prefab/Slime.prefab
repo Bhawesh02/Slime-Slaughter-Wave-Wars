@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1406136492244655018}
   - component: {fileID: 8203685060869198312}
   - component: {fileID: 110557580661257624}
+  - component: {fileID: 5419586530097200890}
   - component: {fileID: 3115513729839390091}
   - component: {fileID: 512595200922185987}
   - component: {fileID: 2874163973500269455}
@@ -125,6 +126,33 @@ CapsuleCollider2D:
   m_Offset: {x: 0.0025905967, y: -0.012953073}
   m_Size: {x: 0.12849677, y: 0.1284968}
   m_Direction: 0
+--- !u!50 &5419586530097200890
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130520614215362674}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!95 &3115513729839390091
 Animator:
   serializedVersion: 5
@@ -153,7 +181,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 130520614215362674}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39e22ae072c6afe4794133d900cde2bc, type: 3}
   m_Name: 
@@ -165,11 +193,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 130520614215362674}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30efca3fd228616478b240cd2074854b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowGizmo: 1
 --- !u!114 &365721401762067813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,7 +206,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 130520614215362674}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5183accc471af5c4da1cacf1ae8d619c, type: 3}
   m_Name: 
@@ -199,7 +228,8 @@ MonoBehaviour:
     MovementSpeed: 10
     ObstacelDetectionRadius: 0.5
     TargetDetectionRadius: 0.8
-    RayCastOffset: 0.1
+    TargetReachedThersold: 0.15
+    ColliderSize: 0.1
     DetectionDelay: 0.05
     ObstacleLayerMask:
       serializedVersion: 2
@@ -207,6 +237,9 @@ MonoBehaviour:
     PlayerLayerMask:
       serializedVersion: 2
       m_Bits: 8
+    Obstacles: []
+    PlayerTarget: {fileID: 0}
   ChaseState: {fileID: 2874163973500269455}
   IdelState: {fileID: 365721401762067813}
   FightState: {fileID: 512595200922185987}
+  ShowGizmos: 0

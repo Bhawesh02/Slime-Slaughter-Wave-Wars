@@ -36,14 +36,31 @@ public class EnemyChaseState : EnemyState
     {
         base.OnStateEnter();
 
+        targetPos = Model.PlayerTarget.position;
     }
     private void Update()
     {
-        if(Model == null)
+        if (targetPos == null)
         {
-            Debug.LogError("Model Null");
+            View.ChangeState(View.IdelState);
             return;
         }
+        if (Vector2.Distance(transform.position, targetPos) < Model.TargetReachedThersold)
+        {
+            if(Model.PlayerTarget != null )
+                View.ChangeState(View.FightState);
+            else
+                View.ChangeState(View.IdelState);
+            return;
+        }
+        aiToMove();
+        View.GetRigidbody.velocity = resultDirection * Model.MovementSpeed;
+    }
+
+    private void aiToMove()
+    {
+        Controller.DetectObstacels();
+        Controller.CheckIfPlayerIsInSight();
         getObstacelsDanger();
         getTargetIntrest();
         getDirectionToMove();
@@ -64,14 +81,7 @@ public class EnemyChaseState : EnemyState
 
     private void getTargetIntrest()
     {
-        if (Model.PlayerTarget == null || targetPos == null) return;
-
         targetPos = Model.PlayerTarget.position;
-        if (Vector2.Distance(transform.position, targetPos) < Model.TargetReachedThersold)
-        {
-            View.ChangeState(View.FightState);
-            return;
-        }
         Vector2 directionToTarget = (targetPos - (Vector2)transform.position).normalized;
         float result;
         for (int i = 0; i < eightDirection.Count; i++)
@@ -89,7 +99,7 @@ public class EnemyChaseState : EnemyState
 
     private void getObstacelsDanger()
     {
-        if(Model.Obstacles == null) return; 
+        if (Model.Obstacles == null) return;
         Vector2 directionToObstacle;
         float distanceToObstacle;
         Vector2 directionToObstacleNormalized;
@@ -125,6 +135,7 @@ public class EnemyChaseState : EnemyState
 
     public override void OnStateExit()
     {
+        View.GetRigidbody.velocity = Vector2.zero;
         base.OnStateExit();
     }
 
@@ -143,9 +154,9 @@ public class EnemyChaseState : EnemyState
             Gizmos.DrawRay(transform.position, eightDirection[i] * interest[i]);
         }
         Gizmos.color = Color.blue;
-        Gizmos.DrawRay(transform.position,resultDirection * 0.5f);
+        Gizmos.DrawRay(transform.position, resultDirection * 0.5f);
 
-        if (Model.PlayerTarget == null)
+        if (Model !=null && Model.PlayerTarget == null && targetPos !=null)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawSphere(targetPos, 0.01f);

@@ -7,7 +7,7 @@ using UnityEngine;
 public class EnemyModel 
 {
     public int Health;
-    public int MovementSpeed;
+    public float MovementSpeed;
     public float ObstacelDetectionRadius;
     public float TargetDetectionRadius;
     public float TargetReachedThersold = 0.5f;

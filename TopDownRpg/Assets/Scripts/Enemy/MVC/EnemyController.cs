@@ -5,25 +5,24 @@ public class EnemyController
 {
     private EnemyView enemyView;
     private EnemyModel enemyModel;
-    
+
     public EnemyController(EnemyView enemyView, EnemyModel enemyModel)
     {
         this.enemyView = enemyView;
         this.enemyModel = enemyModel;
     }
 
-    public void DetectObstacelsAndPlayer()
+    public void DetectObstacels()
     {
         enemyModel.Obstacles = Physics2D.OverlapCircleAll(enemyView.transform.position, enemyModel.ObstacelDetectionRadius, enemyModel.ObstacleLayerMask);
 
-        PlayerDetect();
     }
 
-    private void PlayerDetect()
+    public void PlayerDetect()
     {
-        
-        
-        Collider2D playerCollider = Physics2D.OverlapCircle(enemyView.transform.position, enemyModel.TargetDetectionRadius, enemyModel.PlayerLayerMask); 
+
+
+        Collider2D playerCollider = Physics2D.OverlapCircle(enemyView.transform.position, enemyModel.TargetDetectionRadius, enemyModel.PlayerLayerMask);
 
         if (playerCollider == null)
         {
@@ -31,23 +30,24 @@ public class EnemyController
             return;
         }
         enemyModel.PlayerTarget = playerCollider.transform;
-        CheckIfPlayerIsInSight();
+        if (enemyView.CurrentState == enemyView.IdelState )
+            enemyView.ChangeState(enemyView.ChaseState);
     }
 
-    private void CheckIfPlayerIsInSight()
+    public void CheckIfPlayerIsInSight()
     {
         Vector2 direction = (enemyModel.PlayerTarget.position - enemyView.transform.position).normalized;
-        Vector2 position = (Vector2)(enemyView.transform.position) + direction * enemyModel.ColliderSize ;
-        RaycastHit2D hit = Physics2D.Raycast(position, direction,enemyModel.TargetDetectionRadius);
-        
-        if(hit.collider.gameObject != enemyModel.PlayerTarget.gameObject)
+        Vector2 position = (Vector2)(enemyView.transform.position) + direction * enemyModel.ColliderSize;
+        RaycastHit2D hit = Physics2D.Raycast(position, direction, enemyModel.TargetDetectionRadius);
+
+        if (hit.collider.gameObject != enemyModel.PlayerTarget.gameObject)
         {
             enemyModel.PlayerTarget = null;
             return;
         }
     }
 
-    
+
 
     public void DrawDetectionGizmos()
     {
@@ -63,7 +63,7 @@ public class EnemyController
         {
             Gizmos.DrawSphere(col.transform.position, 0.02f);
         }
-       
+
     }
     public void ReduceHealth()
     {
