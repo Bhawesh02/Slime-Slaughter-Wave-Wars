@@ -12,6 +12,9 @@ GameObject:
   - component: {fileID: 8203685060869198312}
   - component: {fileID: 110557580661257624}
   - component: {fileID: 3115513729839390091}
+  - component: {fileID: 512595200922185987}
+  - component: {fileID: 2874163973500269455}
+  - component: {fileID: 365721401762067813}
   - component: {fileID: 2769476918531778086}
   m_Layer: 7
   m_Name: Slime
@@ -143,6 +146,42 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &512595200922185987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130520614215362674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39e22ae072c6afe4794133d900cde2bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2874163973500269455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130520614215362674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30efca3fd228616478b240cd2074854b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &365721401762067813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130520614215362674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5183accc471af5c4da1cacf1ae8d619c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2769476918531778086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,10 +200,13 @@ MonoBehaviour:
     ObstacelDetectionRadius: 0.5
     TargetDetectionRadius: 0.8
     RayCastOffset: 0.1
-    DetectionDelay: 0.2
+    DetectionDelay: 0.05
     ObstacleLayerMask:
       serializedVersion: 2
       m_Bits: 64
     PlayerLayerMask:
       serializedVersion: 2
       m_Bits: 8
+  ChaseState: {fileID: 2874163973500269455}
+  IdelState: {fileID: 365721401762067813}
+  FightState: {fileID: 512595200922185987}
