@@ -5,18 +5,28 @@ public class EnemyView : MonoBehaviour, IDamageable
 {
     [SerializeField]
     private EnemyModel model;
-    public EnemyModel Model {  get { return model; } }
+    public EnemyModel Model { get { return model; } }
     public EnemyController Controller;
 
-    public Animator GetAnimator { get;private set; }
+    public Animator GetAnimator { get; private set; }
+
+    private float nextDetectionTime;
     private void Awake()
     {
-        Controller = new(this,Model);
+        Controller = new(this, Model);
         GetAnimator = GetComponent<Animator>();
+    }
+    private void Start()
+    {
+        nextDetectionTime = Time.time;
     }
     private void Update()
     {
-       Controller.DetectObstacelsAndPlayer();
+        if(Time.time >= nextDetectionTime) 
+        { 
+            Controller.DetectObstacelsAndPlayer();
+            nextDetectionTime = Time.time + Model.DetectionDelay;
+        }
     }
 
     public void TakeDamage()

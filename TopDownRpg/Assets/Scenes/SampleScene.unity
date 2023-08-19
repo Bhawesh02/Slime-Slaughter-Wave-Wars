@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 486112317}
   - component: {fileID: 486112316}
   - component: {fileID: 486112318}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Boundry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5753,14 +5753,6 @@ PrefabInstance:
     - target: {fileID: 1406136492244655018, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2769476918531778086, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
-      propertyPath: model.RayCasrOffset
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2769476918531778086, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
-      propertyPath: model.PlayerLayerMask.m_Bits
-      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

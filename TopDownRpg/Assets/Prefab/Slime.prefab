@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 1686833970, guid: 03839befede97544b96186a4e7f103ca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -160,6 +160,11 @@ MonoBehaviour:
     MovementSpeed: 10
     ObstacelDetectionRadius: 0.5
     TargetDetectionRadius: 0.8
+    RayCastOffset: 0.1
+    DetectionDelay: 0.2
     ObstacleLayerMask:
       serializedVersion: 2
       m_Bits: 64
+    PlayerLayerMask:
+      serializedVersion: 2
+      m_Bits: 8
