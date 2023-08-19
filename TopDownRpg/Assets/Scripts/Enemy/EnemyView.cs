@@ -14,7 +14,11 @@ public class EnemyView : MonoBehaviour, IDamageable
         Controller = new(this,Model);
         GetAnimator = GetComponent<Animator>();
     }
-    
+    private void Update()
+    {
+       Controller.Detect();
+    }
+
     public void TakeDamage()
     {
         Controller.ReduceHealth();
@@ -23,5 +27,11 @@ public class EnemyView : MonoBehaviour, IDamageable
     public void EnemyDied()
     {
         Destroy(gameObject);
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, Model.DetectionRadius);
+        Controller?.DrawDetectionGizmos();
     }
 }
