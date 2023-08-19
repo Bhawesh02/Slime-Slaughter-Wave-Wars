@@ -1,4 +1,5 @@
 
+using System.Collections;
 using UnityEngine;
 
 public class EnemyView : MonoBehaviour, IDamageable
@@ -17,10 +18,11 @@ public class EnemyView : MonoBehaviour, IDamageable
 
     public Rigidbody2D GetRigidbody {  get; private set; }
 
-    private float nextDetectionTime;
 
 
     public bool ShowGizmos;
+
+    Coroutine playerDetectCoroutine = null;
 
     private void Awake()
     {
@@ -30,18 +32,17 @@ public class EnemyView : MonoBehaviour, IDamageable
     }
     private void Start()
     {
-        nextDetectionTime = Time.time;
         ChangeState(IdelState);
+        playerDetectCoroutine = StartCoroutine(playerDetect());
     }
-    private void Update()
+    
+    IEnumerator playerDetect()
     {
-        if(Time.time >= nextDetectionTime) 
-        { 
-            Controller.PlayerDetect();
-            nextDetectionTime = Time.time + Model.DetectionDelay;
-        }
-    }
+        Controller.PlayerDetect();
+        yield return new WaitForSeconds(Model.DetectionDelay);
+        playerDetectCoroutine = StartCoroutine(playerDetect());
 
+    }
     public void TakeDamage()
     {
         Controller.ReduceHealth();
@@ -55,6 +56,10 @@ public class EnemyView : MonoBehaviour, IDamageable
     public void EnemyDied()
     {
         Destroy(gameObject);
+    }
+    private void OnDestroy()
+    {
+        StopCoroutine(playerDetectCoroutine);
     }
     private void OnDrawGizmos()
     {

@@ -1,32 +1,35 @@
 
 
+using System.Collections;
 using UnityEngine;
 
 public class EnemyFightState :  EnemyState
 {
-    private float nextDetectionTime;
-
+    private Coroutine playerCheckCoroutine = null;
     public override void OnStateEnter()
     {
         base.OnStateEnter();
+        playerCheckCoroutine = StartCoroutine(playerCheck());
 
     }
-    private void Start()
+    
+    IEnumerator playerCheck()
     {
-        nextDetectionTime = Time.time;
-    }
-    private void Update()
-    {
-        if( Time.time < nextDetectionTime) 
-        {
-            return;
-        }
         if (Model.PlayerTarget == null || Vector2.Distance(transform.position, Model.PlayerTarget.position) > Model.TargetReachedThersold)
             View.ChangeState(View.IdelState);
-        nextDetectionTime = Time.time + Model.DetectionDelay;
+        yield return new WaitForSeconds(Model.DetectionDelay);
+        playerCheckCoroutine = StartCoroutine(playerCheck());
+
     }
+    
     public override void OnStateExit()
     {
+        StopCoroutine(playerCheckCoroutine);
         base.OnStateExit();
+    }
+    private void OnDestroy()
+    {
+        StopCoroutine(playerCheckCoroutine);
+
     }
 }

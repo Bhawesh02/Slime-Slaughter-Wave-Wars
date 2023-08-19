@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +27,8 @@ public class EnemyChaseState : EnemyState
     };
 
     private Vector2 resultDirection = Vector2.zero;
-    private float nextSearchTime;
+
+    private Coroutine aiCoroutine = null;
 
     protected override void Awake()
     {
@@ -34,10 +36,7 @@ public class EnemyChaseState : EnemyState
         danger = new float[eightDirection.Count];
         interest = new float[eightDirection.Count];
     }
-    private void Start()
-    {
-        nextSearchTime = Time.time;
-    }
+    
     public override void OnStateEnter()
     {
         base.OnStateEnter();
@@ -46,15 +45,16 @@ public class EnemyChaseState : EnemyState
             Debug.LogError("Model Null");
         }
         targetPos = Model.PlayerTarget.position;
+        aiCoroutine = StartCoroutine(aILogic());
     }
-    private void Update()
+   
+    private IEnumerator aILogic()
     {
-        if (Time.time < nextSearchTime)
-            return;
+        yield return new WaitForSeconds(Model.DetectionDelay);
         if (targetPos == null)
         {
             View.ChangeState(View.IdelState);
-            return;
+            yield break;
         }
         if (Vector2.Distance(transform.position, targetPos) < Model.TargetReachedThersold)
         {
@@ -62,13 +62,13 @@ public class EnemyChaseState : EnemyState
                 View.ChangeState(View.FightState);
             else
                 View.ChangeState(View.IdelState);
-            return;
+            yield break;
         }
         aiToMove();
         View.GetRigidbody.velocity = resultDirection * Model.MovementSpeed;
-        nextSearchTime = Time.time + Model.DetectionDelay;
-    }
+        aiCoroutine = StartCoroutine(aILogic());
 
+    }
     private void aiToMove()
     {
 
@@ -150,8 +150,15 @@ public class EnemyChaseState : EnemyState
 
     public override void OnStateExit()
     {
+        StopCoroutine(aILogic());
         View.GetRigidbody.velocity = Vector2.zero;
         base.OnStateExit();
+
+    }
+    private void OnDestroy()
+    {
+        StopCoroutine(aILogic());
+
     }
 
     private void OnDrawGizmos()
