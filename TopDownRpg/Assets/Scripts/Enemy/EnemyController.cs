@@ -33,12 +33,30 @@ public class EnemyController
                 break;
             }
         }
-       if(playerCollider == null)
+        
+        //playerCollider = Physics2D.OverlapCircle(enemyView.transform.position, enemyModel.TargetDetectionRadius, enemyModel.PlayerLayerMask); 
+
+        if (playerCollider == null)
         {
             playerTarget = null;
             return;
         }
         playerTarget = playerCollider.transform;
+        CheckIfPlayerIsInSight();
+    }
+
+    private void CheckIfPlayerIsInSight()
+    {
+        Vector2 direction = (playerTarget.position - enemyView.transform.position).normalized;
+        Vector2 position = (Vector2)(enemyView.transform.position) + direction * enemyModel.RayCasrOffset ;
+        RaycastHit2D hit = Physics2D.Raycast(position, direction,enemyModel.TargetDetectionRadius);
+        
+        if(hit.collider.gameObject != playerTarget.gameObject)
+        {
+            Debug.Log(hit.collider.gameObject);
+            playerTarget = null;
+            return;
+        }
     }
 
     private void ObstacelDetect()

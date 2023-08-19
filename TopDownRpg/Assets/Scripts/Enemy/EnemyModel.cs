@@ -10,5 +10,7 @@ public class EnemyModel
     public int MovementSpeed;
     public float ObstacelDetectionRadius;
     public float TargetDetectionRadius;
+    public float RayCasrOffset = 0.02f;
     public LayerMask ObstacleLayerMask;
+    public LayerMask PlayerLayerMask;
 }
