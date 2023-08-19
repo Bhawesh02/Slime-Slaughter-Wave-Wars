@@ -20,14 +20,14 @@ public class EnemyController
 
     public void PlayerDetect()
     {
-        Collider2D playerCollider = Physics2D.OverlapCircle(enemyView.transform.position, enemyModel.TargetDetectionRadius, enemyModel.PlayerLayerMask);
+        Collider2D playerCollider = Physics2D.OverlapCircle(enemyView.transform.position, enemyModel.ChaseRadius, enemyModel.PlayerLayerMask);
 
         if (playerCollider == null)
         {
-            enemyModel.PlayerTarget = null;
+            enemyModel.PlayerTransform = null;
             return;
         }
-        enemyModel.PlayerTarget = playerCollider.transform;
+        enemyModel.PlayerTransform = playerCollider.transform;
         if (enemyView.CurrentState == enemyView.IdelState )
             enemyView.ChangeState(enemyView.ChaseState);
     }
@@ -35,13 +35,13 @@ public class EnemyController
     public void CheckIfPlayerIsInSight()
     {
         
-        Vector2 direction = (enemyModel.PlayerTarget.position - enemyView.transform.position).normalized;
+        Vector2 direction = (enemyModel.PlayerTransform.position - enemyView.transform.position).normalized;
         Vector2 position = (Vector2)(enemyView.transform.position) + direction * enemyModel.ColliderSize;
-        RaycastHit2D hit = Physics2D.Raycast(position, direction, enemyModel.TargetDetectionRadius);
+        RaycastHit2D hit = Physics2D.Raycast(position, direction, enemyModel.ChaseRadius);
 
-        if (hit.collider.gameObject != enemyModel.PlayerTarget.gameObject)
+        if (hit.collider.gameObject != enemyModel.PlayerTransform.gameObject)
         {
-            enemyModel.PlayerTarget = null;
+            enemyModel.PlayerTransform = null;
             return;
         }
     }
@@ -53,8 +53,8 @@ public class EnemyController
         if (!Application.isPlaying)
             return;
         Gizmos.color = Color.green;
-        if (enemyModel.PlayerTarget != null)
-            Gizmos.DrawSphere(enemyModel.PlayerTarget.position, 0.02f);
+        if (enemyModel.PlayerTransform != null)
+            Gizmos.DrawSphere(enemyModel.PlayerTransform.position, 0.02f);
         if (enemyModel.Obstacles == null)
             return;
         Gizmos.color = Color.red;

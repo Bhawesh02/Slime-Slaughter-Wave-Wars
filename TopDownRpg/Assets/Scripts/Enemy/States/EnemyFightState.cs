@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyFightState :  EnemyState
 {
     private Coroutine playerCheckCoroutine = null;
+    private Coroutine playerAttackCoroutine = null;
     public override void OnStateEnter()
     {
         base.OnStateEnter();
@@ -15,21 +16,27 @@ public class EnemyFightState :  EnemyState
     
     IEnumerator playerCheck()
     {
-        if (Model.PlayerTarget == null || Vector2.Distance(transform.position, Model.PlayerTarget.position) > Model.TargetReachedThersold)
+        if (Model.PlayerTransform == null || Vector2.Distance(transform.position, Model.PlayerTransform.position) > Model.FightRadius)
             View.ChangeState(View.IdelState);
         yield return new WaitForSeconds(Model.DetectionDelay);
         playerCheckCoroutine = StartCoroutine(playerCheck());
 
     }
     
+    private void asyncCleanup()
+    {
+        if(playerCheckCoroutine != null)
+        StopCoroutine(playerCheckCoroutine);
+        if(playerAttackCoroutine != null)
+        StopCoroutine(playerAttackCoroutine);
+    }
     public override void OnStateExit()
     {
-        StopCoroutine(playerCheckCoroutine);
+        asyncCleanup();
         base.OnStateExit();
     }
     private void OnDestroy()
     {
-        StopCoroutine(playerCheckCoroutine);
-
+        asyncCleanup();
     }
 }

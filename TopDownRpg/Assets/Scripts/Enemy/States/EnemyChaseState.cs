@@ -44,7 +44,7 @@ public class EnemyChaseState : EnemyState
         {
             Debug.LogError("Model Null");
         }
-        targetPos = Model.PlayerTarget.position;
+        targetPos = Model.PlayerTransform.position;
         aiCoroutine = StartCoroutine(aILogic());
     }
    
@@ -56,9 +56,9 @@ public class EnemyChaseState : EnemyState
             View.ChangeState(View.IdelState);
             yield break;
         }
-        if (Vector2.Distance(transform.position, targetPos) < Model.TargetReachedThersold)
+        if (Vector2.Distance(transform.position, targetPos) < Model.FightRadius)
         {
-            if (Model.PlayerTarget != null)
+            if (Model.PlayerTransform != null)
                 View.ChangeState(View.FightState);
             else
                 View.ChangeState(View.IdelState);
@@ -73,7 +73,7 @@ public class EnemyChaseState : EnemyState
     {
 
         Controller.DetectObstacels();
-        if (Model.PlayerTarget != null)
+        if (Model.PlayerTransform != null)
             Controller.CheckIfPlayerIsInSight();
         getObstacelsDanger();
         getTargetIntrest();
@@ -95,8 +95,8 @@ public class EnemyChaseState : EnemyState
 
     private void getTargetIntrest()
     {
-        if (Model.PlayerTarget != null)
-            targetPos = Model.PlayerTarget.position;
+        if (Model.PlayerTransform != null)
+            targetPos = Model.PlayerTransform.position;
         Vector2 directionToTarget = (targetPos - (Vector2)transform.position).normalized;
         float result;
         for (int i = 0; i < eightDirection.Count; i++)
@@ -178,7 +178,7 @@ public class EnemyChaseState : EnemyState
         Gizmos.color = Color.blue;
         Gizmos.DrawRay(transform.position, resultDirection * 0.5f);
 
-        if (Model != null && Model.PlayerTarget == null && targetPos != null)
+        if (Model != null && Model.PlayerTransform == null && targetPos != null)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawSphere(targetPos, 0.01f);

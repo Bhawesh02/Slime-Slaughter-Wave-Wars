@@ -68,7 +68,10 @@ public class EnemyView : MonoBehaviour, IDamageable
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, Model.ObstacelDetectionRadius);
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, Model.TargetDetectionRadius);
+        Gizmos.DrawWireSphere(transform.position, Model.ChaseRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, Model.FightRadius);
         Controller?.DrawDetectionGizmos();
+
     }
 }
