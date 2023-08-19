@@ -20,8 +20,6 @@ public class EnemyController
 
     public void PlayerDetect()
     {
-
-
         Collider2D playerCollider = Physics2D.OverlapCircle(enemyView.transform.position, enemyModel.TargetDetectionRadius, enemyModel.PlayerLayerMask);
 
         if (playerCollider == null)

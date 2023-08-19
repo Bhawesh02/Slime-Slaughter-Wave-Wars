@@ -27,7 +27,6 @@ public class EnemyChaseState : EnemyState
     };
 
     private Vector2 resultDirection = Vector2.zero;
-    private float nextSearchTime;
 
     private Coroutine aiCoroutine = null;
 
@@ -37,10 +36,7 @@ public class EnemyChaseState : EnemyState
         danger = new float[eightDirection.Count];
         interest = new float[eightDirection.Count];
     }
-    private void Start()
-    {
-        nextSearchTime = Time.time;
-    }
+    
     public override void OnStateEnter()
     {
         base.OnStateEnter();
@@ -157,6 +153,11 @@ public class EnemyChaseState : EnemyState
         StopCoroutine(aILogic());
         View.GetRigidbody.velocity = Vector2.zero;
         base.OnStateExit();
+
+    }
+    private void OnDestroy()
+    {
+        StopCoroutine(aILogic());
 
     }
 

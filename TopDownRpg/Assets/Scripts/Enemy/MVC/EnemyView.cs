@@ -18,7 +18,6 @@ public class EnemyView : MonoBehaviour, IDamageable
 
     public Rigidbody2D GetRigidbody {  get; private set; }
 
-    private float nextDetectionTime;
 
 
     public bool ShowGizmos;
@@ -33,15 +32,16 @@ public class EnemyView : MonoBehaviour, IDamageable
     }
     private void Start()
     {
-        nextDetectionTime = Time.time;
         ChangeState(IdelState);
         playerDetectCoroutine = StartCoroutine(playerDetect());
     }
     
     IEnumerator playerDetect()
     {
-        yield return new WaitForSeconds(Model.DetectionDelay);
         Controller.PlayerDetect();
+        yield return new WaitForSeconds(Model.DetectionDelay);
+        playerDetectCoroutine = StartCoroutine(playerDetect());
+
     }
     public void TakeDamage()
     {

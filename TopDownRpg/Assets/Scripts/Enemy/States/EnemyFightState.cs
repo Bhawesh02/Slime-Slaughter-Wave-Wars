@@ -27,4 +27,9 @@ public class EnemyFightState :  EnemyState
         StopCoroutine(playerCheckCoroutine);
         base.OnStateExit();
     }
+    private void OnDestroy()
+    {
+        StopCoroutine(playerCheckCoroutine);
+
+    }
 }
