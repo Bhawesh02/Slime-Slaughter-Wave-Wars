@@ -36,6 +36,7 @@ public class EnemyController
 
     public void CheckIfPlayerIsInSight()
     {
+        
         Vector2 direction = (enemyModel.PlayerTarget.position - enemyView.transform.position).normalized;
         Vector2 position = (Vector2)(enemyView.transform.position) + direction * enemyModel.ColliderSize;
         RaycastHit2D hit = Physics2D.Raycast(position, direction, enemyModel.TargetDetectionRadius);

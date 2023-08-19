@@ -59,6 +59,8 @@ public class EnemyChaseState : EnemyState
 
     private void aiToMove()
     {
+        if (Model.PlayerTarget == null)
+            return;
         Controller.DetectObstacels();
         Controller.CheckIfPlayerIsInSight();
         getObstacelsDanger();
