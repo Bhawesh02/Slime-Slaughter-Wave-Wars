@@ -5764,7 +5764,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2874163973500269455, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
       propertyPath: ShowGizmo
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5419586530097200890, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
       propertyPath: m_Constraints

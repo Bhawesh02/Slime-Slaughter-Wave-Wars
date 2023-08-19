@@ -8,11 +8,12 @@ public class EnemyState : MonoBehaviour
     protected EnemyView View { get; private set; }
     protected EnemyController Controller { get; private set; }
     protected EnemyModel Model { get; private set; }
-    private void Start()
+    protected virtual void Awake()
     {
         View = GetComponent<EnemyView>();
         Controller = View.Controller;
         Model = View.Model;
+
     }
 
     public virtual void OnStateEnter()
