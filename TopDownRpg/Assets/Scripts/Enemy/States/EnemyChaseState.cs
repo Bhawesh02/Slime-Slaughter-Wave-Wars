@@ -1,20 +1,18 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyChaseState : EnemyState
 {
-    #region Gizmos
     public bool ShowGizmo = true;
 
-    private float[] dangerResultTemp = null;
-    private float[] intrestResultTemp = null;
-    #endregion
+
     private Vector2 targetPos;
 
-    private float[] danger = new float[8];
+    private float[] danger;
 
-    private float[] interset = new float[8];
+    private float[] interest;
     private List<Vector2> eightDirection = new List<Vector2> {
         new Vector2(0,1).normalized,
         new Vector2(1,1).normalized,
@@ -26,6 +24,14 @@ public class EnemyChaseState : EnemyState
         new Vector2(-1,1).normalized,
 
     };
+
+    Vector2 resultDirection = Vector2.zero;
+
+    private void Awake()
+    {
+        danger = new float[eightDirection.Count];
+        interest = new float[eightDirection.Count];
+    }
     public override void OnStateEnter()
     {
         base.OnStateEnter();
@@ -33,14 +39,33 @@ public class EnemyChaseState : EnemyState
     }
     private void Update()
     {
+        if(Model == null)
+        {
+            Debug.LogError("Model Null");
+            return;
+        }
         getObstacelsDanger();
         getTargetIntrest();
+        getDirectionToMove();
+    }
+
+    private void getDirectionToMove()
+    {
+        for (int i = 0; i < interest.Length; i++)
+        {
+            interest[i] = Mathf.Clamp01(interest[i] - danger[i]);
+        }
+        for (int i = 0; i < interest.Length; i++)
+            resultDirection += eightDirection[i] * interest[i];
+        resultDirection.Normalize();
+
+
     }
 
     private void getTargetIntrest()
     {
         if (Model.PlayerTarget == null || targetPos == null) return;
-        
+
         targetPos = Model.PlayerTarget.position;
         if (Vector2.Distance(transform.position, targetPos) < Model.TargetReachedThersold)
         {
@@ -54,17 +79,17 @@ public class EnemyChaseState : EnemyState
             result = Vector2.Dot(directionToTarget, eightDirection[i]);
             if (result >= 0)
             {
-                interset[i] = result;
-                
+                interest[i] = result;
+
             }
         }
-        intrestResultTemp = interset;
 
 
     }
 
     private void getObstacelsDanger()
     {
+        if(Model.Obstacles == null) return; 
         Vector2 directionToObstacle;
         float distanceToObstacle;
         Vector2 directionToObstacleNormalized;
@@ -91,11 +116,10 @@ public class EnemyChaseState : EnemyState
         {
             result = Vector2.Dot(directionToObstacleNormalized, eightDirection[i]);
             valueToPut = result * weight;
-            if(valueToPut >= 0)
-            danger[i] = valueToPut;
-            
+            if (valueToPut >= 0)
+                danger[i] = valueToPut;
+
         }
-        dangerResultTemp = danger;
 
     }
 
@@ -108,20 +132,19 @@ public class EnemyChaseState : EnemyState
     {
         if (!ShowGizmo)
             return;
-        if (!Application.isPlaying || dangerResultTemp == null) return;
+        if (!Application.isPlaying || interest == null) return;
         Gizmos.DrawSphere(targetPos, 0.02f);
 
-        Gizmos.color = Color.red;
-        for (int i = 0; i < eightDirection.Count; i++)
-        {
-            Gizmos.DrawRay(transform.position, eightDirection[i] * danger[i]);
-        }
-        if (intrestResultTemp == null) return;
+
+        if (interest == null) return;
         Gizmos.color = Color.green;
-        for (int i = 1; i < intrestResultTemp.Length; i++)
+        for (int i = 1; i < interest.Length; i++)
         {
-            Gizmos.DrawRay(transform.position, eightDirection[i] * intrestResultTemp[i]);
+            Gizmos.DrawRay(transform.position, eightDirection[i] * interest[i]);
         }
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(transform.position,resultDirection * 0.5f);
+
         if (Model.PlayerTarget == null)
         {
             Gizmos.color = Color.red;
