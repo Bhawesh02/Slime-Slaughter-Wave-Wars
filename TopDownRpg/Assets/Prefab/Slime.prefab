@@ -141,7 +141,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -152,7 +152,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!95 &3115513729839390091
 Animator:
   serializedVersion: 5
@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30efca3fd228616478b240cd2074854b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowGizmo: 1
+  ShowGizmo: 0
 --- !u!114 &365721401762067813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,7 +225,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   model:
     Health: 50
-    MovementSpeed: 10
+    MovementSpeed: 0.2
     ObstacelDetectionRadius: 0.5
     TargetDetectionRadius: 0.8
     TargetReachedThersold: 0.15
@@ -233,7 +233,7 @@ MonoBehaviour:
     DetectionDelay: 0.05
     ObstacleLayerMask:
       serializedVersion: 2
-      m_Bits: 64
+      m_Bits: 192
     PlayerLayerMask:
       serializedVersion: 2
       m_Bits: 8
