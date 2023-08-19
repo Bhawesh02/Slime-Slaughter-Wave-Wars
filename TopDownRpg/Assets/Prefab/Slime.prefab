@@ -158,3 +158,8 @@ MonoBehaviour:
   model:
     Health: 50
     MovementSpeed: 10
+    ObstacelDetectionRadius: 0.5
+    TargetDetectionRadius: 0.8
+    ObstacleLayerMask:
+      serializedVersion: 2
+      m_Bits: 64

@@ -8,6 +8,7 @@ public class EnemyModel
 {
     public int Health;
     public int MovementSpeed;
-    public float DetectionRadius;
+    public float ObstacelDetectionRadius;
+    public float TargetDetectionRadius;
     public LayerMask ObstacleLayerMask;
 }

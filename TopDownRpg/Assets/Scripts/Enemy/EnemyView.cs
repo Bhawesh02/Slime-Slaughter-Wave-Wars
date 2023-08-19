@@ -16,7 +16,7 @@ public class EnemyView : MonoBehaviour, IDamageable
     }
     private void Update()
     {
-       Controller.Detect();
+       Controller.DetectObstacelsAndPlayer();
     }
 
     public void TakeDamage()
@@ -31,7 +31,9 @@ public class EnemyView : MonoBehaviour, IDamageable
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, Model.DetectionRadius);
+        Gizmos.DrawWireSphere(transform.position, Model.ObstacelDetectionRadius);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, Model.TargetDetectionRadius);
         Controller?.DrawDetectionGizmos();
     }
 }

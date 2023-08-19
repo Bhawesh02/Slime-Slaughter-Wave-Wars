@@ -24,7 +24,7 @@ public class PlayerView : MonoBehaviour
     public Transform AttackPoint;
 
     private float nextSwingTime;
-   
+
 
     
     private void Awake()
@@ -95,7 +95,7 @@ public class PlayerView : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(AttackPoint.position, PlayerModel.AttackRadius);
+       Gizmos.DrawWireSphere(AttackPoint.position, PlayerModel.AttackRadius);
     }
 
 }
