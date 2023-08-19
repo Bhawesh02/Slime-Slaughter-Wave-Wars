@@ -5716,11 +5716,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1406136492244655018, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.683
+      value: 1.388
       objectReference: {fileID: 0}
     - target: {fileID: 1406136492244655018, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.144
+      value: -0.147
       objectReference: {fileID: 0}
     - target: {fileID: 1406136492244655018, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5756,7 +5756,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2769476918531778086, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
       propertyPath: model.RayCasrOffset
-      value: 0.07
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769476918531778086, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
+      propertyPath: model.PlayerLayerMask.m_Bits
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
