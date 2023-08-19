@@ -39,6 +39,7 @@ public class PlayerView : MonoBehaviour
         PlayerController.ChangeLookDirection(LookDirection.Down);
         ChangeState(PlayerIdelState);
         nextSwingTime = Time.time;
+        GameManager.Instance.Player = this;
     }
 
     private void Update()

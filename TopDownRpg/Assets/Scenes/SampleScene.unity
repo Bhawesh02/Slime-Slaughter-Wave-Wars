@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 486112317}
   - component: {fileID: 486112316}
   - component: {fileID: 486112318}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CollisonObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1198,7 +1198,7 @@ GameObject:
   - component: {fileID: 632836198}
   - component: {fileID: 632836197}
   - component: {fileID: 632836193}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1774,7 +1774,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1273257824}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1795,6 +1795,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 632836192}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1310968761
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1310968762}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1310968762
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310968761}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.20368123, y: -0.15463012, z: 0.0023223807}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2017161938
 GameObject:
@@ -5380,6 +5411,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime
       objectReference: {fileID: 0}
+    - target: {fileID: 130520614215362674, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1406136492244655018, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.37
@@ -5430,6 +5465,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
+  - {fileID: 1310968762}
   - {fileID: 632836192}
   - {fileID: 103894023}
   - {fileID: 2045258783552414035}
