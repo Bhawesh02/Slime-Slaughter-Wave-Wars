@@ -8,6 +8,9 @@ public class EnemyModel
 {
     public int Health;
     public float MovementSpeed;
+    public int AttackPower = 10;
+    public float AttackDelay = 0.5f;
+
     public float ObstacelDetectionRadius;
     public float ChaseRadius = 0.8f;
     public float FightRadius = 0.12f;
