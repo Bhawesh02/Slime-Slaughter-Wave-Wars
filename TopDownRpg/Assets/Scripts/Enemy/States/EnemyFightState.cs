@@ -46,8 +46,4 @@ public class EnemyFightState :  EnemyState
         asyncCleanup();
         base.OnStateExit();
     }
-    private void OnDestroy()
-    {
-        asyncCleanup();
-    }
 }

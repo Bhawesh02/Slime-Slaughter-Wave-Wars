@@ -18,6 +18,7 @@ public class EnemyView : MonoBehaviour, IDamageable
 
     public Rigidbody2D GetRigidbody {  get; private set; }
 
+    public SpriteRenderer GetSpriteRenderer { get; private set; }
 
 
     public bool ShowGizmos;
@@ -29,6 +30,7 @@ public class EnemyView : MonoBehaviour, IDamageable
         Controller = new(this, Model);
         GetAnimator = GetComponent<Animator>();
         GetRigidbody = GetComponent<Rigidbody2D>();
+        GetSpriteRenderer = GetComponent<SpriteRenderer>();
     }
     private void Start()
     {
@@ -61,6 +63,7 @@ public class EnemyView : MonoBehaviour, IDamageable
     }
     private void OnDestroy()
     {
+        CurrentState?.OnStateExit();
         StopCoroutine(playerDetectCoroutine);
     }
     private void OnDrawGizmos()

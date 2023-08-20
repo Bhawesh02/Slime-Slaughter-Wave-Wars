@@ -152,11 +152,7 @@ public class EnemyChaseState : EnemyState
         base.OnStateExit();
 
     }
-    private void OnDestroy()
-    {
-        StopCoroutine(aILogic());
-
-    }
+   
 
     private void OnDrawGizmos()
     {
