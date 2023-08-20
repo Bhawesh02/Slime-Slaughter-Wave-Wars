@@ -53,17 +53,10 @@ public class PlayerView : MonoBehaviour
     }
     private void playerAttackCheck()
     {
-        if (Time.time >= nextSwingTime)
+        if (Time.time >= nextSwingTime && Input.GetMouseButton(0))
         {
-            if (Input.GetMouseButton(0))
-            {
-                PlayerController.PlayerAttack();
-                nextSwingTime = Time.time + PlayerModel.SwingRate;
-            }
-            else
-            {
-                PlayerAnimator.SetBool("IsAttacking", false);
-            }
+            PlayerController.PlayerAttack();
+            nextSwingTime = Time.time + PlayerModel.SwingRate;
         }
     }
 
@@ -102,6 +95,7 @@ public class PlayerView : MonoBehaviour
 
     public void TakeDamage(int attackPower)
     {
+        PlayerAnimator.SetTrigger("Attacked");
         PlayerController.ReduceHealth(attackPower);
     }
 }

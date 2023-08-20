@@ -39,7 +39,7 @@ public class PlayerController
 
                 break;
             case LookDirection.Left:
-                setAnimatorDirectionBoolTrue("IsLookingHrizontal");
+                setAnimatorDirectionBoolTrue("IsLookingHorizontal");
                 newXPosForAttackPoint = playerView.transform.position.x + playerView.PlayerModel.AttackPointLeftXOffset;
                 newYPosForAttackPoint = playerView.transform.position.y + playerView.PlayerModel.AttackPointLeftYOffset + playerView.AttackPointInitialYOffset;
                 
@@ -47,7 +47,7 @@ public class PlayerController
                 playerView.PlayerSpriteRenderer.flipX = true;
                 break;
             case LookDirection.Right:
-                setAnimatorDirectionBoolTrue("IsLookingHrizontal");
+                setAnimatorDirectionBoolTrue("IsLookingHorizontal");
                 newXPosForAttackPoint = playerView.transform.position.x + playerView.PlayerModel.AttackPointRightXOffset;
                 newYPosForAttackPoint = playerView.transform.position.y + playerView.PlayerModel.AttackPointRightYOffset + playerView.AttackPointInitialYOffset;
                
@@ -61,6 +61,7 @@ public class PlayerController
     {
         for (int i = 0; i < playerModel.AnimationDirectionBools.Length; i++)
         {
+
             if (playerModel.AnimationDirectionBools[i] == direction)
                 playerView.PlayerAnimator.SetBool(playerModel.AnimationDirectionBools[i], true);
             else
@@ -70,7 +71,7 @@ public class PlayerController
 
     public void PlayerAttack()
     {
-        playerView.PlayerAnimator.SetBool("IsAttacking", true);
+        playerView.PlayerAnimator.SetTrigger("Attacking");
         Collider2D[] hits = Physics2D.OverlapCircleAll(playerView.AttackPoint.position,playerModel.AttackRadius);
         for(int i = 0; i < hits.Length; i++)
         {
