@@ -62,6 +62,10 @@ public class EnemyChaseState : EnemyState
         }
         aiToMove();
         View.GetRigidbody.velocity = resultDirection * Model.MovementSpeed;
+        if(View.GetRigidbody.velocity.x > 0)
+            View.GetSpriteRenderer.flipX = false;
+        else
+            View.GetSpriteRenderer.flipX = true;
         yield return new WaitForSeconds(Model.DetectionDelay);
         aiCoroutine = StartCoroutine(aILogic());
 
