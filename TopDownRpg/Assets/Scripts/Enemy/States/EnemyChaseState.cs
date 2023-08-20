@@ -127,7 +127,7 @@ public class EnemyChaseState : EnemyState
         float weight;
         foreach (Collider2D obstacleCollider in Model.Obstacles)
         {
-            directionToObstacle = (Vector2)obstacleCollider.transform.position
+            directionToObstacle = obstacleCollider.ClosestPoint(transform.position)
                 - (Vector2)transform.position;
             distanceToObstacle = directionToObstacle.magnitude;
             directionToObstacleNormalized = directionToObstacle.normalized;
