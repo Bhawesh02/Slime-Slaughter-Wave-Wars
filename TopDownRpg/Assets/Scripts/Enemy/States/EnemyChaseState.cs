@@ -40,23 +40,19 @@ public class EnemyChaseState : EnemyState
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-        if (Model == null)
-        {
-            Debug.LogError("Model Null");
-        }
         targetPos = Model.PlayerTransform.position;
         aiCoroutine = StartCoroutine(aILogic());
     }
-   
+    
+    
     private IEnumerator aILogic()
     {
-        yield return new WaitForSeconds(Model.DetectionDelay);
         if (targetPos == null)
         {
             View.ChangeState(View.IdelState);
             yield break;
         }
-        if (Vector2.Distance(transform.position, targetPos) < Model.FightRadius)
+        if (Vector2.Distance(transform.position, targetPos) <= Model.FightRadius)
         {
             if (Model.PlayerTransform != null)
                 View.ChangeState(View.FightState);
@@ -66,6 +62,7 @@ public class EnemyChaseState : EnemyState
         }
         aiToMove();
         View.GetRigidbody.velocity = resultDirection * Model.MovementSpeed;
+        yield return new WaitForSeconds(Model.DetectionDelay);
         aiCoroutine = StartCoroutine(aILogic());
 
     }

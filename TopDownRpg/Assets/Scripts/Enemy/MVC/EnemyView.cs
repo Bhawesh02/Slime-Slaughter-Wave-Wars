@@ -49,6 +49,8 @@ public class EnemyView : MonoBehaviour, IDamageable
     }
     public void ChangeState(EnemyState state)
     {
+        /*if(CurrentState!=null)
+        Debug.Log("New State: " + state + "  Current State" + CurrentState);*/
         CurrentState?.OnStateExit();
         CurrentState = state;
         CurrentState.OnStateEnter();

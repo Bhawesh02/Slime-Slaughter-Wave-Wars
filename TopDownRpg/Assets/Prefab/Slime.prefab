@@ -228,7 +228,7 @@ MonoBehaviour:
     MovementSpeed: 0.2
     ObstacelDetectionRadius: 0.5
     ChaseRadius: 0.8
-    FightRadius: 0.12
+    FightRadius: 0.15
     ColliderSize: 0.1
     DetectionDelay: 0.05
     ObstacleLayerMask:

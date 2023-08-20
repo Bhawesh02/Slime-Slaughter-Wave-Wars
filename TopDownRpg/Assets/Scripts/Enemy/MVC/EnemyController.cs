@@ -39,7 +39,7 @@ public class EnemyController
         Vector2 position = (Vector2)(enemyView.transform.position) + direction * enemyModel.ColliderSize;
         RaycastHit2D hit = Physics2D.Raycast(position, direction, enemyModel.ChaseRadius);
 
-        if (hit.collider.gameObject != enemyModel.PlayerTransform.gameObject)
+        if (hit.collider != null && hit.collider.gameObject != enemyModel.PlayerTransform.gameObject)
         {
             enemyModel.PlayerTransform = null;
             return;
