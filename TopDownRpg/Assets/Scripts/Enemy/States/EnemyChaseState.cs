@@ -41,7 +41,10 @@ public class EnemyChaseState : EnemyState
     {
         base.OnStateEnter();
         targetPos = Model.PlayerTransform.position;
-
+        if (targetPos == null)
+        {
+            View.ChangeState(View.IdelState);
+        }
         aiCoroutine = StartCoroutine(aILogic());
         View.GetAnimator.SetBool("IsMoving",true);
     }
@@ -49,11 +52,12 @@ public class EnemyChaseState : EnemyState
     
     private IEnumerator aILogic()
     {
-        if (targetPos == null)
-        {
-            View.ChangeState(View.IdelState);
-            yield break;
-        }
+        
+
+        Controller.DetectObstacels();
+        if (Model.PlayerTransform != null)
+            Controller.CheckIfPlayerIsInSight();
+
         if (Vector2.Distance(transform.position, targetPos) <= Model.FightRadius)
         {
             if (Model.PlayerTransform != null)
@@ -62,6 +66,7 @@ public class EnemyChaseState : EnemyState
                 View.ChangeState(View.IdelState);
             yield break;
         }
+
         aiToMove();
         View.GetRigidbody.velocity = resultDirection * Model.MovementSpeed;
         if(View.GetRigidbody.velocity.x > 0)
@@ -75,9 +80,7 @@ public class EnemyChaseState : EnemyState
     private void aiToMove()
     {
 
-        Controller.DetectObstacels();
-        if (Model.PlayerTransform != null)
-            Controller.CheckIfPlayerIsInSight();
+        
         getObstacelsDanger();
         getTargetIntrest();
         getDirectionToMove();
