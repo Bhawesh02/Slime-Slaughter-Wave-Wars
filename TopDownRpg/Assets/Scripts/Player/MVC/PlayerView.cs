@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 
 public class PlayerView : MonoBehaviour
@@ -98,4 +99,8 @@ public class PlayerView : MonoBehaviour
        Gizmos.DrawWireSphere(AttackPoint.position, PlayerModel.AttackRadius);
     }
 
+    public void TakeDamage(int attackPower)
+    {
+        PlayerController.ReduceHealth(attackPower);
+    }
 }

@@ -1,8 +1,6 @@
 
 using System;
-using System.Threading.Tasks;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerController
 {
@@ -68,5 +66,21 @@ public class PlayerController
         {
             hits[i].GetComponent<IDamageable>()?.TakeDamage();
         }
+    }
+
+    public void ReduceHealth(int attackPower)
+    {
+        playerModel.CurrentHealth -= attackPower;
+        if(playerModel.CurrentHealth <= 0)
+        {
+            PlayerDead();
+            return;
+        }
+
+    }
+
+    private void PlayerDead()
+    {
+        Debug.Log("Player Died");
     }
 }
