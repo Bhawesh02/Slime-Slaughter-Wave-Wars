@@ -6,6 +6,8 @@ public class PlayerController
 {
     private PlayerModel playerModel;
     private PlayerView playerView;
+    private float newXPosForAttackPoint;
+    private float newYPosForAttackPoint;
     public PlayerController(PlayerModel playerModel, PlayerView playerView)
     {
         this.playerModel = playerModel;
@@ -25,26 +27,33 @@ public class PlayerController
         {
             case LookDirection.Down:
                 setAnimatorDirectionBoolTrue("IsLookingDown");
-                playerView.AttackPoint.position = new(playerView.transform.position.x + playerView.PlayerModel.AttackPointDownXOffset, playerView.transform.position.y + playerView.PlayerModel.AttackPointDownYOffset);
+                newXPosForAttackPoint = playerView.transform.position.x + playerView.PlayerModel.AttackPointDownXOffset;
+                newYPosForAttackPoint = playerView.transform.position.y + playerView.PlayerModel.AttackPointDownYOffset + playerView.AttackPointInitialYOffset;
                 break;
             case LookDirection.Up:
                 setAnimatorDirectionBoolTrue("IsLookingUp");
-                playerView.AttackPoint.position = new(playerView.transform.position.x + playerView.PlayerModel.AttackPointUpXOffset, playerView.transform.position.y + playerView.PlayerModel.AttackPointUpYOffset);
+                newXPosForAttackPoint = playerView.transform.position.x + playerView.PlayerModel.AttackPointUpXOffset;
+                newYPosForAttackPoint = playerView.transform.position.y + playerView.PlayerModel.AttackPointUpYOffset + playerView.AttackPointInitialYOffset;
+                
 
                 break;
             case LookDirection.Left:
                 setAnimatorDirectionBoolTrue("IsLookingHrizontal");
-                playerView.AttackPoint.position = new(playerView.transform.position.x + playerView.PlayerModel.AttackPointLeftXOffset, playerView.transform.position.y + playerView.PlayerModel.AttackPointLeftYOffset);
+                newXPosForAttackPoint = playerView.transform.position.x + playerView.PlayerModel.AttackPointLeftXOffset;
+                newYPosForAttackPoint = playerView.transform.position.y + playerView.PlayerModel.AttackPointLeftYOffset + playerView.AttackPointInitialYOffset;
+                
 
                 playerView.PlayerSpriteRenderer.flipX = true;
                 break;
             case LookDirection.Right:
                 setAnimatorDirectionBoolTrue("IsLookingHrizontal");
-                playerView.AttackPoint.position = new(playerView.transform.position.x + playerView.PlayerModel.AttackPointRightXOffset, playerView.transform.position.y + playerView.PlayerModel.AttackPointRightYOffset);
-
+                newXPosForAttackPoint = playerView.transform.position.x + playerView.PlayerModel.AttackPointRightXOffset;
+                newYPosForAttackPoint = playerView.transform.position.y + playerView.PlayerModel.AttackPointRightYOffset + playerView.AttackPointInitialYOffset;
+               
                 playerView.PlayerSpriteRenderer.flipX = false;
                 break;
         }
+        playerView.AttackPoint.position = new(newXPosForAttackPoint,newYPosForAttackPoint);
         playerModel.CurrentLookDirection = direction;
     }
     private void setAnimatorDirectionBoolTrue(string direction)

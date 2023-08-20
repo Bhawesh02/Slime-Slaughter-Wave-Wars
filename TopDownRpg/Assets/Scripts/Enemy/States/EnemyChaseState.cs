@@ -41,7 +41,9 @@ public class EnemyChaseState : EnemyState
     {
         base.OnStateEnter();
         targetPos = Model.PlayerTransform.position;
+
         aiCoroutine = StartCoroutine(aILogic());
+        View.GetAnimator.SetBool("IsMoving",true);
     }
     
     
@@ -153,6 +155,8 @@ public class EnemyChaseState : EnemyState
     {
         StopCoroutine(aILogic());
         View.GetRigidbody.velocity = Vector2.zero;
+        View.GetAnimator.SetBool("IsMoving", false);
+
         base.OnStateExit();
 
     }

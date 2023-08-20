@@ -9,9 +9,9 @@ public class PlayerView : MonoBehaviour
     public PlayerController PlayerController { get; private set; }
     public Rigidbody2D PlayerRigidBody { get; private set; }
 
-    public SpriteRenderer PlayerSpriteRenderer { get; private set; }
+    public SpriteRenderer PlayerSpriteRenderer;
 
-    public Animator PlayerAnimator { get; private set; }
+    public Animator PlayerAnimator;
 
     public PlayerIdelState PlayerIdelState;
     public PlayerRunningState PlayerRunningState;
@@ -26,13 +26,13 @@ public class PlayerView : MonoBehaviour
 
     private float nextSwingTime;
 
+    public float AttackPointInitialYOffset;
 
     
     private void Awake()
     {
         PlayerRigidBody = GetComponent<Rigidbody2D>();
-        PlayerAnimator = GetComponent<Animator>();
-        PlayerSpriteRenderer = GetComponent<SpriteRenderer>();
+        AttackPointInitialYOffset = AttackPoint.transform.position.y;
     }
     private void Start()
     {
@@ -40,6 +40,7 @@ public class PlayerView : MonoBehaviour
         PlayerController.ChangeLookDirection(LookDirection.Down);
         ChangeState(PlayerIdelState);
         nextSwingTime = Time.time;
+
         GameManager.Instance.Player = this;
     }
 
