@@ -32,7 +32,6 @@ public class EnemyFightState : EnemyState
         {
             yield break;
         }
-        Debug.Log("Attakced");
 
         playerView.TakeDamage(Model.AttackPower);
         yield return new WaitForSeconds(Model.AttackDelay);

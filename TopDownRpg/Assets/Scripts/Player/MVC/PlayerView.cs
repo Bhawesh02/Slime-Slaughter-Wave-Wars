@@ -97,5 +97,6 @@ public class PlayerView : MonoBehaviour
     {
         PlayerAnimator.SetTrigger("Attacked");
         PlayerController.ReduceHealth(attackPower);
+        GameManager.Instance.SetPlayerHealthInSlider();
     }
 }
