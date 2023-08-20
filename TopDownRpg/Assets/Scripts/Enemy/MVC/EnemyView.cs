@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class EnemyView : MonoBehaviour, IDamageable
 {
+
     [SerializeField]
-    private EnemyModel model;
-    public EnemyModel Model { get { return model; } }
+    private EnemyScriptableObject enemyScriptableObject;
+    public EnemyModel Model { get; private set; }
     public EnemyController Controller;
 
     public EnemyChaseState ChaseState;
@@ -27,6 +28,7 @@ public class EnemyView : MonoBehaviour, IDamageable
 
     private void Awake()
     {
+        Model = new(enemyScriptableObject);
         Controller = new(this, Model);
         GetAnimator = GetComponent<Animator>();
         GetRigidbody = GetComponent<Rigidbody2D>();

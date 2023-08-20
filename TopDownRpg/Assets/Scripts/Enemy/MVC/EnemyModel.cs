@@ -3,7 +3,6 @@
 using System;
 using UnityEngine;
 
-[Serializable]
 public class EnemyModel 
 {
     public int Health;
@@ -21,4 +20,20 @@ public class EnemyModel
     [HideInInspector]
     public Collider2D[] Obstacles = null;
     public Transform PlayerTransform = null;
+
+    public EnemyModel(EnemyScriptableObject scriptableObject)
+    {
+        this.Health = scriptableObject.Health;
+        this.MovementSpeed = scriptableObject.MovementSpeed;
+        this.AttackPower = scriptableObject.AttackPower;
+        this.AttackDelay = scriptableObject.AttackDelay;
+        this.ObstacelDetectionRadius = scriptableObject.ObstacelDetectionRadius;
+        this.ChaseRadius = scriptableObject.ChaseRadius;
+        this.FightRadius = scriptableObject.FightRadius;
+        this.ColliderSize = scriptableObject.ColliderSize;
+        this.DetectionDelay = scriptableObject.DetectionDelay;
+        this.ObstacleLayerMask = scriptableObject.ObstacleLayerMask;
+        this.PlayerLayerMask = scriptableObject.PlayerLayerMask;
+
+    }
 }
