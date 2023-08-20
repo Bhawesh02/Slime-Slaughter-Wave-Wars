@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7483650810208463347}
   - component: {fileID: 3053219031422146317}
   - component: {fileID: 8079949482251310456}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PointyPlain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
