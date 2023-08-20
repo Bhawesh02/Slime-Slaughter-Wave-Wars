@@ -5,6 +5,8 @@ using UnityEngine;
 [Serializable]
 public class PlayerModel 
 {
+    public int MaxHealth = 100;
+    public int CurrentHealth = 100;
     public float MovementSpeed = 500f;
     public string[] AnimationDirectionBools = { "IsLookingDown", "IsLookingUp", "IsLookingHrizontal" };
     public LookDirection CurrentLookDirection;

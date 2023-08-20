@@ -7,11 +7,18 @@ using UnityEngine;
 public class EnemyModel 
 {
     public int Health;
-    public int MovementSpeed;
+    public float MovementSpeed;
+    public int AttackPower = 10;
+    public float AttackDelay = 0.5f;
+
     public float ObstacelDetectionRadius;
-    public float TargetDetectionRadius;
-    public float RayCastOffset = 0.1f;
+    public float ChaseRadius = 0.8f;
+    public float FightRadius = 0.12f;
+    public float ColliderSize = 0.08f;
     public float DetectionDelay = 0.5f;
     public LayerMask ObstacleLayerMask;
     public LayerMask PlayerLayerMask;
+    [HideInInspector]
+    public Collider2D[] Obstacles = null;
+    public Transform PlayerTransform = null;
 }

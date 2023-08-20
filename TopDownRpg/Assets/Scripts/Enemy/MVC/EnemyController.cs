@@ -1,72 +1,68 @@
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using UnityEngine;
 public class EnemyController
 {
     private EnemyView enemyView;
     private EnemyModel enemyModel;
-    private Transform playerTarget = null;
-    private Collider2D[] obstacles = null;
+
     public EnemyController(EnemyView enemyView, EnemyModel enemyModel)
     {
         this.enemyView = enemyView;
         this.enemyModel = enemyModel;
     }
 
-    public void DetectObstacelsAndPlayer()
+    public void DetectObstacels()
     {
-        obstacles = Physics2D.OverlapCircleAll(enemyView.transform.position, enemyModel.ObstacelDetectionRadius, enemyModel.ObstacleLayerMask);
+        enemyModel.Obstacles = Physics2D.OverlapCircleAll(enemyView.transform.position, enemyModel.ObstacelDetectionRadius, enemyModel.ObstacleLayerMask);
 
-        PlayerDetect();
     }
 
-    private void PlayerDetect()
+    public void PlayerDetect()
     {
-        
-        
-        Collider2D playerCollider = Physics2D.OverlapCircle(enemyView.transform.position, enemyModel.TargetDetectionRadius, enemyModel.PlayerLayerMask); 
+        Collider2D playerCollider = Physics2D.OverlapCircle(enemyView.transform.position, enemyModel.ChaseRadius, enemyModel.PlayerLayerMask);
 
         if (playerCollider == null)
         {
-            playerTarget = null;
+            enemyModel.PlayerTransform = null;
             return;
         }
-        playerTarget = playerCollider.transform;
-        CheckIfPlayerIsInSight();
+        enemyModel.PlayerTransform = playerCollider.transform;
+        if (enemyView.CurrentState == enemyView.IdelState )
+            enemyView.ChangeState(enemyView.ChaseState);
     }
 
-    private void CheckIfPlayerIsInSight()
+    public void CheckIfPlayerIsInSight()
     {
-        Vector2 direction = (playerTarget.position - enemyView.transform.position).normalized;
-        Vector2 position = (Vector2)(enemyView.transform.position) + direction * enemyModel.RayCastOffset ;
-        RaycastHit2D hit = Physics2D.Raycast(position, direction,enemyModel.TargetDetectionRadius);
         
-        if(hit.collider.gameObject != playerTarget.gameObject)
+        Vector2 direction = (enemyModel.PlayerTransform.position - enemyView.transform.position).normalized;
+        Vector2 position = (Vector2)(enemyView.transform.position) + direction * enemyModel.ColliderSize;
+        RaycastHit2D hit = Physics2D.Raycast(position, direction, enemyModel.ChaseRadius);
+
+        if (hit.collider != null && hit.collider.gameObject != enemyModel.PlayerTransform.gameObject)
         {
-            playerTarget = null;
+            enemyModel.PlayerTransform = null;
             return;
         }
     }
 
-    
+
 
     public void DrawDetectionGizmos()
     {
         if (!Application.isPlaying)
             return;
         Gizmos.color = Color.green;
-        if (playerTarget != null)
-            Gizmos.DrawSphere(playerTarget.position, 0.02f);
-        if (obstacles == null)
+        if (enemyModel.PlayerTransform != null)
+            Gizmos.DrawSphere(enemyModel.PlayerTransform.position, 0.02f);
+        if (enemyModel.Obstacles == null)
             return;
         Gizmos.color = Color.red;
-        foreach (Collider2D col in obstacles)
+        foreach (Collider2D col in enemyModel.Obstacles)
         {
             Gizmos.DrawSphere(col.transform.position, 0.02f);
         }
-       
+
     }
     public void ReduceHealth()
     {

@@ -1,4 +1,5 @@
 
+using System.Collections;
 using UnityEngine;
 
 public class EnemyView : MonoBehaviour, IDamageable
@@ -15,33 +16,43 @@ public class EnemyView : MonoBehaviour, IDamageable
 
     public Animator GetAnimator { get; private set; }
 
-    private float nextDetectionTime;
+    public Rigidbody2D GetRigidbody {  get; private set; }
+
+    public SpriteRenderer GetSpriteRenderer { get; private set; }
+
+
+    public bool ShowGizmos;
+
+    Coroutine playerDetectCoroutine = null;
 
     private void Awake()
     {
         Controller = new(this, Model);
         GetAnimator = GetComponent<Animator>();
+        GetRigidbody = GetComponent<Rigidbody2D>();
+        GetSpriteRenderer = GetComponent<SpriteRenderer>();
     }
     private void Start()
     {
-        nextDetectionTime = Time.time;
         ChangeState(IdelState);
+        playerDetectCoroutine = StartCoroutine(playerDetect());
     }
-    private void Update()
+    
+    IEnumerator playerDetect()
     {
-        if(Time.time >= nextDetectionTime) 
-        { 
-            Controller.DetectObstacelsAndPlayer();
-            nextDetectionTime = Time.time + Model.DetectionDelay;
-        }
-    }
+        Controller.PlayerDetect();
+        yield return new WaitForSeconds(Model.DetectionDelay);
+        playerDetectCoroutine = StartCoroutine(playerDetect());
 
+    }
     public void TakeDamage()
     {
         Controller.ReduceHealth();
     }
     public void ChangeState(EnemyState state)
     {
+        /*if(CurrentState!=null)
+        Debug.Log("New State: " + state + "  Current State" + CurrentState);*/
         CurrentState?.OnStateExit();
         CurrentState = state;
         CurrentState.OnStateEnter();
@@ -50,12 +61,22 @@ public class EnemyView : MonoBehaviour, IDamageable
     {
         Destroy(gameObject);
     }
+    private void OnDestroy()
+    {
+        CurrentState?.OnStateExit();
+        StopCoroutine(playerDetectCoroutine);
+    }
     private void OnDrawGizmos()
     {
+        if (!ShowGizmos)
+            return;
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, Model.ObstacelDetectionRadius);
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, Model.TargetDetectionRadius);
+        Gizmos.DrawWireSphere(transform.position, Model.ChaseRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, Model.FightRadius);
         Controller?.DrawDetectionGizmos();
+
     }
 }

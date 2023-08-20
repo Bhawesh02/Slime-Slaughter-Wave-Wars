@@ -1381,6 +1381,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerModel:
+    MaxHealth: 100
+    CurrentHealth: 100
     MovementSpeed: 250
     AnimationDirectionBools:
     - IsLookingDown
@@ -5710,17 +5712,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 110557580661257624, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 130520614215362674, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
       propertyPath: m_Name
       value: Slime
       objectReference: {fileID: 0}
     - target: {fileID: 1406136492244655018, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.388
+      value: 0.94
       objectReference: {fileID: 0}
     - target: {fileID: 1406136492244655018, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.147
+      value: -0.048
       objectReference: {fileID: 0}
     - target: {fileID: 1406136492244655018, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5752,6 +5758,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1406136492244655018, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8203685060869198312, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
+      propertyPath: m_FlipX
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
