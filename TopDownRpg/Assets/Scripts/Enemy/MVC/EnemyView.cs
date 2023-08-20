@@ -24,7 +24,8 @@ public class EnemyView : MonoBehaviour, IDamageable
 
     public bool ShowGizmos;
 
-    Coroutine playerDetectCoroutine = null;
+    private Coroutine playerDetectCoroutine = null;
+
 
     private void Awake()
     {
@@ -38,23 +39,25 @@ public class EnemyView : MonoBehaviour, IDamageable
     {
         ChangeState(IdelState);
         playerDetectCoroutine = StartCoroutine(playerDetect());
-    }
 
-    IEnumerator playerDetect()
+    }
+    private IEnumerator playerDetect()
     {
         Controller.PlayerDetect();
+        if (Model.PlayerTransform != null)
+            Controller.CheckIfPlayerIsInSight();
+        
         yield return new WaitForSeconds(Model.DetectionDelay);
         playerDetectCoroutine = StartCoroutine(playerDetect());
 
     }
+
     public void TakeDamage()
     {
         Controller.ReduceHealth();
     }
     public void ChangeState(EnemyState state)
     {
-        /*if(CurrentState!=null)
-        Debug.Log("New State: " + state + "  Current State" + CurrentState);*/
         CurrentState?.OnStateExit();
         CurrentState = state;
         CurrentState.OnStateEnter();
@@ -62,11 +65,11 @@ public class EnemyView : MonoBehaviour, IDamageable
     public void EnemyDied()
     {
         Destroy(gameObject);
+        StopCoroutine(playerDetectCoroutine);
     }
     private void OnDestroy()
     {
         CurrentState?.OnStateExit();
-        StopCoroutine(playerDetectCoroutine);
     }
     private void OnDrawGizmos()
     {

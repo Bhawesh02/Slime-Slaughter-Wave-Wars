@@ -7,6 +7,8 @@ using UnityEngine;
 public class EnemyChaseState : EnemyState
 {
     public bool ShowGizmo = true;
+    public bool ShowDangerGizmo = true;
+    public bool ShowIntrestGizmo = true;
 
 
     private Vector2 targetPos;
@@ -40,6 +42,10 @@ public class EnemyChaseState : EnemyState
     public override void OnStateEnter()
     {
         base.OnStateEnter();
+        for(int i = 0;i< danger.Length; i++)
+        {
+            danger[i] = interest[i] = 0;
+        }
         targetPos = Model.PlayerTransform.position;
         if (targetPos == null)
         {
@@ -129,6 +135,8 @@ public class EnemyChaseState : EnemyState
         {
             directionToObstacle = obstacleCollider.ClosestPoint(transform.position)
                 - (Vector2)transform.position;
+           /* directionToObstacle = (Vector2)obstacleCollider.transform.position
+                - (Vector2)transform.position;*/
             distanceToObstacle = directionToObstacle.magnitude;
             directionToObstacleNormalized = directionToObstacle.normalized;
             weight = (distanceToObstacle <= Model.ColliderSize)
@@ -171,13 +179,22 @@ public class EnemyChaseState : EnemyState
             return;
         if (!Application.isPlaying || interest == null) return;
         Gizmos.DrawSphere(targetPos, 0.02f);
-
-
-        if (interest == null) return;
-        Gizmos.color = Color.green;
-        for (int i = 1; i < interest.Length; i++)
+        if (danger != null && ShowDangerGizmo)
         {
-            Gizmos.DrawRay(transform.position, eightDirection[i] * interest[i]);
+            Gizmos.color = Color.red;
+            for (int i = 1; i < interest.Length; i++)
+            {
+                Gizmos.DrawRay(transform.position, eightDirection[i] * danger[i]);
+            }
+        }
+        if (interest == null) return;
+        if (ShowIntrestGizmo)
+        {
+            Gizmos.color = Color.green;
+            for (int i = 1; i < interest.Length; i++)
+            {
+                Gizmos.DrawRay(transform.position, eightDirection[i] * interest[i]);
+            }
         }
         Gizmos.color = Color.blue;
         Gizmos.DrawRay(transform.position, resultDirection * 0.5f);

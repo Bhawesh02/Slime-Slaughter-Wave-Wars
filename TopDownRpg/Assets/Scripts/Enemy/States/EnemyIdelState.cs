@@ -7,10 +7,24 @@ public class EnemyIdelState : EnemyState
     private readonly float flipMaxTime = 2f;
     private int flipValue;
     private float waitTime;
+    private Coroutine checkForPlayer = null;
+
     public override void OnStateEnter()
     {
         base.OnStateEnter();
         spriteFlip = StartCoroutine(FlipTheSprite());
+        checkForPlayer = StartCoroutine(CheckPlayer());
+    }
+    
+    private IEnumerator CheckPlayer()
+    {
+        if(Model.PlayerTransform != null)
+        {
+            View.ChangeState(View.ChaseState);
+            yield break;
+        }
+        yield return new WaitForSeconds(Model.DetectionDelay);
+        checkForPlayer = StartCoroutine(CheckPlayer());
     }
     private IEnumerator FlipTheSprite()
     {

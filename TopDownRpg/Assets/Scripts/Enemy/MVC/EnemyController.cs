@@ -28,8 +28,6 @@ public class EnemyController
             return;
         }
         enemyModel.PlayerTransform = playerCollider.transform;
-        if (enemyView.CurrentState == enemyView.IdelState )
-            enemyView.ChangeState(enemyView.ChaseState);
     }
 
     public void CheckIfPlayerIsInSight()
