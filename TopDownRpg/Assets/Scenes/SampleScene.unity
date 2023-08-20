@@ -2135,6 +2135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
+  playerHealthSlider: {fileID: 306255545}
 --- !u!1001 &1343137348
 PrefabInstance:
   m_ObjectHideFlags: 0
