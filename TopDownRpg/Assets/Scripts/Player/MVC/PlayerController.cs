@@ -1,5 +1,4 @@
 
-using System;
 using UnityEngine;
 
 public class PlayerController
@@ -8,6 +7,7 @@ public class PlayerController
     private PlayerView playerView;
     private float newXPosForAttackPoint;
     private float newYPosForAttackPoint;
+    private Vector2 movementDirection;
     public PlayerController(PlayerModel playerModel, PlayerView playerView)
     {
         this.playerModel = playerModel;
@@ -16,8 +16,9 @@ public class PlayerController
 
     public void MovePlayer(float horizontalInput, float verticalInput)
     {
-        Vector2 movement = new(horizontalInput, verticalInput);
-        playerView.PlayerRigidBody.velocity = playerModel.MovementSpeed * Time.deltaTime * movement;
+        movementDirection = new(horizontalInput, verticalInput);
+        movementDirection.Normalize();
+        playerView.PlayerRigidBody.velocity = playerModel.MovementSpeed * Time.deltaTime * movementDirection;
     }
     public void ChangeLookDirection(LookDirection direction)
     {
