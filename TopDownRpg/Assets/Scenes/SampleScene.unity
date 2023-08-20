@@ -1354,6 +1354,7 @@ MonoBehaviour:
   HorizontalInput: 0
   VerticalInput: 0
   AttackPoint: {fileID: 1273257824}
+  AttackPointInitialYOffset: 0
 --- !u!61 &632836194
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5746,10 +5747,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 110557580661257624, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
-      propertyPath: m_IsTrigger
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 130520614215362674, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
       propertyPath: m_Name
       value: Slime
@@ -5792,18 +5789,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1406136492244655018, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2769476918531778086, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
-      propertyPath: model.AttackDelay
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5419586530097200890, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
-      propertyPath: m_BodyType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8203685060869198312, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
-      propertyPath: m_FlipX
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
