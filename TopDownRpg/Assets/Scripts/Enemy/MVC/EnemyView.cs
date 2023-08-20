@@ -7,17 +7,17 @@ public class EnemyView : MonoBehaviour, IDamageable
 
     [SerializeField]
     private EnemyScriptableObject enemyScriptableObject;
-    public EnemyModel Model { get; private set; }
+    public EnemyModel Model  { get; private set; }
     public EnemyController Controller;
 
     public EnemyChaseState ChaseState;
     public EnemyIdelState IdelState;
     public EnemyFightState FightState;
-    public EnemyState CurrentState { get;private set; }
+    public EnemyState CurrentState { get; private set; }
 
     public Animator GetAnimator { get; private set; }
 
-    public Rigidbody2D GetRigidbody {  get; private set; }
+    public Rigidbody2D GetRigidbody { get; private set; }
 
     public SpriteRenderer GetSpriteRenderer { get; private set; }
 
@@ -39,7 +39,7 @@ public class EnemyView : MonoBehaviour, IDamageable
         ChangeState(IdelState);
         playerDetectCoroutine = StartCoroutine(playerDetect());
     }
-    
+
     IEnumerator playerDetect()
     {
         Controller.PlayerDetect();
@@ -70,8 +70,15 @@ public class EnemyView : MonoBehaviour, IDamageable
     }
     private void OnDrawGizmos()
     {
+        if (!Application.isPlaying)
+            return;
+
         if (!ShowGizmos)
             return;
+        if(Model == null)
+        {
+            return;
+        }
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, Model.ObstacelDetectionRadius);
         Gizmos.color = Color.blue;
