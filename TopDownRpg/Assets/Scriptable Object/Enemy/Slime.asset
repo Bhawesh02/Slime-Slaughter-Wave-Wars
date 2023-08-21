@@ -23,7 +23,7 @@ MonoBehaviour:
   DetectionDelay: 0.05
   ObstacleLayerMask:
     serializedVersion: 2
-    m_Bits: 960
+    m_Bits: 448
   PlayerLayerMask:
     serializedVersion: 2
     m_Bits: 8
