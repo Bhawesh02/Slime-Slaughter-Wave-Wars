@@ -8,6 +8,8 @@ public class EnemySpawner : MonoSingletonGeneric<EnemySpawner>
     private EnemyView enemyView;
     [SerializeField]
     private Collider2D levelConfiner;
+    [SerializeField]
+    private LayerMask layerToNotSpawnEnemy;
 
     private int maxTries = 500;
     [SerializeField]
@@ -39,7 +41,7 @@ public class EnemySpawner : MonoSingletonGeneric<EnemySpawner>
         for (int i = 0; i < maxTries; i++)
         {
             randomPoint = GetRandomPositionInLevel();
-            collider2D = Physics2D.OverlapCircle(randomPoint, enemy.Model.ColliderSize, enemy.Model.ObstacleLayerMask);
+            collider2D = Physics2D.OverlapCircle(randomPoint, enemy.Model.ColliderSize, layerToNotSpawnEnemy);
             if(collider2D == null){
                 break;
             }
