@@ -28113,6 +28113,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyView: {fileID: 5404494735906893075, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
   levelConfiner: {fileID: 1824482580}
+  layerToNotSpawnEnemy:
+    serializedVersion: 2
+    m_Bits: 456
   spawnOffset: 0.5
 --- !u!4 &1105277725
 Transform:
