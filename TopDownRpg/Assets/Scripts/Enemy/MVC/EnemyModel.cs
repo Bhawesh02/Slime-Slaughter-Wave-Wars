@@ -1,8 +1,6 @@
 
 
-using System;
 using UnityEngine;
-
 public class EnemyModel 
 {
     public int Health;
@@ -17,7 +15,7 @@ public class EnemyModel
     public float DetectionDelay = 0.5f;
     public LayerMask ObstacleLayerMask;
     public LayerMask PlayerLayerMask;
-    [HideInInspector]
+
     public Collider2D[] Obstacles = null;
     public Transform PlayerTransform = null;
 

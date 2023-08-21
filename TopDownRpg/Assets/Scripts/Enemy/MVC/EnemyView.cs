@@ -7,7 +7,7 @@ public class EnemyView : MonoBehaviour, IDamageable
 
     [SerializeField]
     private EnemyScriptableObject enemyScriptableObject;
-    public EnemyModel Model  { get; private set; }
+    public EnemyModel Model;
     public EnemyController Controller;
 
     public EnemyChaseState ChaseState;

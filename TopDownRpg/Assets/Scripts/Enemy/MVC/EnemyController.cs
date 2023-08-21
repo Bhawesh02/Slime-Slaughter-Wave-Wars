@@ -21,7 +21,6 @@ public class EnemyController
     public void PlayerDetect()
     {
         Collider2D playerCollider = Physics2D.OverlapCircle(enemyView.transform.position, enemyModel.ChaseRadius, enemyModel.PlayerLayerMask);
-
         if (playerCollider == null)
         {
             enemyModel.PlayerTransform = null;
@@ -35,7 +34,7 @@ public class EnemyController
         
         Vector2 direction = (enemyModel.PlayerTransform.position - enemyView.transform.position).normalized;
         Vector2 position = (Vector2)(enemyView.transform.position) + direction * enemyModel.ColliderSize;
-        RaycastHit2D hit = Physics2D.Raycast(position, direction, enemyModel.ChaseRadius);
+        RaycastHit2D hit = Physics2D.Raycast(position, direction, enemyModel.ChaseRadius,enemyModel.ObstacleLayerMask);
 
         if (hit.collider != null && hit.collider.gameObject != enemyModel.PlayerTransform.gameObject)
         {

@@ -1,12 +1,10 @@
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyChaseState : EnemyState
 {
-    public bool ShowGizmo = true;
     public bool ShowDangerGizmo = true;
     public bool ShowIntrestGizmo = true;
 
@@ -175,8 +173,6 @@ public class EnemyChaseState : EnemyState
 
     private void OnDrawGizmos()
     {
-        if (!ShowGizmo)
-            return;
         if (!Application.isPlaying || interest == null) return;
         Gizmos.DrawSphere(targetPos, 0.02f);
         if (danger != null && ShowDangerGizmo)
