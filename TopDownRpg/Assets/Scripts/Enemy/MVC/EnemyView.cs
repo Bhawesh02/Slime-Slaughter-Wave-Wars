@@ -35,6 +35,13 @@ public class EnemyView : MonoBehaviour, IDamageable
         GetRigidbody = GetComponent<Rigidbody2D>();
         GetSpriteRenderer = GetComponent<SpriteRenderer>();
     }
+    private void OnEnable()
+    {
+        if (Model == null)
+            return;
+        Controller.ResetHealth(enemyScriptableObject);
+        Start();
+    }
     private void Start()
     {
         ChangeState(IdelState);
@@ -65,6 +72,7 @@ public class EnemyView : MonoBehaviour, IDamageable
     public void EnemyDied()
     {
         EnemyPoolService.Instance.ReturnEnemy(this);
+        EventService.Instance.InvokeEnemyDied();
         StopCoroutine(playerDetectCoroutine);
     }
     private void OnDisable()

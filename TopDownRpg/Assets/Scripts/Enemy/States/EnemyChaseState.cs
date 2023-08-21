@@ -7,6 +7,7 @@ public class EnemyChaseState : EnemyState
 {
     public bool ShowDangerGizmo = true;
     public bool ShowIntrestGizmo = true;
+    public bool ShowPathGizmo = true;
 
 
     private Vector2 targetPos;
@@ -193,6 +194,10 @@ public class EnemyChaseState : EnemyState
             {
                 Gizmos.DrawRay(transform.position, eightDirection[i] * interest[i]);
             }
+        }
+        if (!ShowPathGizmo)
+        {
+            return;
         }
         Gizmos.color = Color.blue;
         Gizmos.DrawRay(transform.position, resultDirection * 0.5f);

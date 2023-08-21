@@ -200,6 +200,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowDangerGizmo: 0
   ShowIntrestGizmo: 0
+  ShowPathGizmo: 0
 --- !u!114 &365721401762067813
 MonoBehaviour:
   m_ObjectHideFlags: 0

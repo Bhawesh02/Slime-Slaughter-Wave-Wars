@@ -29512,6 +29512,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
   playerHealthSlider: {fileID: 306255545}
+  waveSystem: {fileID: 11400000, guid: 8c82f21f78d50a14492323e4425809d7, type: 2}
 --- !u!1 &1434450748
 GameObject:
   m_ObjectHideFlags: 0

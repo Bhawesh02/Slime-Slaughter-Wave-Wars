@@ -26,6 +26,7 @@ public class EnemySpawner : MonoSingletonGeneric<EnemySpawner>
         EnemyView newEnemy = enemyPoolService.GetEnemy();
         newEnemy.transform.position = GetRandomSpawnPoint(newEnemy);
         newEnemy.gameObject.SetActive(true);
+        EventService.Instance.InvokeEnemySpawned();
     }
 
     private Vector2 GetRandomSpawnPoint(EnemyView enemy)
@@ -35,7 +36,7 @@ public class EnemySpawner : MonoSingletonGeneric<EnemySpawner>
         for (int i = 0; i < maxTries; i++)
         {
             randomPoint = GetRandomPositionInLevel();
-            collider2D = Physics2D.OverlapCircle(randomPoint, enemy.Model.ColliderSize, enemy.Model.ObstacleLayerMask);
+            collider2D = Physics2D.OverlapCircle(randomPoint, enemy.Model.ColliderSize + spawnOffset, enemy.Model.ObstacleLayerMask);
             if(collider2D == null){
                 break;
             }

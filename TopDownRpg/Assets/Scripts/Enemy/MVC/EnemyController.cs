@@ -1,5 +1,6 @@
 
 
+using System;
 using UnityEngine;
 public class EnemyController
 {
@@ -72,5 +73,10 @@ public class EnemyController
         {
             enemyView.GetAnimator.SetTrigger("Attacked");
         }
+    }
+
+    public void ResetHealth(EnemyScriptableObject enemyScriptableObject)
+    {
+        enemyModel.Health = enemyScriptableObject.Health;
     }
 }
