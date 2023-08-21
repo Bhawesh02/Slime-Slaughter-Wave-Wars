@@ -1,5 +1,6 @@
 
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,8 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     private Slider playerHealthSlider;
     [SerializeField]
     private WaveSystemScriptableObject waveSystem;
-
+    [SerializeField]
+    private List<EnemyView> enemyInScene;
 
 
     private int numOfEnemyInScene;
@@ -60,14 +62,16 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         numOfEnemyToSpawn+= additionEnemy;
     }
 
-    private void increaseEnemyInScene()
+    private void increaseEnemyInScene(EnemyView enemyView)
     {
         numOfEnemyInScene++;
+        enemyInScene.Add(enemyView);
     }
 
-    private void decreaseEnemyInScene()
+    private void decreaseEnemyInScene(EnemyView enemyView)
     {
         numOfEnemyInScene--;
+        enemyInScene.Remove(enemyView);
         if (numOfEnemyInScene == 0)
             spawnWave();
     }
@@ -80,4 +84,6 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     {
         playerHealthSlider.value = Player.PlayerModel.CurrentHealth;
     }
+
+   
 }

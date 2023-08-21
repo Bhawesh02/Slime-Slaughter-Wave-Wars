@@ -3,15 +3,15 @@ using System;
 
 public class EventService : SingletonGeneric<EventService> 
 {
-    public event Action EnemySpawned;
-    public event Action EnemyDied;
+    public event Action<EnemyView> EnemySpawned;
+    public event Action<EnemyView> EnemyDied;
 
-    public void InvokeEnemySpawned()
+    public void InvokeEnemySpawned(EnemyView enemyView)
     {
-        EnemySpawned?.Invoke();
+        EnemySpawned?.Invoke(enemyView);
     }
-    public void InvokeEnemyDied()
+    public void InvokeEnemyDied(EnemyView enemyView)
     {
-        EnemyDied?.Invoke();
+        EnemyDied?.Invoke(enemyView);
     }
 }

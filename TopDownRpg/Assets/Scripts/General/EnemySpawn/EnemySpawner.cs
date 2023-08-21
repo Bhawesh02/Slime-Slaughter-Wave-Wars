@@ -14,7 +14,6 @@ public class EnemySpawner : MonoSingletonGeneric<EnemySpawner>
     private int maxTries = 500;
     [SerializeField]
     private float spawnOffset = 0.5f;
-
     
 
 
@@ -31,7 +30,8 @@ public class EnemySpawner : MonoSingletonGeneric<EnemySpawner>
         EnemyView newEnemy = enemyPoolService.GetEnemy();
         newEnemy.transform.position = GetRandomSpawnPoint(newEnemy);
         newEnemy.gameObject.SetActive(true);
-        EventService.Instance.InvokeEnemySpawned();
+        
+        EventService.Instance.InvokeEnemySpawned(newEnemy);
     }
 
     private Vector2 GetRandomSpawnPoint(EnemyView enemy)
@@ -71,5 +71,7 @@ public class EnemySpawner : MonoSingletonGeneric<EnemySpawner>
         }
 
     }
+
+    
 
 }
