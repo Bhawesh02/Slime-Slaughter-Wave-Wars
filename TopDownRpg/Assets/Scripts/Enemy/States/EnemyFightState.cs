@@ -8,9 +8,12 @@ public class EnemyFightState : EnemyState
     private Coroutine playerCheckCoroutine = null;
     private Coroutine playerAttackCoroutine = null;
     private PlayerView playerView;
+   
     public override void OnStateEnter()
     {
         base.OnStateEnter();
+        if (Model == null || Controller == null)
+            SetModelController();
         playerView = Model.PlayerTransform.GetComponent<PlayerView>();
         playerCheckCoroutine = StartCoroutine(playerCheck());
 

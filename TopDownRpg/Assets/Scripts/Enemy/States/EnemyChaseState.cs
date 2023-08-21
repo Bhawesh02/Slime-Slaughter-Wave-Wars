@@ -40,6 +40,8 @@ public class EnemyChaseState : EnemyState
     public override void OnStateEnter()
     {
         base.OnStateEnter();
+        if (Model == null || Controller == null)
+            SetModelController();
         for(int i = 0;i< danger.Length; i++)
         {
             danger[i] = interest[i] = 0;

@@ -13,5 +13,10 @@ public class EnemySpawner : MonoSingletonGeneric<EnemySpawner>
         enemyPoolService = EnemyPoolService.Instance;
         enemyPoolService.MakeEnemyPool(enemyView,this);
     }
-
+    public void SpawnEnemy()
+    {
+        
+        EnemyView newEnemy = enemyPoolService.GetEnemy();
+        newEnemy.gameObject.SetActive(true);
+    }
 }

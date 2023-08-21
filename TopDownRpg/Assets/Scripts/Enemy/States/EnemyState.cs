@@ -11,11 +11,20 @@ public class EnemyState : MonoBehaviour
     protected virtual void Awake()
     {
         View = GetComponent<EnemyView>();
-        Controller = View.Controller;
-        Model = View.Model;
+    }
+   
+    protected virtual void Start()
+    {
+        SetModelController();
+
 
     }
+    protected void SetModelController()
+    {
+        Model = View.Model;
+        Controller = View.Controller;
 
+    }
     public virtual void OnStateEnter()
     {
         this.enabled = true;
