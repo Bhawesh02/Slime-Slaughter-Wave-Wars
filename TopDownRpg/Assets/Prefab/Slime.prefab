@@ -198,7 +198,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30efca3fd228616478b240cd2074854b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowGizmo: 0
+  ShowDangerGizmo: 0
+  ShowIntrestGizmo: 0
 --- !u!114 &365721401762067813
 MonoBehaviour:
   m_ObjectHideFlags: 0
