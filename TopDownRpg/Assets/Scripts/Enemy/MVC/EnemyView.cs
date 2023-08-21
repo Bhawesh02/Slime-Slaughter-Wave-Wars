@@ -64,10 +64,10 @@ public class EnemyView : MonoBehaviour, IDamageable
     }
     public void EnemyDied()
     {
-        Destroy(gameObject);
+        EnemyPoolService.Instance.ReturnEnemy(this);
         StopCoroutine(playerDetectCoroutine);
     }
-    private void OnDestroy()
+    private void OnDisable()
     {
         CurrentState?.OnStateExit();
     }
