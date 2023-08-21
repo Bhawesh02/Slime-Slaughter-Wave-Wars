@@ -28111,7 +28111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a230b444c31db1247b35a9e3585cb207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyView: {fileID: 2769476918531778086, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
+  enemyView: {fileID: 5404494735906893075, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
   levelConfiner: {fileID: 1824482580}
   spawnOffset: 0.5
 --- !u!4 &1105277725

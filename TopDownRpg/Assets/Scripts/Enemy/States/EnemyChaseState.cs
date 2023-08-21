@@ -27,7 +27,7 @@ public class EnemyChaseState : EnemyState
 
     };
 
-    private Vector2 resultDirection = Vector2.zero;
+    private Vector2 resultDirection;
 
     private Coroutine aiCoroutine = null;
 
@@ -43,20 +43,25 @@ public class EnemyChaseState : EnemyState
         base.OnStateEnter();
         if (Model == null || Controller == null)
             SetModelController();
-        for(int i = 0;i< danger.Length; i++)
-        {
-            danger[i] = interest[i] = 0;
-        }
+        SetVariableToZero();
         targetPos = Model.PlayerTransform.position;
         if (targetPos == null)
         {
             View.ChangeState(View.IdelState);
         }
         aiCoroutine = StartCoroutine(aILogic());
-        View.GetAnimator.SetBool("IsMoving",true);
+        View.GetAnimator.SetBool("IsMoving", true);
     }
-    
-    
+
+    private void SetVariableToZero()
+    {
+        for (int i = 0; i < danger.Length; i++)
+        {
+            danger[i] = interest[i] = 0;
+        }
+        resultDirection = Vector2.zero;
+    }
+
     private IEnumerator aILogic()
     {
         
@@ -93,37 +98,7 @@ public class EnemyChaseState : EnemyState
         getDirectionToMove();
     }
 
-    private void getDirectionToMove()
-    {
-        for (int i = 0; i < interest.Length; i++)
-        {
-            interest[i] = Mathf.Clamp01(interest[i] - danger[i]);
-        }
-        for (int i = 0; i < interest.Length; i++)
-            resultDirection += eightDirection[i] * interest[i];
-        resultDirection.Normalize();
-
-
-    }
-
-    private void getTargetIntrest()
-    {
-        if (Model.PlayerTransform != null)
-            targetPos = Model.PlayerTransform.position;
-        Vector2 directionToTarget = (targetPos - (Vector2)transform.position).normalized;
-        float result;
-        for (int i = 0; i < eightDirection.Count; i++)
-        {
-            result = Vector2.Dot(directionToTarget, eightDirection[i]);
-            if (result >= 0)
-            {
-                interest[i] = result;
-
-            }
-        }
-
-
-    }
+    
 
     private void getObstacelsDanger()
     {
@@ -147,7 +122,7 @@ public class EnemyChaseState : EnemyState
             getDangerFromObstacle(directionToObstacleNormalized, weight);
         }
     }
-
+    
     private void getDangerFromObstacle(Vector2 directionToObstacleNormalized, float weight)
     {
         float result;
@@ -162,13 +137,43 @@ public class EnemyChaseState : EnemyState
         }
 
     }
+    private void getTargetIntrest()
+    {
+        if (Model.PlayerTransform != null)
+            targetPos = Model.PlayerTransform.position;
+        Vector2 directionToTarget = (targetPos - (Vector2)transform.position).normalized;
+        float result;
+        for (int i = 0; i < eightDirection.Count; i++)
+        {
+            result = Vector2.Dot(directionToTarget, eightDirection[i]);
+            if (result >= 0)
+            {
+                interest[i] = result;
+
+            }
+        }
+
+
+    }
+    private void getDirectionToMove()
+    {
+        for (int i = 0; i < interest.Length; i++)
+        {
+            interest[i] = Mathf.Clamp01(interest[i] - danger[i]);
+        }
+        for (int i = 0; i < interest.Length; i++)
+            resultDirection += eightDirection[i] * interest[i];
+        resultDirection.Normalize();
+
+
+    }
 
     public override void OnStateExit()
     {
         StopCoroutine(aILogic());
         View.GetRigidbody.velocity = Vector2.zero;
         View.GetAnimator.SetBool("IsMoving", false);
-
+        SetVariableToZero();
         base.OnStateExit();
 
     }

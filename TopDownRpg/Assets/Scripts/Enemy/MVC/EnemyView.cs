@@ -37,13 +37,7 @@ public class EnemyView : MonoBehaviour, IDamageable
     }
     private void OnEnable()
     {
-        if (Model == null)
-            return;
         Controller.ResetHealth(enemyScriptableObject);
-        Start();
-    }
-    private void Start()
-    {
         ChangeState(IdelState);
         playerDetectCoroutine = StartCoroutine(playerDetect());
 
@@ -74,10 +68,8 @@ public class EnemyView : MonoBehaviour, IDamageable
         EnemyPoolService.Instance.ReturnEnemy(this);
         EventService.Instance.InvokeEnemyDied();
         StopCoroutine(playerDetectCoroutine);
-    }
-    private void OnDisable()
-    {
         CurrentState?.OnStateExit();
+
     }
     private void OnDrawGizmos()
     {

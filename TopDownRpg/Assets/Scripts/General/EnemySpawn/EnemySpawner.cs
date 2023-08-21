@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoSingletonGeneric<EnemySpawner>
@@ -11,6 +12,8 @@ public class EnemySpawner : MonoSingletonGeneric<EnemySpawner>
     private int maxTries = 500;
     [SerializeField]
     private float spawnOffset = 0.5f;
+
+    
 
 
     private EnemyPoolService enemyPoolService;
@@ -36,7 +39,7 @@ public class EnemySpawner : MonoSingletonGeneric<EnemySpawner>
         for (int i = 0; i < maxTries; i++)
         {
             randomPoint = GetRandomPositionInLevel();
-            collider2D = Physics2D.OverlapCircle(randomPoint, enemy.Model.ColliderSize + spawnOffset, enemy.Model.ObstacleLayerMask);
+            collider2D = Physics2D.OverlapCircle(randomPoint, enemy.Model.ColliderSize, enemy.Model.ObstacleLayerMask);
             if(collider2D == null){
                 break;
             }

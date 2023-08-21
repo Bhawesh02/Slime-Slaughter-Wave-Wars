@@ -1,5 +1,6 @@
 
 
+using System.Collections.Generic;
 using UnityEngine;
 public class EnemyModel 
 {
@@ -16,7 +17,7 @@ public class EnemyModel
     public LayerMask ObstacleLayerMask;
     public LayerMask PlayerLayerMask;
 
-    public Collider2D[] Obstacles = null;
+    public List<Collider2D> Obstacles = new();
     public Transform PlayerTransform = null;
 
     public EnemyModel(EnemyScriptableObject scriptableObject)

@@ -6,6 +6,7 @@ public class EnemyController
 {
     private EnemyView enemyView;
     private EnemyModel enemyModel;
+    private Collider2D[] obstacles;
 
     public EnemyController(EnemyView enemyView, EnemyModel enemyModel)
     {
@@ -15,8 +16,12 @@ public class EnemyController
 
     public void DetectObstacels()
     {
-        enemyModel.Obstacles = Physics2D.OverlapCircleAll(enemyView.transform.position, enemyModel.ObstacelDetectionRadius, enemyModel.ObstacleLayerMask);
-
+       obstacles = Physics2D.OverlapCircleAll(enemyView.transform.position, enemyModel.ObstacelDetectionRadius, enemyModel.ObstacleLayerMask);
+       foreach(Collider2D obs in obstacles)
+        {
+            if(obs.GetComponent<EnemyView>() != enemyView)
+                enemyModel.Obstacles.Add(obs);
+        }
     }
 
     public void PlayerDetect()
