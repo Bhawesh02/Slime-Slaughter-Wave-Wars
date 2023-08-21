@@ -183,7 +183,6 @@ GameObject:
   - component: {fileID: 294380664}
   - component: {fileID: 294380666}
   - component: {fileID: 294380665}
-  - component: {fileID: 294380667}
   m_Layer: 0
   m_Name: OuterArea
   m_TagString: Untagged
@@ -24675,42 +24674,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!19719996 &294380667
-TilemapCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 294380663}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0
-  m_UseDelaunayMesh: 0
 --- !u!1 &306255543
 GameObject:
   m_ObjectHideFlags: 0
@@ -26991,7 +26954,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 0.92
+  orthographic size: 0.86
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -27016,7 +26979,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.11214901, y: 0.48725998, z: -10}
+  m_LocalPosition: {x: 0.008948942, y: 0.42793998, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29589,7 +29552,7 @@ MonoBehaviour:
   m_Follow: {fileID: 632836192}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 0.92
+    OrthographicSize: 0.86
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -29788,14 +29751,14 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 2.0726995, y: 4.223051}
+    - - {x: 2.5917892, y: 3.5104027}
       - {x: 1.5825859, y: 3.5126119}
       - {x: -2.0372322, y: 3.4558814}
       - {x: -2.026378, y: -1.8475279}
       - {x: 1.8305937, y: -1.873065}
       - {x: 1.8581265, y: 0.9635564}
       - {x: 2.7071629, y: 0.97088253}
-      - {x: 3.267356, y: 1.3864118}
+      - {x: 2.669083, y: 2.1254547}
       - {x: 4.008627, y: 2.1423523}
       - {x: 6.476682, y: 2.1233697}
       - {x: 6.473546, y: 4.424757}
