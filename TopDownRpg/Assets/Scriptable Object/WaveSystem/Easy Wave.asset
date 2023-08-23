@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c609db328d3aac4b96911ab497215fe, type: 3}
   m_Name: Easy Wave
   m_EditorClassIdentifier: 
-  NumOfWaves: 10
+  NumOfWaves: 1
   NumOfEneimesInFirstWave: 5
   MaxNumOfEneimesIncraseEachWave: 2
   MinNumOfEneimesIncraseEachWave: 5
