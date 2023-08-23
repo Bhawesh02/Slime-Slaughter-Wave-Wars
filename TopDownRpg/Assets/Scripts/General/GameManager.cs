@@ -31,15 +31,17 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     private GameObject playerDeadUi;
     [SerializeField]
     private TextMeshProUGUI wavesCoveredInfo;
-    
+
     [Header("Player Won")]
     [SerializeField]
     private GameObject playerWonUi;
 
     [Header("Buttons")]
     [SerializeField]
-    private Button[] restartButton;
 
+    private Button[] restartButton;
+    [SerializeField]
+    private Button[] quitButton;
     private int currWave;
 
     private int numOfEnemyToSpawn;
@@ -51,11 +53,22 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     {
         base.Awake();
         currWave = 0;
-        foreach(Button restart in restartButton)
-            restart.onClick.AddListener(restartScene);
+        for (int i = 0; i < restartButton.Length; i++)
+            restartButton[i].onClick.AddListener(restartScene);
+        for (int i = 0; i < quitButton.Length; i++)
+            quitButton[i].onClick.AddListener(quitScene);
         waveNotification.gameObject.SetActive(false);
         playerDeadUi.SetActive(false);
         playerWonUi.SetActive(false);
+    }
+
+    private void quitScene()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+    Application.Quit()
+#endif
     }
 
     private void restartScene()
@@ -65,7 +78,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
 
     private void Start()
     {
-        
+
         StartCoroutine(setPlayerMaxHealthInSlider());
         EventService.Instance.EnemySpawned += increaseEnemyInScene;
         EventService.Instance.EnemyDied += decreaseEnemyInScene;
@@ -75,15 +88,15 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     private IEnumerator spawnNewWave()
     {
         currWave++;
-        if(currWave > waveSystem.NumOfWaves)
+        if (currWave > waveSystem.NumOfWaves)
         {
             PlayerWon();
-            yield break ;
+            yield break;
         }
         waveNotification.text = "Wave: " + currWave;
         yield return StartCoroutine(showWaveNotification());
         calculateNumOfEnemyToSpawn();
-        for(int i = 0;i<numOfEnemyToSpawn;i++)
+        for (int i = 0; i < numOfEnemyToSpawn; i++)
         {
             EnemySpawner.Instance.SpawnEnemy();
         }
@@ -123,8 +136,8 @@ public class GameManager : MonoSingletonGeneric<GameManager>
             numOfEnemyToSpawn = waveSystem.NumOfEneimesInFirstWave;
             return;
         }
-        int additionEnemy = Random.Range(waveSystem.MinNumOfEneimesIncraseEachWave,waveSystem.MinNumOfEneimesIncraseEachWave+1);
-        numOfEnemyToSpawn+= additionEnemy;
+        int additionEnemy = Random.Range(waveSystem.MinNumOfEneimesIncraseEachWave, waveSystem.MinNumOfEneimesIncraseEachWave + 1);
+        numOfEnemyToSpawn += additionEnemy;
     }
 
     private void increaseEnemyInScene(EnemyView enemyView)
@@ -152,7 +165,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         playerHealthSlider.value = Player.PlayerModel.CurrentHealth;
     }
 
-   private void updateEnemyCountUI()
+    private void updateEnemyCountUI()
     {
         enemiesCount.text = ": " + enemyInScene.Count;
     }
@@ -172,7 +185,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
 
     private void setAllEnemyIdel()
     {
-        for(int i = 0;i < enemyInScene.Count;i++)
+        for (int i = 0; i < enemyInScene.Count; i++)
         {
             enemyInScene[i].ChangeState(enemyInScene[i].IdelState);
         }
