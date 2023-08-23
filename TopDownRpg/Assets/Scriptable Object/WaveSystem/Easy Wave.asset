@@ -16,3 +16,4 @@ MonoBehaviour:
   NumOfEneimesInFirstWave: 5
   MaxNumOfEneimesIncraseEachWave: 2
   MinNumOfEneimesIncraseEachWave: 5
+  WaveNotificationFadeDuration: 1.5

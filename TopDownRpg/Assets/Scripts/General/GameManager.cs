@@ -59,9 +59,10 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     }
     private IEnumerator showWaveNotification()
     {
+        waveNotification.gameObject.SetActive(true);
         yield return StartCoroutine(chaneAlphaOfWaveNotification(1f));
         yield return StartCoroutine(chaneAlphaOfWaveNotification(0f));
-        
+        waveNotification.gameObject.SetActive(false);
     }
 
     private IEnumerator chaneAlphaOfWaveNotification(float newAlpha)
