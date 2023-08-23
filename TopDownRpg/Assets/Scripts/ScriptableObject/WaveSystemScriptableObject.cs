@@ -8,5 +8,5 @@ public class WaveSystemScriptableObject : ScriptableObject
     public int NumOfEneimesInFirstWave;
     public int MaxNumOfEneimesIncraseEachWave;
     public int MinNumOfEneimesIncraseEachWave;
-
+    public float WaveNotificationFadeDuration;
 }

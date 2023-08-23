@@ -1,6 +1,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,13 +17,16 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     private List<EnemyView> enemyInScene;
     [SerializeField]
     private TextMeshProUGUI enemiesCount;
-
+    [SerializeField]
+    private TextMeshProUGUI waveNotification;
 
 
     private int currWave;
 
     private int numOfEnemyToSpawn;
-    
+
+    private Coroutine spawnWave;
+
     protected override void Awake()
     {
         base.Awake();
@@ -34,22 +38,50 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         StartCoroutine(setPlayerMaxHealthInSlider());
         EventService.Instance.EnemySpawned += increaseEnemyInScene;
         EventService.Instance.EnemyDied += decreaseEnemyInScene;
-        spawnWave();
+        spawnWave = StartCoroutine(spawnNewWave());
     }
 
-    private void spawnWave()
+    private IEnumerator spawnNewWave()
     {
         currWave++;
         if(currWave > waveSystem.NumOfWaves)
         {
             Debug.Log("Player Won");
-            return;
+            yield break ;
         }
+        waveNotification.text = "Wave: " + currWave;
+        yield return StartCoroutine(showWaveNotification());
         calculateNumOfEnemyToSpawn();
         for(int i = 0;i<numOfEnemyToSpawn;i++)
         {
             EnemySpawner.Instance.SpawnEnemy();
         }
+    }
+    private IEnumerator showWaveNotification()
+    {
+        yield return StartCoroutine(chaneAlphaOfWaveNotification(1f));
+        yield return StartCoroutine(chaneAlphaOfWaveNotification(0f));
+        
+    }
+
+    private IEnumerator chaneAlphaOfWaveNotification(float newAlpha)
+    {
+        float elapsedTime = 0f;
+        Color initialColor = waveNotification.color;
+        while (elapsedTime < waveSystem.WaveNotificationFadeDuration)
+        {
+            float normalizedTime = elapsedTime / waveSystem.WaveNotificationFadeDuration;
+            Color newColor = initialColor;
+            newColor.a = Mathf.Lerp(initialColor.a, newAlpha, normalizedTime);
+
+            waveNotification.color = newColor;
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        Color finalColor = waveNotification.color;
+        finalColor.a = newAlpha;
+        waveNotification.color = finalColor;
     }
 
     private void calculateNumOfEnemyToSpawn()
@@ -75,7 +107,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         updateEnemyCountUI();
 
         if (enemyInScene.Count == 0)
-            spawnWave();
+            spawnWave = StartCoroutine(spawnNewWave());
 
     }
     private IEnumerator setPlayerMaxHealthInSlider()
