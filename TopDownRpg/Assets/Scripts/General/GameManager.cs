@@ -36,6 +36,8 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     [Header("Game Pause")]
     [SerializeField]
     private GameObject gamePauseUi;
+    [SerializeField]
+    private Button gameResumeButton;
 
     [Header("Buttons")]
     [SerializeField]
@@ -66,6 +68,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         for (int i = 0; i < quitButton.Length; i++)
             quitButton[i].onClick.AddListener(quitScene);
         returnLobby.onClick.AddListener(returnToLobby);
+        gameResumeButton.onClick.AddListener(ResumeGame);
         waveNotification.gameObject.SetActive(false);
         playerDeadUi.SetActive(false);
         playerWonUi.SetActive(false);
@@ -94,7 +97,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
                 if (!isPaused)
                     PauseGame();
                 else
-                    UnPauseGame();
+                    ResumeGame();
             }
         }
         else
@@ -242,7 +245,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     #endregion
 
 
-    #region Pause Game
+    #region Pause & Resume Game
     public void PauseGame()
     {
         isPaused = true;
@@ -251,7 +254,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         Time.timeScale = 0;
 
     }
-    private void UnPauseGame()
+    private void ResumeGame()
     {
         isPaused = false;
         gamePauseUi.SetActive(false);
