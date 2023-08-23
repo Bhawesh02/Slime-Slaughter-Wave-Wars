@@ -54,6 +54,9 @@ public class GameManager : MonoSingletonGeneric<GameManager>
 
     private Coroutine spawnWave;
 
+    private bool isPaused;
+    private bool isKeyBeingPressed;
+
     protected override void Awake()
     {
         base.Awake();
@@ -66,8 +69,42 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         waveNotification.gameObject.SetActive(false);
         playerDeadUi.SetActive(false);
         playerWonUi.SetActive(false);
+        gamePauseUi.SetActive(false);
+        isPaused = false;
+        isKeyBeingPressed = false;
     }
 
+    private void Start()
+    {
+
+        StartCoroutine(setPlayerMaxHealthInSlider());
+        EventService.Instance.EnemySpawned += increaseEnemyInScene;
+        EventService.Instance.EnemyDied += decreaseEnemyInScene;
+        spawnWave = StartCoroutine(spawnNewWave());
+    }
+
+    private void Update()
+    {
+        if (Input.GetAxisRaw("Cancel") == 1)
+        {
+            if (!isKeyBeingPressed)
+            {
+                isKeyBeingPressed = true;
+
+                if (!isPaused)
+                    PauseGame();
+                else
+                    UnPauseGame();
+            }
+        }
+        else
+        {
+            isKeyBeingPressed = false;
+        }
+    }
+
+    
+    #region Button Functions
     private void returnToLobby()
     {
         SceneManager.LoadScene(0);
@@ -86,16 +123,10 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+    #endregion
 
-    private void Start()
-    {
 
-        StartCoroutine(setPlayerMaxHealthInSlider());
-        EventService.Instance.EnemySpawned += increaseEnemyInScene;
-        EventService.Instance.EnemyDied += decreaseEnemyInScene;
-        spawnWave = StartCoroutine(spawnNewWave());
-    }
-
+    #region Spwan Wave
     private IEnumerator spawnNewWave()
     {
         currWave++;
@@ -150,7 +181,9 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         int additionEnemy = Random.Range(waveSystem.MinNumOfEneimesIncraseEachWave, waveSystem.MinNumOfEneimesIncraseEachWave + 1);
         numOfEnemyToSpawn += additionEnemy;
     }
+    #endregion
 
+    #region EnemyCount Update
     private void increaseEnemyInScene(EnemyView enemyView)
     {
         enemyInScene.Add(enemyView);
@@ -166,6 +199,15 @@ public class GameManager : MonoSingletonGeneric<GameManager>
             spawnWave = StartCoroutine(spawnNewWave());
 
     }
+    private void updateEnemyCountUI()
+    {
+        enemiesCount.text = ": " + enemyInScene.Count;
+    }
+
+
+    #endregion
+
+    #region Player Health UI
     private IEnumerator setPlayerMaxHealthInSlider()
     {
         yield return null;
@@ -175,12 +217,9 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     {
         playerHealthSlider.value = Player.PlayerModel.CurrentHealth;
     }
+    #endregion
 
-    private void updateEnemyCountUI()
-    {
-        enemiesCount.text = ": " + enemyInScene.Count;
-    }
-
+    #region Player Won And dead
     public void PlayedDied()
     {
         setAllEnemyIdel();
@@ -193,7 +232,6 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         setAllEnemyIdel();
         playerWonUi.SetActive(true);
     }
-
     private void setAllEnemyIdel()
     {
         for (int i = 0; i < enemyInScene.Count; i++)
@@ -201,4 +239,24 @@ public class GameManager : MonoSingletonGeneric<GameManager>
             enemyInScene[i].ChangeState(enemyInScene[i].IdelState);
         }
     }
+    #endregion
+
+
+    #region Pause Game
+    public void PauseGame()
+    {
+        isPaused = true;
+        gamePauseUi.SetActive(true);
+        Player.enabled = false;
+        Time.timeScale = 0;
+
+    }
+    private void UnPauseGame()
+    {
+        isPaused = false;
+        gamePauseUi.SetActive(false);
+        Player.enabled = true;
+        Time.timeScale = 1f;
+    }
+    #endregion
 }

@@ -50,6 +50,7 @@ public class PlayerView : MonoBehaviour
         VerticalInput = Input.GetAxisRaw("Vertical");
         changeLookDirectionBasedOnInput();
         playerAttackCheck();
+        
     }
     private void playerAttackCheck()
     {
