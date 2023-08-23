@@ -4,26 +4,39 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoSingletonGeneric<GameManager>
 {
-    public PlayerView Player;
-    [SerializeField]
-    private Slider playerHealthSlider;
     [SerializeField]
     private WaveSystemScriptableObject waveSystem;
     [SerializeField]
     private List<EnemyView> enemyInScene;
+    [HideInInspector]
+    public PlayerView Player;
+    [Header("UI Elements")]
+    [SerializeField]
+    private Slider playerHealthSlider;
+    
+    
     [SerializeField]
     private TextMeshProUGUI enemiesCount;
     [SerializeField]
     private TextMeshProUGUI waveNotification;
+    [SerializeField]
+    private GameObject playerDeadUi;
+    [SerializeField]
+    private TextMeshProUGUI wavesCoveredInfo;
+    [SerializeField]
+    private Button restartButton;
 
 
     private int currWave;
 
     private int numOfEnemyToSpawn;
+
 
     private Coroutine spawnWave;
 
@@ -31,7 +44,16 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     {
         base.Awake();
         currWave = 0;
+        restartButton.onClick.AddListener(restartScene);
+        waveNotification.gameObject.SetActive(false);
+        playerDeadUi.SetActive(false);
     }
+
+    private void restartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     private void Start()
     {
         
@@ -124,5 +146,12 @@ public class GameManager : MonoSingletonGeneric<GameManager>
    private void updateEnemyCountUI()
     {
         enemiesCount.text = ": " + enemyInScene.Count;
+    }
+
+    public void PlayedDied()
+    {
+        wavesCoveredInfo.text = "Waves Covered: " + (currWave - 1);
+        playerDeadUi.SetActive(true);
+
     }
 }

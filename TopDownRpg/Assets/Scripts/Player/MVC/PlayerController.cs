@@ -92,6 +92,8 @@ public class PlayerController
 
     private void PlayerDead()
     {
-        Debug.Log("Player Died");
+        playerView.PlayerAnimator.SetTrigger("Dead");
+        playerView.enabled = false;
+        GameManager.Instance.PlayedDied();
     }
 }
