@@ -1,6 +1,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,9 +14,10 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     private WaveSystemScriptableObject waveSystem;
     [SerializeField]
     private List<EnemyView> enemyInScene;
+    [SerializeField]
+    private TextMeshProUGUI enemiesCount;
 
 
-    private int numOfEnemyInScene;
 
     private int currWave;
 
@@ -24,7 +26,6 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     protected override void Awake()
     {
         base.Awake();
-        numOfEnemyInScene = 0;
         currWave = 0;
     }
     private void Start()
@@ -64,16 +65,18 @@ public class GameManager : MonoSingletonGeneric<GameManager>
 
     private void increaseEnemyInScene(EnemyView enemyView)
     {
-        numOfEnemyInScene++;
         enemyInScene.Add(enemyView);
+        updateEnemyCountUI();
     }
 
     private void decreaseEnemyInScene(EnemyView enemyView)
     {
-        numOfEnemyInScene--;
         enemyInScene.Remove(enemyView);
-        if (numOfEnemyInScene == 0)
+        updateEnemyCountUI();
+
+        if (enemyInScene.Count == 0)
             spawnWave();
+
     }
     private IEnumerator setPlayerMaxHealthInSlider()
     {
@@ -85,5 +88,8 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         playerHealthSlider.value = Player.PlayerModel.CurrentHealth;
     }
 
-   
+   private void updateEnemyCountUI()
+    {
+        enemiesCount.text = ": " + enemyInScene.Count;
+    }
 }
