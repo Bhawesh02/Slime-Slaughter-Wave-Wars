@@ -1,10 +1,8 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -35,6 +33,9 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     [Header("Player Won")]
     [SerializeField]
     private GameObject playerWonUi;
+    [Header("Game Pause")]
+    [SerializeField]
+    private GameObject gamePauseUi;
 
     [Header("Buttons")]
     [SerializeField]
@@ -42,6 +43,10 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     private Button[] restartButton;
     [SerializeField]
     private Button[] quitButton;
+    [SerializeField]
+    private Button returnLobby;
+
+
     private int currWave;
 
     private int numOfEnemyToSpawn;
@@ -57,9 +62,15 @@ public class GameManager : MonoSingletonGeneric<GameManager>
             restartButton[i].onClick.AddListener(restartScene);
         for (int i = 0; i < quitButton.Length; i++)
             quitButton[i].onClick.AddListener(quitScene);
+        returnLobby.onClick.AddListener(returnToLobby);
         waveNotification.gameObject.SetActive(false);
         playerDeadUi.SetActive(false);
         playerWonUi.SetActive(false);
+    }
+
+    private void returnToLobby()
+    {
+        SceneManager.LoadScene(0);
     }
 
     private void quitScene()
