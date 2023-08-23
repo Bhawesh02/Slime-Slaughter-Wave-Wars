@@ -17,21 +17,28 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     [HideInInspector]
     public PlayerView Player;
     [Header("UI Elements")]
+    [Header("Always Visisble")]
     [SerializeField]
     private Slider playerHealthSlider;
-    
-    
     [SerializeField]
     private TextMeshProUGUI enemiesCount;
+    [Header("New Wave")]
+
     [SerializeField]
     private TextMeshProUGUI waveNotification;
+    [Header("Player Dead")]
     [SerializeField]
     private GameObject playerDeadUi;
     [SerializeField]
     private TextMeshProUGUI wavesCoveredInfo;
+    
+    [Header("Player Won")]
     [SerializeField]
-    private Button restartButton;
+    private GameObject playerWonUi;
 
+    [Header("Buttons")]
+    [SerializeField]
+    private Button[] restartButton;
 
     private int currWave;
 
@@ -44,9 +51,11 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     {
         base.Awake();
         currWave = 0;
-        restartButton.onClick.AddListener(restartScene);
+        foreach(Button restart in restartButton)
+            restart.onClick.AddListener(restartScene);
         waveNotification.gameObject.SetActive(false);
         playerDeadUi.SetActive(false);
+        playerWonUi.SetActive(false);
     }
 
     private void restartScene()
@@ -68,7 +77,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         currWave++;
         if(currWave > waveSystem.NumOfWaves)
         {
-            Debug.Log("Player Won");
+            PlayerWon();
             yield break ;
         }
         waveNotification.text = "Wave: " + currWave;
@@ -150,8 +159,22 @@ public class GameManager : MonoSingletonGeneric<GameManager>
 
     public void PlayedDied()
     {
+        setAllEnemyIdel();
         wavesCoveredInfo.text = "Waves Covered: " + (currWave - 1);
         playerDeadUi.SetActive(true);
+    }
 
+    public void PlayerWon()
+    {
+        setAllEnemyIdel();
+        playerWonUi.SetActive(true);
+    }
+
+    private void setAllEnemyIdel()
+    {
+        for(int i = 0;i < enemyInScene.Count;i++)
+        {
+            enemyInScene[i].ChangeState(enemyInScene[i].IdelState);
+        }
     }
 }
