@@ -39,6 +39,9 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     [SerializeField]
     private Button gameResumeButton;
 
+    [Header("Settings")]
+    [SerializeField]
+    private GameObject settingUi;
     [Header("Buttons")]
     [SerializeField]
 
@@ -46,7 +49,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     [SerializeField]
     private Button[] quitButton;
     [SerializeField]
-    private Button returnLobby;
+    private Button settingsButton;
 
 
     private int currWave;
@@ -67,7 +70,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
             restartButton[i].onClick.AddListener(restartScene);
         for (int i = 0; i < quitButton.Length; i++)
             quitButton[i].onClick.AddListener(quitScene);
-        returnLobby.onClick.AddListener(returnToLobby);
+        settingsButton.onClick.AddListener(showSettings);
         gameResumeButton.onClick.AddListener(ResumeGame);
         waveNotification.gameObject.SetActive(false);
         playerDeadUi.SetActive(false);
@@ -96,6 +99,8 @@ public class GameManager : MonoSingletonGeneric<GameManager>
 
                 if (!isPaused)
                     PauseGame();
+                else if (settingUi.activeSelf)
+                    settingUi.SetActive(false);
                 else
                     ResumeGame();
             }
@@ -106,15 +111,18 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         }
     }
 
-    
+
     #region Button Functions
-    private void returnToLobby()
+    private void showSettings()
     {
-        SceneManager.LoadScene(0);
+        SoundService.Instance.PlaySfx(SoundService.Instance.Click);
+
+        settingUi.SetActive(true);
     }
 
     private void quitScene()
     {
+        SoundService.Instance.PlaySfx(SoundService.Instance.Click);
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -124,6 +132,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
 
     private void restartScene()
     {
+        SoundService.Instance.PlaySfx(SoundService.Instance.Click);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     #endregion
@@ -258,6 +267,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     {
         isPaused = false;
         gamePauseUi.SetActive(false);
+
         Player.enabled = true;
         Time.timeScale = 1f;
     }

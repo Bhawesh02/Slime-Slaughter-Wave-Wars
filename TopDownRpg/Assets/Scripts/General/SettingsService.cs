@@ -14,8 +14,6 @@ public class SettingsService : MonoBehaviour
     [SerializeField]
     private Button backButton;
     [SerializeField]
-    private float initialBgVol = 0.03f;
-    [SerializeField]
     private TMP_Dropdown resoltionDropdown;
 
     private Resolution[] resolutions;
@@ -30,7 +28,6 @@ public class SettingsService : MonoBehaviour
     }
     private void Start()
     {
-        bgVolumeSlider.value = initialBgVol;
         setResolutionOptions();
     }
 
