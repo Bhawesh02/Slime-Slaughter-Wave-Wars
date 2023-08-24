@@ -27,6 +27,15 @@ public class SoundService : MonoSingletonGeneric<SoundService>
     {
         PlayBg();
     }
+
+    public void SetBgVolume( float volume)
+    {
+        backgroundSound.volume = volume;
+    }
+    public void SetSfxVolume(float volume)
+    {
+        sfxSound.volume = volume;
+    }
     public void PlayBg()
     {
         backgroundSound.clip = BgSoundClip;
