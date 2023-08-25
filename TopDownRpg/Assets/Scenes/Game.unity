@@ -28474,8 +28474,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerModel:
-    MaxHealth: 10
-    CurrentHealth: 10
+    MaxHealth: 100
+    CurrentHealth: 100
     MovementSpeed: 50
     AnimationDirectionBools:
     - IsLookingDown

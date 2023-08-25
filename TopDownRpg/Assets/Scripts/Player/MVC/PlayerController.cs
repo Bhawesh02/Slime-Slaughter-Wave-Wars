@@ -147,17 +147,18 @@ public class PlayerController
     public void PlayerAttack()
     {
         PlayPlayerFightAnimation();
+        SoundService.Instance.PlaySfx(SoundService.Instance.Slash);
         Collider2D[] hits = Physics2D.OverlapCircleAll(playerView.AttackPoint.position, playerModel.AttackRadius);
         for (int i = 0; i < hits.Length; i++)
         {
             hits[i].GetComponent<IDamageable>()?.TakeDamage();
         }
-        // wait for animation to done playing and put debug.log("Done playing")
-        ResetPlayerAnimation();
+         ResetPlayerAnimation();
     }
     public void ReduceHealth(int attackPower)
     {
         ChangePlayerAnimation(PlayerAnimationStates.Took_Damage);
+        SoundService.Instance.PlaySfx(SoundService.Instance.Hurt);
         playerModel.CurrentHealth -= attackPower;
         if (playerModel.CurrentHealth <= 0)
         {
