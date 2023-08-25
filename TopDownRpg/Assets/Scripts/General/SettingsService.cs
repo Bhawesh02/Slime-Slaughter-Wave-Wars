@@ -33,7 +33,7 @@ public class SettingsService : MonoBehaviour
 
     private void setResolution(int resolutionIndex)
     {
-        Screen.SetResolution(resolutions[resolutionIndex].width, resolutions[resolutionIndex].height,true);
+        Screen.SetResolution(resolutions[resolutionIndex].width, resolutions[resolutionIndex].height, UnityEngine.FullScreenMode.ExclusiveFullScreen, resolutions[resolutionIndex].refreshRateRatio);
     }
 
     private void setResolutionOptions()
@@ -42,9 +42,10 @@ public class SettingsService : MonoBehaviour
         resoltionDropdown.ClearOptions();
         List<string> options = new();
         int currResolutionIndex = 0;
+        Debug.Log(Screen.currentResolution);
         for (int i = 0; i < resolutions.Length; i++)
         {
-            options.Add(resolutions[i].width + " x " + resolutions[i].height );
+            options.Add(resolutions[i].width + " x " + resolutions[i].height +" @ " + resolutions[i].refreshRateRatio + "Hz");
             if (resolutions[i].Equals(Screen.currentResolution))
             {
                 currResolutionIndex = i;

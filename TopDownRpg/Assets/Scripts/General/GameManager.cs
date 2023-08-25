@@ -114,7 +114,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-    Application.Quit()
+    Application.Quit();
 #endif
     }
 

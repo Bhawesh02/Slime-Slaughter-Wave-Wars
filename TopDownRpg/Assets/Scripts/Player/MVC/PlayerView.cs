@@ -125,6 +125,7 @@ public class PlayerView : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if(!Application.isPlaying)
         Gizmos.DrawWireSphere(AttackPoint.position, Model.AttackRadius);
     }
 
