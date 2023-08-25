@@ -60,7 +60,8 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     private Coroutine spawnWave;
 
     private bool isPaused;
-    private bool isKeyBeingPressed;
+
+    private InputMaster inputs;
 
     protected override void Awake()
     {
@@ -77,7 +78,8 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         playerWonUi.SetActive(false);
         gamePauseUi.SetActive(false);
         isPaused = false;
-        isKeyBeingPressed = false;
+        inputs = new();
+
     }
 
     private void Start()
@@ -89,29 +91,15 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         spawnWave = StartCoroutine(spawnNewWave());
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        if (Input.GetAxisRaw("Cancel") == 1)
-        {
-            if (!isKeyBeingPressed)
-            {
-                isKeyBeingPressed = true;
+        inputs.Enable();
+        inputs.Menu.Pause.performed += _ =>
+        OnPausePress();
 
-                if (!isPaused)
-                    PauseGame();
-                else if (settingUi.activeSelf)
-                    settingUi.SetActive(false);
-                else
-                    ResumeGame();
-            }
-        }
-        else
-        {
-            isKeyBeingPressed = false;
-        }
     }
 
-
+    
     #region Button Functions
     private void showSettings()
     {
@@ -255,6 +243,17 @@ public class GameManager : MonoSingletonGeneric<GameManager>
 
 
     #region Pause & Resume Game
+
+    private void OnPausePress()
+    {
+        if (!isPaused)
+            PauseGame();
+        else if (settingUi.activeSelf)
+            settingUi.SetActive(false);
+        else
+            ResumeGame();
+    }
+
     public void PauseGame()
     {
         isPaused = true;
@@ -272,4 +271,12 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         Time.timeScale = 1f;
     }
     #endregion
+
+    private void OnDisable()
+    {
+        inputs.Disable();
+        inputs.Menu.Pause.performed -= _ =>
+        OnPausePress();
+
+    }
 }

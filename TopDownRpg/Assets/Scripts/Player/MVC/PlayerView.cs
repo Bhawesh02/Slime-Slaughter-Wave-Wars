@@ -28,7 +28,7 @@ public class PlayerView : MonoBehaviour
 
     public float AttackPointInitialYOffset { get; private set; }
 
-    private InputMaster inputs;
+    private InputMaster inputs ;
 
     private bool canAttack = false;
 
