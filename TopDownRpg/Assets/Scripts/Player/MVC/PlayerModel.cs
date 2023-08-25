@@ -1,32 +1,39 @@
 
 using System;
-using UnityEngine;
 
 [Serializable]
 public class PlayerModel 
 {
-    public int MaxHealth = 100;
-    public int CurrentHealth = 100;
-    public float MovementSpeed = 500f;
-    public string[] AnimationDirectionBools = { "IsLookingDown", "IsLookingUp", "IsLookingHorizontal" };
+    public int MaxHealth {get;private set;}
+    public int CurrentHealth ;
+    public float MovementSpeed { get; private set; }
     public PlayerAnimationStates CurrentAnimation;
     public LookDirection CurrentLookDirection;
-    public float AttackRate = 0.25f;
-    public float AttackRadius = 0.5f;
+    public float AttackRate { get; private set; }
+    public float AttackRadius { get; private set; }
+    public float AttackPointDownYOffset { get; private set; }
+    public float AttackPointDownXOffset { get; private set; }
+    public float AttackPointUpYOffset { get; private set; }
+    public float AttackPointUpXOffset { get; private set; }
+    public float AttackPointRightYOffset { get; private set; }
+    public float AttackPointRightXOffset { get; private set; }
+    public float AttackPointLeftYOffset { get; private set; }
+    public float AttackPointLeftXOffset { get; private set; }
 
-    [Header("Attack Point Offset")]
-    [Header("Down")]
-    public float AttackPointDownYOffset = 0.17f;
-    public float AttackPointDownXOffset = 0f;
-    [Header("Up")]
-    public float AttackPointUpYOffset = 0.17f;
-    public float AttackPointUpXOffset = 0f;
-    [Header("Right")]
-
-    public float AttackPointRightYOffset = 0.17f;
-    public float AttackPointRightXOffset = 0f;
-    [Header("Left")]
-
-    public float AttackPointLeftYOffset = 0.17f;
-    public float AttackPointLeftXOffset = 0f;
+    public PlayerModel(PlayerScriptableObject scriptableObject) 
+    {
+        this.MaxHealth = scriptableObject.MaxHealth;
+        this.CurrentHealth = scriptableObject.CurrentHealth;
+        this.MovementSpeed = scriptableObject.MovementSpeed;
+        this.AttackRadius = scriptableObject.AttackRadius;
+        this.AttackRate = scriptableObject.AttackRate;
+        this.AttackPointDownYOffset = scriptableObject.AttackPointDownYOffset;
+        this.AttackPointDownXOffset = scriptableObject.AttackPointDownXOffset;
+        this.AttackPointUpYOffset = scriptableObject.AttackPointUpYOffset;
+        this.AttackPointUpXOffset = scriptableObject.AttackPointUpXOffset;
+        this.AttackPointRightYOffset = scriptableObject.AttackPointRightYOffset;
+        this.AttackPointRightXOffset = scriptableObject.AttackPointRightXOffset;
+        this.AttackPointLeftYOffset = scriptableObject.AttackPointLeftYOffset; 
+        this.AttackPointLeftXOffset = scriptableObject.AttackPointLeftXOffset;
+    }
 }

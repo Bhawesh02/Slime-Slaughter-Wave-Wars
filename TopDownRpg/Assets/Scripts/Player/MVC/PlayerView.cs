@@ -1,14 +1,15 @@
 
-using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerView : MonoBehaviour
 {
-    public PlayerModel PlayerModel;
+    [SerializeField]
+    private PlayerScriptableObject playerScriptableObject;
 
-    public PlayerController PlayerController { get; private set; }
+    public PlayerModel Model { get;private set; }
+
+    public PlayerController Controller { get; private set; }
     public Rigidbody2D PlayerRigidBody { get; private set; }
 
     public SpriteRenderer PlayerSpriteRenderer;
@@ -36,14 +37,15 @@ public class PlayerView : MonoBehaviour
     private float nextSwingTime;
     private void Awake()
     {
+        Model = new(playerScriptableObject);
+        Controller = new(Model, this);
         PlayerRigidBody = GetComponent<Rigidbody2D>();
         AttackPointInitialYOffset = AttackPoint.transform.position.y;
         inputs = new();
     }
     private void Start()
     {
-        PlayerController = new(PlayerModel, this);
-        PlayerController.SetLookAndAttackPointDirection(LookDirection.Down);
+        Controller.SetLookAndAttackPointDirection(LookDirection.Down);
         ChangeState(PlayerIdelState);
         nextSwingTime = Time.time;
         GameManager.Instance.Player = this;
@@ -67,8 +69,8 @@ public class PlayerView : MonoBehaviour
             return;
         if (Time.time >= nextSwingTime)
         {
-            PlayerController.PlayerAttack();
-            nextSwingTime = Time.time + PlayerModel.AttackRate;
+            Controller.PlayerAttack();
+            nextSwingTime = Time.time + Model.AttackRate;
         }
 
     }
@@ -94,19 +96,19 @@ public class PlayerView : MonoBehaviour
         if (MoveVector.x != 0)
         {
             if (MoveVector.x > 0)
-                PlayerController.SetLookAndAttackPointDirection(LookDirection.Right);
+                Controller.SetLookAndAttackPointDirection(LookDirection.Right);
             else
-                PlayerController.SetLookAndAttackPointDirection(LookDirection.Left);
+                Controller.SetLookAndAttackPointDirection(LookDirection.Left);
         }
         else
         {
             if (MoveVector.y > 0)
             {
-                PlayerController.SetLookAndAttackPointDirection(LookDirection.Up);
+                Controller.SetLookAndAttackPointDirection(LookDirection.Up);
             }
             else if (MoveVector.y < 0)
             {
-                PlayerController.SetLookAndAttackPointDirection(LookDirection.Down);
+                Controller.SetLookAndAttackPointDirection(LookDirection.Down);
             }
         }
     }
@@ -123,12 +125,12 @@ public class PlayerView : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(AttackPoint.position, PlayerModel.AttackRadius);
+        Gizmos.DrawWireSphere(AttackPoint.position, Model.AttackRadius);
     }
 
     public void TakeDamage(int attackPower)
     {
-        PlayerController.ReduceHealth(attackPower);
+        Controller.ReduceHealth(attackPower);
         GameManager.Instance.SetPlayerHealthInSlider();
     }
     private void OnDisable()

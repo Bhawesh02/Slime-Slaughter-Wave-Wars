@@ -9,7 +9,7 @@ public class PlayerRunningState : PlayerState
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-        playerController ??= playerView.PlayerController;
+        playerController ??= playerView.Controller;
         playerController.PlayPlayerRunningAnimation();
     }
 

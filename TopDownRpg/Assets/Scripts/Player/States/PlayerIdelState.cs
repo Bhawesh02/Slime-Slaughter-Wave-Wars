@@ -6,7 +6,7 @@ public class PlayerIdelState : PlayerState
    public override void OnStateEnter()
     {
         base.OnStateEnter();
-        playerController ??= playerView.PlayerController;
+        playerController ??= playerView.Controller;
         playerController.PlayPlayerIdelAnimation();
         playerView.PlayerRigidBody.velocity = Vector2.zero;
     }

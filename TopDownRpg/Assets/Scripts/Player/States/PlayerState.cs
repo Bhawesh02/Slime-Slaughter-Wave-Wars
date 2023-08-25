@@ -15,7 +15,7 @@ public class PlayerState : MonoBehaviour
     }
     private void Start()
     {
-        playerController = playerView.PlayerController;
+        playerController = playerView.Controller;
     }
 
 

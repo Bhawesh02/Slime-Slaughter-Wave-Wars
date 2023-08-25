@@ -28473,26 +28473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b02af34b60e52cf4fb536f4eab95670a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerModel:
-    MaxHealth: 100
-    CurrentHealth: 100
-    MovementSpeed: 50
-    AnimationDirectionBools:
-    - IsLookingDown
-    - IsLookingUp
-    - IsLookingHorizontal
-    CurrentAnimation: 0
-    CurrentLookDirection: 0
-    AttackRate: 0.25
-    AttackRadius: 0.09
-    AttackPointDownYOffset: -0.15
-    AttackPointDownXOffset: 0.015
-    AttackPointUpYOffset: -0.07
-    AttackPointUpXOffset: 0
-    AttackPointRightYOffset: -0.15
-    AttackPointRightXOffset: 0.07
-    AttackPointLeftYOffset: -0.15
-    AttackPointLeftXOffset: -0.07
+  playerScriptableObject: {fileID: 11400000, guid: 8ec5b09d7fdf4ba4aae8f0959b2b0a30, type: 2}
   PlayerSpriteRenderer: {fileID: 1844449805}
   PlayerAnimator: {fileID: 1844449803}
   PlayerIdelState: {fileID: 632836198}
