@@ -1,8 +1,8 @@
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+
 
 public class PlayerController
 {
@@ -12,6 +12,7 @@ public class PlayerController
     private float newYPosForAttackPoint;
     private Vector2 movementDirection;
     private CancellationTokenSource cancellationTokenSource = new();
+    private bool isAttacking = false;
     public PlayerController(PlayerModel playerModel, PlayerView playerView)
     {
         this.playerModel = playerModel;
@@ -77,7 +78,7 @@ public class PlayerController
     }
     public void ChangePlayerAnimation(PlayerAnimationStates animation)
     {
-        if (animation == playerModel.CurrentAnimation||playerModel.CurrentAnimation == PlayerAnimationStates.Dead)
+        if (isAttacking||animation == playerModel.CurrentAnimation||playerModel.CurrentAnimation == PlayerAnimationStates.Dead)
             return;
         
         playerView.PlayerAnimator.Play(animation.ToString());
@@ -142,7 +143,7 @@ public class PlayerController
         try
         {
             await Task.Delay((int)(1000f * GetAnimationClipLength(playerModel.CurrentAnimation)), cancellationTokenSource.Token);
-
+            isAttacking = false;
             if (playerView.CurrentState == playerView.PlayerIdelState)
                 PlayPlayerIdelAnimation();
             else
@@ -155,8 +156,8 @@ public class PlayerController
     #endregion
     public void PlayerAttack()
     {
-
         PlayPlayerFightAnimation();
+        isAttacking = true;
         SoundService.Instance.PlaySfx(SoundService.Instance.Slash);
         Collider2D[] hits = Physics2D.OverlapCircleAll(playerView.AttackPoint.position, playerModel.AttackRadius);
         for (int i = 0; i < hits.Length; i++)
