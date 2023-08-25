@@ -71,6 +71,7 @@ public class PlayerController
 
     public void PlayerAttack()
     {
+        Debug.Log("Attack");
         playerView.PlayerAnimator.SetTrigger("Attacking");
         Collider2D[] hits = Physics2D.OverlapCircleAll(playerView.AttackPoint.position,playerModel.AttackRadius);
         for(int i = 0; i < hits.Length; i++)

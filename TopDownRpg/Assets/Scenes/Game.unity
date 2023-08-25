@@ -28476,13 +28476,13 @@ MonoBehaviour:
   PlayerModel:
     MaxHealth: 100
     CurrentHealth: 100
-    MovementSpeed: 250
+    MovementSpeed: 50
     AnimationDirectionBools:
     - IsLookingDown
     - IsLookingUp
     - IsLookingHorizontal
     CurrentLookDirection: 0
-    SwingRate: 0.25
+    AttackRate: 0.25
     AttackRadius: 0.09
     AttackPointDownYOffset: -0.15
     AttackPointDownXOffset: 0.015
@@ -28497,10 +28497,8 @@ MonoBehaviour:
   PlayerIdelState: {fileID: 632836198}
   PlayerRunningState: {fileID: 632836197}
   currentPlayerState: {fileID: 0}
-  HorizontalInput: 0
-  VerticalInput: 0
+  MoveVector: {x: 0, y: 0}
   AttackPoint: {fileID: 1273257824}
-  AttackPointInitialYOffset: 0
 --- !u!61 &632836194
 BoxCollider2D:
   m_ObjectHideFlags: 0

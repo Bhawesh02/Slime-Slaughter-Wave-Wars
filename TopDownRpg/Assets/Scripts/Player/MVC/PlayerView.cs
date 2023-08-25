@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,29 +22,22 @@ public class PlayerView : MonoBehaviour
 
     public Vector2 MoveVector = Vector2.zero;
 
-    public float HorizontalInput;
-
-    public float VerticalInput;
 
     public Transform AttackPoint;
 
+
+    public float AttackPointInitialYOffset { get; private set; }
+
+    private InputMaster inputs;
+
+    private bool canAttack = false;
+
     private float nextSwingTime;
-
-    public float AttackPointInitialYOffset;
-
-    public InputMaster Inputs { get; private set; }
-
     private void Awake()
     {
         PlayerRigidBody = GetComponent<Rigidbody2D>();
         AttackPointInitialYOffset = AttackPoint.transform.position.y;
-        Inputs = new();
-    }
-    private void OnEnable()
-    {
-        Inputs.Enable();
-        Inputs.Player.Movement.performed += OnMovementPerformed;
-        Inputs.Player.Movement.canceled += OnMovementCancelled;
+        inputs = new();
     }
     private void Start()
     {
@@ -51,16 +45,39 @@ public class PlayerView : MonoBehaviour
         PlayerController.SetLookAndAttackPointDirection(LookDirection.Down);
         ChangeState(PlayerIdelState);
         nextSwingTime = Time.time;
-
         GameManager.Instance.Player = this;
     }
+    private void OnEnable()
+    {
+        inputs.Enable();
+        inputs.Player.Movement.performed += OnMovementPerformed;
+        inputs.Player.Movement.canceled += OnMovementCancelled;
+        inputs.Player.Shoot.performed += _ => canAttack = true;
+        inputs.Player.Shoot.canceled += _ => canAttack = false;
+    }
 
-    #region Player Control
+    private void Update()
+    {
+        PerformAttackCheck();
+    }
+    private void PerformAttackCheck()
+    {
+        if (!canAttack)
+            return;
+        if (Time.time >= nextSwingTime)
+        {
+            PlayerController.PlayerAttack();
+            nextSwingTime = Time.time + PlayerModel.AttackRate;
+        }
+
+    }
+
+
+    #region Player Direction Set
     private void OnMovementPerformed(InputAction.CallbackContext value)
     {
+
         MoveVector = value.ReadValue<Vector2>();
-        HorizontalInput = MoveVector.x;
-        VerticalInput = MoveVector.y;
         changeLookDirectionBasedOnInput();
         ChangeState(PlayerRunningState);
     }
@@ -73,33 +90,26 @@ public class PlayerView : MonoBehaviour
     private void changeLookDirectionBasedOnInput()
     {
 
-        if (HorizontalInput != 0)
+        if (MoveVector.x != 0)
         {
-            if (HorizontalInput == 1)
+            if (MoveVector.x > 0)
                 PlayerController.SetLookAndAttackPointDirection(LookDirection.Right);
             else
                 PlayerController.SetLookAndAttackPointDirection(LookDirection.Left);
         }
         else
         {
-            if (VerticalInput == 1)
+            if (MoveVector.y > 0)
             {
                 PlayerController.SetLookAndAttackPointDirection(LookDirection.Up);
             }
-            else if (VerticalInput == -1)
+            else if (MoveVector.y < 0)
             {
                 PlayerController.SetLookAndAttackPointDirection(LookDirection.Down);
             }
         }
     }
-    private void playerAttackCheck()
-    {
-        if (Time.time >= nextSwingTime && Input.GetMouseButton(0))
-        {
-            PlayerController.PlayerAttack();
-            nextSwingTime = Time.time + PlayerModel.SwingRate;
-        }
-    }
+
     #endregion
     public void ChangeState(PlayerState playerState)
     {
@@ -121,9 +131,13 @@ public class PlayerView : MonoBehaviour
     }
     private void OnDisable()
     {
-        Inputs.Disable();
-        Inputs.Player.Movement.performed -= OnMovementPerformed;
-        Inputs.Player.Movement.performed -= OnMovementCancelled;
+        inputs.Disable();
+        inputs.Player.Movement.performed -= OnMovementPerformed;
+        inputs.Player.Movement.performed -= OnMovementCancelled;
+        inputs.Player.Shoot.performed -= _ => canAttack = true;
+        inputs.Player.Shoot.canceled -= _ => canAttack = false;
+
+
 
     }
 }

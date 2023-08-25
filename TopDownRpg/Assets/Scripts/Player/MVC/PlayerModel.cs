@@ -10,8 +10,9 @@ public class PlayerModel
     public float MovementSpeed = 500f;
     public string[] AnimationDirectionBools = { "IsLookingDown", "IsLookingUp", "IsLookingHorizontal" };
     public LookDirection CurrentLookDirection;
-    public float SwingRate = 0.25f;
+    public float AttackRate = 0.25f;
     public float AttackRadius = 0.5f;
+
     [Header("Attack Point Offset")]
     [Header("Down")]
     public float AttackPointDownYOffset = 0.17f;
