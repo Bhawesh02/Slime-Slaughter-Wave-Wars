@@ -42,7 +42,6 @@ public class SettingsService : MonoBehaviour
         resoltionDropdown.ClearOptions();
         List<string> options = new();
         int currResolutionIndex = 0;
-        Debug.Log(Screen.currentResolution);
         for (int i = 0; i < resolutions.Length; i++)
         {
             options.Add(resolutions[i].width + " x " + resolutions[i].height +" @ " + resolutions[i].refreshRateRatio + "Hz");
