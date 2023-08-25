@@ -16,7 +16,7 @@ MonoBehaviour:
   CurrentHealth: 100
   MovementSpeed: 50
   AttackRadius: 0.09
-  AttackRate: 0.35
+  AttackRate: 0.55
   AttackPointDownYOffset: -0.15
   AttackPointDownXOffset: 0.015
   AttackPointUpYOffset: -0.07
