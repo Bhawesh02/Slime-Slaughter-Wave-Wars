@@ -14,13 +14,13 @@ public class PlayerController
         this.playerView = playerView;
     }
 
-    public void MovePlayer(float horizontalInput, float verticalInput)
+    public void MovePlayer()
     {
-        movementDirection = new(horizontalInput, verticalInput);
+        movementDirection = playerView.MoveVector;
         movementDirection.Normalize();
         playerView.PlayerRigidBody.velocity = playerModel.MovementSpeed * Time.deltaTime * movementDirection;
     }
-    public void ChangeLookDirection(LookDirection direction)
+    public void SetLookAndAttackPointDirection(LookDirection direction)
     {
         if (direction == playerModel.CurrentLookDirection)
             return;

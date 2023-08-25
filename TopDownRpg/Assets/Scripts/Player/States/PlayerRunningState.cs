@@ -12,16 +12,15 @@ public class PlayerRunningState : PlayerState
         playerView.PlayerAnimator.SetBool("IsMoving",true);
     }
 
-    public override void Update()
+    public void FixedUpdate()
     {
-        base.Update();
-        if (playerView.HorizontalInput == 0 && playerView.VerticalInput == 0)
-            playerView.ChangeState(playerView.PlayerIdelState);
-        playerController.MovePlayer(playerView.HorizontalInput, playerView.VerticalInput);
+        playerController.MovePlayer();
     }
 
     public override void OnStateExit()
     {
+        playerView.PlayerAnimator.SetBool("IsMoving", false);
+
         base.OnStateExit();
     }
 }

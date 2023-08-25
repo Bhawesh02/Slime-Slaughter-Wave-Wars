@@ -32,7 +32,7 @@ public class PlayerView : MonoBehaviour
     public float AttackPointInitialYOffset;
 
     public InputMaster Inputs { get; private set; }
-    
+
     private void Awake()
     {
         PlayerRigidBody = GetComponent<Rigidbody2D>();
@@ -43,12 +43,12 @@ public class PlayerView : MonoBehaviour
     {
         Inputs.Enable();
         Inputs.Player.Movement.performed += OnMovementPerformed;
-        Inputs.Player.Movement.performed += OnMovementCancelled;
+        Inputs.Player.Movement.canceled += OnMovementCancelled;
     }
     private void Start()
     {
         PlayerController = new(PlayerModel, this);
-        PlayerController.ChangeLookDirection(LookDirection.Down);
+        PlayerController.SetLookAndAttackPointDirection(LookDirection.Down);
         ChangeState(PlayerIdelState);
         nextSwingTime = Time.time;
 
@@ -62,12 +62,13 @@ public class PlayerView : MonoBehaviour
         HorizontalInput = MoveVector.x;
         VerticalInput = MoveVector.y;
         changeLookDirectionBasedOnInput();
-        playerAttackCheck();
+        ChangeState(PlayerRunningState);
     }
 
     private void OnMovementCancelled(InputAction.CallbackContext value)
     {
         MoveVector = Vector2.zero;
+        ChangeState(PlayerIdelState);
     }
     private void changeLookDirectionBasedOnInput()
     {
@@ -75,19 +76,19 @@ public class PlayerView : MonoBehaviour
         if (HorizontalInput != 0)
         {
             if (HorizontalInput == 1)
-                PlayerController.ChangeLookDirection(LookDirection.Right);
+                PlayerController.SetLookAndAttackPointDirection(LookDirection.Right);
             else
-                PlayerController.ChangeLookDirection(LookDirection.Left);
+                PlayerController.SetLookAndAttackPointDirection(LookDirection.Left);
         }
         else
         {
             if (VerticalInput == 1)
             {
-                PlayerController.ChangeLookDirection(LookDirection.Up);
+                PlayerController.SetLookAndAttackPointDirection(LookDirection.Up);
             }
             else if (VerticalInput == -1)
             {
-                PlayerController.ChangeLookDirection(LookDirection.Down);
+                PlayerController.SetLookAndAttackPointDirection(LookDirection.Down);
             }
         }
     }
@@ -109,7 +110,7 @@ public class PlayerView : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-       Gizmos.DrawWireSphere(AttackPoint.position, PlayerModel.AttackRadius);
+        Gizmos.DrawWireSphere(AttackPoint.position, PlayerModel.AttackRadius);
     }
 
     public void TakeDamage(int attackPower)

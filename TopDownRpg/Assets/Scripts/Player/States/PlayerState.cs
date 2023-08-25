@@ -17,10 +17,6 @@ public class PlayerState : MonoBehaviour
     {
         playerController = playerView.PlayerController;
     }
-    public virtual void Update()
-    {
-
-    }
 
 
 
