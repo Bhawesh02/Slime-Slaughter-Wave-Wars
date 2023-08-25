@@ -17,8 +17,7 @@ public class PlayerView : MonoBehaviour
 
     public PlayerIdelState PlayerIdelState;
     public PlayerRunningState PlayerRunningState;
-    [SerializeField]
-    private PlayerState currentPlayerState;
+    public PlayerState CurrentState;
 
     public Vector2 MoveVector = Vector2.zero;
 
@@ -26,9 +25,11 @@ public class PlayerView : MonoBehaviour
     public Transform AttackPoint;
 
 
+
+
     public float AttackPointInitialYOffset { get; private set; }
 
-    private InputMaster inputs ;
+    private InputMaster inputs;
 
     private bool canAttack = false;
 
@@ -113,10 +114,12 @@ public class PlayerView : MonoBehaviour
     #endregion
     public void ChangeState(PlayerState playerState)
     {
-        currentPlayerState?.OnStateExit();
-        currentPlayerState = playerState;
-        currentPlayerState.OnStateEnter();
+        CurrentState?.OnStateExit();
+        CurrentState = playerState;
+        CurrentState.OnStateEnter();
     }
+
+
 
     private void OnDrawGizmos()
     {
@@ -125,7 +128,6 @@ public class PlayerView : MonoBehaviour
 
     public void TakeDamage(int attackPower)
     {
-        PlayerAnimator.SetTrigger("Attacked");
         PlayerController.ReduceHealth(attackPower);
         GameManager.Instance.SetPlayerHealthInSlider();
     }

@@ -9,6 +9,7 @@ public class PlayerModel
     public int CurrentHealth = 100;
     public float MovementSpeed = 500f;
     public string[] AnimationDirectionBools = { "IsLookingDown", "IsLookingUp", "IsLookingHorizontal" };
+    public PlayerAnimationStates CurrentAnimation;
     public LookDirection CurrentLookDirection;
     public float AttackRate = 0.25f;
     public float AttackRadius = 0.5f;

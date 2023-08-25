@@ -9,7 +9,8 @@ public class PlayerRunningState : PlayerState
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-        playerView.PlayerAnimator.SetBool("IsMoving",true);
+        playerController ??= playerView.PlayerController;
+        playerController.PlayPlayerRunningAnimation();
     }
 
     public void FixedUpdate()
@@ -19,7 +20,6 @@ public class PlayerRunningState : PlayerState
 
     public override void OnStateExit()
     {
-        playerView.PlayerAnimator.SetBool("IsMoving", false);
 
         base.OnStateExit();
     }
