@@ -12,7 +12,7 @@ Slime Slaughter: Wave Wars is an exhilarating game that thrusts players into a w
 
 - **Modular AI System:** The game features a sophisticated modular AI system for enemy behavior. Each slime type employs different tactics, ensuring diverse and unpredictable encounters.
 
-- **Strategic Environments:** Navigate through diverse environments with unique features. Narrow passages, obstacles, and interactive elements demand quick thinking and careful planning.
+- **Strategic Environments:** Navigate through diverse environments with unique features. Narrow passages and obstacles demand quick thinking and careful planning.
 
 - **Responsive Controls:** Experience smooth and fluid controls that empower players to swiftly maneuver, attack, and dodge, contributing to a seamless and immersive gameplay experience.
 
