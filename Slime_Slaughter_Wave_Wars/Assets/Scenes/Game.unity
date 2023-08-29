@@ -306,6 +306,68 @@ Transform:
   - {fileID: 1269790403}
   m_Father: {fileID: 1210005261}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &105381151
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 105381153}
+  - component: {fileID: 105381152}
+  m_Layer: 0
+  m_Name: UIService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &105381152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105381151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59253d771dec43c4493c12b1f8244f6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHealthSlider: {fileID: 306255545}
+  enemiesCount: {fileID: 554157008}
+  WaveNotification: {fileID: 1135859520}
+  playerDeadUi: {fileID: 341407273}
+  wavesCoveredInfo: {fileID: 35394856}
+  playerWonUi: {fileID: 395013616}
+  gamePauseUi: {fileID: 575153602}
+  gameResumeButton: {fileID: 735339385}
+  SettingUi: {fileID: 176851419}
+  restartButton:
+  - {fileID: 709028664}
+  - {fileID: 2104052234}
+  - {fileID: 861440752}
+  quitButton:
+  - {fileID: 141626026}
+  - {fileID: 1322585649}
+  - {fileID: 1545882007}
+  settingsButton: {fileID: 960900462}
+--- !u!4 &105381153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105381151}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &122486133
 GameObject:
   m_ObjectHideFlags: 0
@@ -32238,27 +32300,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f1dbf624702b2c43bddeae25ba2d739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveSystem: {fileID: 11400000, guid: 8c82f21f78d50a14492323e4425809d7, type: 2}
-  enemyInScene: []
+  WaveSystem: {fileID: 11400000, guid: 8c82f21f78d50a14492323e4425809d7, type: 2}
   Player: {fileID: 0}
-  playerHealthSlider: {fileID: 306255545}
-  enemiesCount: {fileID: 554157008}
-  waveNotification: {fileID: 1135859520}
-  playerDeadUi: {fileID: 341407273}
-  wavesCoveredInfo: {fileID: 35394856}
-  playerWonUi: {fileID: 395013616}
-  gamePauseUi: {fileID: 575153602}
-  gameResumeButton: {fileID: 735339385}
-  settingUi: {fileID: 176851419}
-  restartButton:
-  - {fileID: 2104052234}
-  - {fileID: 861440752}
-  - {fileID: 709028664}
-  quitButton:
-  - {fileID: 1322585649}
-  - {fileID: 1545882007}
-  - {fileID: 141626026}
-  settingsButton: {fileID: 960900462}
 --- !u!1 &1322585647
 GameObject:
   m_ObjectHideFlags: 0
@@ -46277,10 +46320,11 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 1434450750}
+  - {fileID: 105381153}
+  - {fileID: 2023766776}
   - {fileID: 1310968762}
   - {fileID: 1105277725}
   - {fileID: 1210005261}
   - {fileID: 632836192}
   - {fileID: 1903822788}
   - {fileID: 727466868}
-  - {fileID: 2023766776}

@@ -1,93 +1,47 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GameManager : MonoSingletonGeneric<GameManager>
 {
-    [SerializeField]
-    private WaveSystemScriptableObject waveSystem;
-    [SerializeField]
-    private List<EnemyView> enemyInScene;
+    public WaveSystemScriptableObject WaveSystem;
+    public List<EnemyView> EnemyInScene  { get; private set; }
     [HideInInspector]
     public PlayerView Player;
-    [Header("UI Elements")]
-    [Header("Always Visisble")]
-    [SerializeField]
-    private Slider playerHealthSlider;
-    [SerializeField]
-    private TextMeshProUGUI enemiesCount;
-    [Header("New Wave")]
-
-    [SerializeField]
-    private TextMeshProUGUI waveNotification;
-    [Header("Player Dead")]
-    [SerializeField]
-    private GameObject playerDeadUi;
-    [SerializeField]
-    private TextMeshProUGUI wavesCoveredInfo;
-
-    [Header("Player Won")]
-    [SerializeField]
-    private GameObject playerWonUi;
-    [Header("Game Pause")]
-    [SerializeField]
-    private GameObject gamePauseUi;
-    [SerializeField]
-    private Button gameResumeButton;
-
-    [Header("Settings")]
-    [SerializeField]
-    private GameObject settingUi;
-    [Header("Buttons")]
-    [SerializeField]
-
-    private Button[] restartButton;
-    [SerializeField]
-    private Button[] quitButton;
-    [SerializeField]
-    private Button settingsButton;
+    
 
 
-    private int currWave;
+    public int CurrWave { get; private set; }
 
     private int numOfEnemyToSpawn;
 
 
     private Coroutine spawnWave;
 
-    private bool isPaused;
 
     private InputMaster inputs;
+
+    private UIService uIService;
+    private bool isPaused;
+
 
     protected override void Awake()
     {
         base.Awake();
-        currWave = 0;
-        for (int i = 0; i < restartButton.Length; i++)
-            restartButton[i].onClick.AddListener(restartScene);
-        for (int i = 0; i < quitButton.Length; i++)
-            quitButton[i].onClick.AddListener(quitScene);
-        settingsButton.onClick.AddListener(showSettings);
-        gameResumeButton.onClick.AddListener(ResumeGame);
-        waveNotification.gameObject.SetActive(false);
-        playerDeadUi.SetActive(false);
-        playerWonUi.SetActive(false);
-        gamePauseUi.SetActive(false);
-        isPaused = false;
+        CurrWave = 0;
+        
         inputs = new();
-
+        isPaused = false;
+        EnemyInScene = new();
     }
 
     private void Start()
     {
-
-        StartCoroutine(setPlayerMaxHealthInSlider());
-        EventService.Instance.EnemySpawned += increaseEnemyInScene;
-        EventService.Instance.EnemyDied += decreaseEnemyInScene;
+        uIService = UIService.Instance;
+        StartCoroutine(uIService.SetPlayerMaxHealthInSlider());
+        EventService.Instance.EnemySpawned += IncreaseEnemyInScene;
+        EventService.Instance.EnemyDied += DecreaseEnemyInScene;
         spawnWave = StartCoroutine(spawnNewWave());
     }
 
@@ -100,143 +54,80 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     }
 
     
-    #region Button Functions
-    private void showSettings()
-    {
-        SoundService.Instance.PlaySfx(SoundService.Instance.Click);
-
-        settingUi.SetActive(true);
-    }
-
-    private void quitScene()
-    {
-        SoundService.Instance.PlaySfx(SoundService.Instance.Click);
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-    Application.Quit();
-#endif
-    }
-
-    private void restartScene()
-    {
-        SoundService.Instance.PlaySfx(SoundService.Instance.Click);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-    #endregion
+    
 
 
     #region Spwan Wave
     private IEnumerator spawnNewWave()
     {
-        currWave++;
-        if (currWave > waveSystem.NumOfWaves)
+        CurrWave++;
+        if (CurrWave > WaveSystem.NumOfWaves)
         {
             PlayerWon();
             yield break;
         }
-        waveNotification.text = "Wave: " + currWave;
-        yield return StartCoroutine(showWaveNotification());
-        calculateNumOfEnemyToSpawn();
+        uIService.WaveNotification.text = "Wave: " + CurrWave;
+        yield return StartCoroutine(uIService.ShowWaveNotification());
+        CalculateNumOfEnemyToSpawn();
         for (int i = 0; i < numOfEnemyToSpawn; i++)
         {
             EnemySpawner.Instance.SpawnEnemy();
         }
     }
-    private IEnumerator showWaveNotification()
-    {
-        waveNotification.gameObject.SetActive(true);
-        yield return StartCoroutine(chaneAlphaOfWaveNotification(1f));
-        yield return StartCoroutine(chaneAlphaOfWaveNotification(0f));
-        waveNotification.gameObject.SetActive(false);
-    }
+    
 
-    private IEnumerator chaneAlphaOfWaveNotification(float newAlpha)
+    private void CalculateNumOfEnemyToSpawn()
     {
-        float elapsedTime = 0f;
-        Color initialColor = waveNotification.color;
-        while (elapsedTime < waveSystem.WaveNotificationFadeDuration)
+        if (CurrWave == 1)
         {
-            float normalizedTime = elapsedTime / waveSystem.WaveNotificationFadeDuration;
-            Color newColor = initialColor;
-            newColor.a = Mathf.Lerp(initialColor.a, newAlpha, normalizedTime);
-
-            waveNotification.color = newColor;
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        Color finalColor = waveNotification.color;
-        finalColor.a = newAlpha;
-        waveNotification.color = finalColor;
-    }
-
-    private void calculateNumOfEnemyToSpawn()
-    {
-        if (currWave == 1)
-        {
-            numOfEnemyToSpawn = waveSystem.NumOfEneimesInFirstWave;
+            numOfEnemyToSpawn = WaveSystem.NumOfEneimesInFirstWave;
             return;
         }
-        int additionEnemy = Random.Range(waveSystem.MinNumOfEneimesIncraseEachWave, waveSystem.MinNumOfEneimesIncraseEachWave + 1);
+        int additionEnemy = Random.Range(WaveSystem.MinNumOfEneimesIncraseEachWave, WaveSystem.MinNumOfEneimesIncraseEachWave + 1);
         numOfEnemyToSpawn += additionEnemy;
     }
     #endregion
 
     #region EnemyCount Update
-    private void increaseEnemyInScene(EnemyView enemyView)
+    private void IncreaseEnemyInScene(EnemyView enemyView)
     {
-        enemyInScene.Add(enemyView);
-        updateEnemyCountUI();
+        EnemyInScene.Add(enemyView);
+        uIService.UpdateEnemyCountUI();
     }
 
-    private void decreaseEnemyInScene(EnemyView enemyView)
+    private void DecreaseEnemyInScene(EnemyView enemyView)
     {
-        enemyInScene.Remove(enemyView);
-        updateEnemyCountUI();
+        EnemyInScene.Remove(enemyView);
+        uIService.UpdateEnemyCountUI();
 
-        if (enemyInScene.Count == 0)
+        if (EnemyInScene.Count == 0)
             spawnWave = StartCoroutine(spawnNewWave());
 
     }
-    private void updateEnemyCountUI()
-    {
-        enemiesCount.text = ": " + enemyInScene.Count;
-    }
+    
 
 
     #endregion
 
-    #region Player Health UI
-    private IEnumerator setPlayerMaxHealthInSlider()
-    {
-        yield return null;
-        playerHealthSlider.maxValue = Player.Controller.Model.MaxHealth;
-    }
-    public void SetPlayerHealthInSlider()
-    {
-        playerHealthSlider.value = Player.Controller.Model.CurrentHealth;
-    }
-    #endregion
+   
 
     #region Player Won And dead
     public void PlayedDied()
     {
         setAllEnemyIdel();
-        wavesCoveredInfo.text = "Waves Covered: " + (currWave - 1);
-        playerDeadUi.SetActive(true);
+        uIService.PlayerDiedUI();
     }
 
     public void PlayerWon()
     {
         setAllEnemyIdel();
-        playerWonUi.SetActive(true);
+        uIService.PlayerWonUI();
     }
     private void setAllEnemyIdel()
     {
-        for (int i = 0; i < enemyInScene.Count; i++)
+        for (int i = 0; i < EnemyInScene.Count; i++)
         {
-            enemyInScene[i].Controller.ChangeState(enemyInScene[i].IdelState);
+            EnemyInScene[i].Controller.ChangeState(EnemyInScene[i].IdelState);
         }
     }
     #endregion
@@ -247,29 +138,22 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     private void OnPausePress()
     {
         if (!isPaused)
-            PauseGame();
-        else if (settingUi.activeSelf)
-            settingUi.SetActive(false);
+        {
+            isPaused = true;
+            Player.enabled = false;
+            uIService.PauseGameUI();
+        }
+        else if (uIService.SettingUi.activeSelf)
+            uIService.SettingUi.SetActive(false);
         else
-            ResumeGame();
+        {
+            isPaused = false;
+            Player.enabled = true;
+            uIService.ResumeGameUI();
+        }
     }
 
-    public void PauseGame()
-    {
-        isPaused = true;
-        gamePauseUi.SetActive(true);
-        Player.enabled = false;
-        Time.timeScale = 0;
-
-    }
-    private void ResumeGame()
-    {
-        isPaused = false;
-        gamePauseUi.SetActive(false);
-
-        Player.enabled = true;
-        Time.timeScale = 1f;
-    }
+    
     #endregion
 
     private void OnDisable()

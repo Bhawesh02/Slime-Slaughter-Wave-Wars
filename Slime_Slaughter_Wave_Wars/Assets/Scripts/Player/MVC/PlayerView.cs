@@ -124,7 +124,7 @@ public class PlayerView : MonoBehaviour
     public void TakeDamage(int attackPower)
     {
         Controller.ReduceHealth(attackPower);
-        GameManager.Instance.SetPlayerHealthInSlider();
+        UIService.Instance.SetPlayerHealthInSlider();
     }
     private void OnDisable()
     {
