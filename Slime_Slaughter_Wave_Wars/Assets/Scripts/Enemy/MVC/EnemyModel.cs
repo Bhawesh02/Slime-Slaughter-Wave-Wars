@@ -4,35 +4,39 @@ using System.Collections.Generic;
 using UnityEngine;
 public class EnemyModel 
 {
-    public int Health;
-    public float MovementSpeed;
-    public int AttackPower = 10;
-    public float AttackDelay = 0.5f;
+    public int MaxHealth { get; }
+    public int CurrHealth;
+    public float MovementSpeed { get; }
+    public int AttackPower { get; }
+    public float AttackDelay { get; }
 
-    public float ObstacelDetectionRadius;
-    public float ChaseRadius = 0.8f;
-    public float FightRadius = 0.12f;
-    public float ColliderSize = 0.08f;
-    public float DetectionDelay = 0.5f;
-    public LayerMask ObstacleLayerMask;
-    public LayerMask PlayerLayerMask;
+    public float ObstacelDetectionRadius { get; }
+    public float ChaseRadius { get; }
+    public float FightRadius { get; }
+    public float ColliderSize { get; }
+    public float DetectionDelay { get; }
+    public LayerMask ObstacleLayerMask { get; }
+    public LayerMask PlayerLayerMask { get; }
+
+    public EnemyState CurrentState;
+
 
     public List<Collider2D> Obstacles = new();
     public Transform PlayerTransform = null;
 
     public EnemyModel(EnemyScriptableObject scriptableObject)
     {
-        this.Health = scriptableObject.Health;
-        this.MovementSpeed = scriptableObject.MovementSpeed;
-        this.AttackPower = scriptableObject.AttackPower;
-        this.AttackDelay = scriptableObject.AttackDelay;
-        this.ObstacelDetectionRadius = scriptableObject.ObstacelDetectionRadius;
-        this.ChaseRadius = scriptableObject.ChaseRadius;
-        this.FightRadius = scriptableObject.FightRadius;
-        this.ColliderSize = scriptableObject.ColliderSize;
-        this.DetectionDelay = scriptableObject.DetectionDelay;
-        this.ObstacleLayerMask = scriptableObject.ObstacleLayerMask;
-        this.PlayerLayerMask = scriptableObject.PlayerLayerMask;
+        MaxHealth = scriptableObject.MaxHealth;
+        MovementSpeed = scriptableObject.MovementSpeed;
+        AttackPower = scriptableObject.AttackPower;
+        AttackDelay = scriptableObject.AttackDelay;
+        ObstacelDetectionRadius = scriptableObject.ObstacelDetectionRadius;
+        ChaseRadius = scriptableObject.ChaseRadius;
+        FightRadius = scriptableObject.FightRadius;
+        ColliderSize = scriptableObject.ColliderSize;
+        DetectionDelay = scriptableObject.DetectionDelay;
+        ObstacleLayerMask = scriptableObject.ObstacleLayerMask;
+        PlayerLayerMask = scriptableObject.PlayerLayerMask;
 
     }
 }

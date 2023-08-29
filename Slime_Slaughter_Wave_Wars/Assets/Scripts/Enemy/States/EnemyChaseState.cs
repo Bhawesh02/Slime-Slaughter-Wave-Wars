@@ -47,7 +47,7 @@ public class EnemyChaseState : EnemyState
         targetPos = Model.PlayerTransform.position;
         if (targetPos == null)
         {
-            View.ChangeState(View.IdelState);
+            Controller.ChangeState(View.IdelState);
         }
         aiCoroutine = StartCoroutine(aILogic());
         View.GetAnimator.SetBool("IsMoving", true);
@@ -73,9 +73,9 @@ public class EnemyChaseState : EnemyState
         if (Vector2.Distance(transform.position, targetPos) <= Model.FightRadius)
         {
             if (Model.PlayerTransform != null)
-                View.ChangeState(View.FightState);
+                Controller.ChangeState(View.FightState);
             else
-                View.ChangeState(View.IdelState);
+                Controller.ChangeState(View.IdelState);
             yield break;
         }
 

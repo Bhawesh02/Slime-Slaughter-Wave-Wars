@@ -236,7 +236,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     {
         for (int i = 0; i < enemyInScene.Count; i++)
         {
-            enemyInScene[i].ChangeState(enemyInScene[i].IdelState);
+            enemyInScene[i].Controller.ChangeState(enemyInScene[i].IdelState);
         }
     }
     #endregion

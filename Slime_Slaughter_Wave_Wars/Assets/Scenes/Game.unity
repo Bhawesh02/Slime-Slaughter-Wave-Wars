@@ -30530,6 +30530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a230b444c31db1247b35a9e3585cb207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyScriptableObject: {fileID: 11400000, guid: 670f573b41d04c04481f50ed5889ebf8, type: 2}
   enemyView: {fileID: 5404494735906893075, guid: 92d6f5c35246ce9499c749e0917829af, type: 3}
   levelConfiner: {fileID: 1824482580}
   layerToNotSpawnEnemy:

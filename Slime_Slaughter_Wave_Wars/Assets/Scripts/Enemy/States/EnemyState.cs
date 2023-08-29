@@ -21,9 +21,8 @@ public class EnemyState : MonoBehaviour
     }
     protected void SetModelController()
     {
-        Model = View.Model;
         Controller = View.Controller;
-
+        Model = Controller.Model;
     }
     public virtual void OnStateEnter()
     {

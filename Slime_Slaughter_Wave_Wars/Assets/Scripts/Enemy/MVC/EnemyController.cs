@@ -1,50 +1,50 @@
 
 
-using System;
 using UnityEngine;
 public class EnemyController
 {
-    private EnemyView enemyView;
-    private EnemyModel enemyModel;
+    private EnemyView view;
+    public EnemyModel Model { get; private set; }
     private Collider2D[] obstacles;
 
-    public EnemyController(EnemyView enemyView, EnemyModel enemyModel)
+    public EnemyController(EnemyView enemyView, EnemyScriptableObject enemyScriptableObject)
     {
-        this.enemyView = enemyView;
-        this.enemyModel = enemyModel;
+        view = enemyView;
+        Model = new(enemyScriptableObject);
+        
     }
-
+    
     public void DetectObstacels()
     {
-       obstacles = Physics2D.OverlapCircleAll(enemyView.transform.position, enemyModel.ObstacelDetectionRadius, enemyModel.ObstacleLayerMask);
+       obstacles = Physics2D.OverlapCircleAll(view.transform.position, Model.ObstacelDetectionRadius, Model.ObstacleLayerMask);
        foreach(Collider2D obs in obstacles)
         {
-            if(obs.GetComponent<EnemyView>() != enemyView)
-                enemyModel.Obstacles.Add(obs);
+            if(obs.GetComponent<EnemyView>() != view)
+                Model.Obstacles.Add(obs);
         }
     }
 
     public void PlayerDetect()
     {
-        Collider2D playerCollider = Physics2D.OverlapCircle(enemyView.transform.position, enemyModel.ChaseRadius, enemyModel.PlayerLayerMask);
+        Collider2D playerCollider = Physics2D.OverlapCircle(view.transform.position, Model.ChaseRadius, Model.PlayerLayerMask);
         if (playerCollider == null)
         {
-            enemyModel.PlayerTransform = null;
+            Model.PlayerTransform = null;
             return;
         }
-        enemyModel.PlayerTransform = playerCollider.transform;
+        Model.PlayerTransform = playerCollider.transform;
     }
 
     public void CheckIfPlayerIsInSight()
     {
         
-        Vector2 direction = (enemyModel.PlayerTransform.position - enemyView.transform.position).normalized;
-        Vector2 position = (Vector2)(enemyView.transform.position) + direction * enemyModel.ColliderSize;
-        RaycastHit2D hit = Physics2D.Raycast(position, direction, enemyModel.ChaseRadius,enemyModel.ObstacleLayerMask);
+        Vector2 direction = (Model.PlayerTransform.position - view.transform.position).normalized;
+        Vector2 position = (Vector2)(view.transform.position) + direction * Model.ColliderSize;
+        RaycastHit2D hit = Physics2D.Raycast(position, direction, Model.ChaseRadius,Model.ObstacleLayerMask);
 
-        if (hit.collider != null && hit.collider.gameObject != enemyModel.PlayerTransform.gameObject)
+        if (hit.collider != null && hit.collider.gameObject != Model.PlayerTransform.gameObject)
         {
-            enemyModel.PlayerTransform = null;
+            Model.PlayerTransform = null;
             return;
         }
     }
@@ -56,12 +56,12 @@ public class EnemyController
         if (!Application.isPlaying)
             return;
         Gizmos.color = Color.green;
-        if (enemyModel.PlayerTransform != null)
-            Gizmos.DrawSphere(enemyModel.PlayerTransform.position, 0.02f);
-        if (enemyModel.Obstacles == null)
+        if (Model.PlayerTransform != null)
+            Gizmos.DrawSphere(Model.PlayerTransform.position, 0.02f);
+        if (Model.Obstacles == null)
             return;
         Gizmos.color = Color.red;
-        foreach (Collider2D col in enemyModel.Obstacles)
+        foreach (Collider2D col in Model.Obstacles)
         {
             Gizmos.DrawSphere(col.transform.position, 0.02f);
         }
@@ -69,19 +69,33 @@ public class EnemyController
     }
     public void ReduceHealth()
     {
-        enemyModel.Health -= 10;
-        if (enemyModel.Health <= 0)
+        Model.CurrHealth -= 10;
+        if (Model.CurrHealth <= 0)
         {
-            enemyView.GetAnimator.SetTrigger("Died");
+            view.GetAnimator.SetTrigger("Died");
         }
         else
         {
-            enemyView.GetAnimator.SetTrigger("Attacked");
+            view.GetAnimator.SetTrigger("Attacked");
         }
     }
 
-    public void ResetHealth(EnemyScriptableObject enemyScriptableObject)
+    public void ResetHealth()
     {
-        enemyModel.Health = enemyScriptableObject.Health;
+        Model.CurrHealth = Model.MaxHealth;
+    }
+
+    public void ChangeState(EnemyState state)
+    {
+        Model.CurrentState?.OnStateExit();
+        Model.CurrentState = state;
+        Model.CurrentState.OnStateEnter();
+    }
+    public void EnemyDied()
+    {
+        EnemyPoolService.Instance.ReturnEnemy(view);
+        EventService.Instance.InvokeEnemyDied(view);
+        view.StopCoroutine(view.PlayerDetectCoroutine);
+        Model.CurrentState?.OnStateExit();
     }
 }

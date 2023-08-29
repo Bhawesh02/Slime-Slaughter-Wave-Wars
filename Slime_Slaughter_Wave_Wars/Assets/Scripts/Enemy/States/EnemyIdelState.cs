@@ -26,7 +26,7 @@ public class EnemyIdelState : EnemyState
         
         if(Model.PlayerTransform != null)
         {
-            View.ChangeState(View.ChaseState);
+            Controller.ChangeState(View.ChaseState);
             yield break;
         }
         checkForPlayer = StartCoroutine(CheckPlayer());

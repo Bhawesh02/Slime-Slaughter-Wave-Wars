@@ -1,9 +1,10 @@
 
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoSingletonGeneric<EnemySpawner>
 {
+    [SerializeField]
+    private EnemyScriptableObject enemyScriptableObject;
     [SerializeField]
     private EnemyView enemyView;
     [SerializeField]
@@ -41,7 +42,7 @@ public class EnemySpawner : MonoSingletonGeneric<EnemySpawner>
         for (int i = 0; i < maxTries; i++)
         {
             randomPoint = GetRandomPositionInLevel();
-            collider2D = Physics2D.OverlapCircle(randomPoint, enemy.Model.ColliderSize, layerToNotSpawnEnemy);
+            collider2D = Physics2D.OverlapCircle(randomPoint, enemy.Controller.Model.ColliderSize, layerToNotSpawnEnemy);
             if(collider2D == null){
                 break;
             }

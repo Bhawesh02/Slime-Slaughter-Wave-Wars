@@ -31,7 +31,7 @@ public class EnemyFightState : EnemyState
 
     private IEnumerator attackPlayer()
     {
-        if (View.CurrentState != this)
+        if (Controller.Model.CurrentState != this)
         {
             yield break;
         }
@@ -49,7 +49,7 @@ public class EnemyFightState : EnemyState
         if (Model.PlayerTransform == null || Vector2.Distance(transform.position, Model.PlayerTransform.position) > Model.FightRadius)
         {
 
-            View.ChangeState(View.IdelState);
+            Controller.ChangeState(View.IdelState);
             yield break;
         }
         yield return new WaitForSeconds(Model.DetectionDelay);

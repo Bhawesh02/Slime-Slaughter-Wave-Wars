@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c4324b010b349c46a02f088c6628aa8, type: 3}
   m_Name: Slime
   m_EditorClassIdentifier: 
-  Health: 50
+  MaxHealth: 30
   MovementSpeed: 0.2
   AttackPower: 5
   AttackDelay: 2

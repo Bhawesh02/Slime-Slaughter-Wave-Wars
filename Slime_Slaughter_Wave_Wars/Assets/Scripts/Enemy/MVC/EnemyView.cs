@@ -4,16 +4,14 @@ using UnityEngine;
 
 public class EnemyView : MonoBehaviour, IDamageable
 {
-
     [SerializeField]
     private EnemyScriptableObject enemyScriptableObject;
-    public EnemyModel Model;
+   
     public EnemyController Controller;
 
     public EnemyChaseState ChaseState;
     public EnemyIdelState IdelState;
     public EnemyFightState FightState;
-    public EnemyState CurrentState { get; private set; }
 
     public Animator GetAnimator { get; private set; }
 
@@ -24,38 +22,33 @@ public class EnemyView : MonoBehaviour, IDamageable
 
     public bool ShowGizmos;
 
-    private Coroutine playerDetectCoroutine = null;
+    public Coroutine PlayerDetectCoroutine { get; private set; }
 
 
     private void Awake()
     {
-        Model = new(enemyScriptableObject);
-        Controller = new(this, Model);
+        Controller = new(this,enemyScriptableObject);
         GetAnimator = GetComponent<Animator>();
         GetRigidbody = GetComponent<Rigidbody2D>();
         GetSpriteRenderer = GetComponent<SpriteRenderer>();
     }
     private void OnEnable()
     {
-        Controller.ResetHealth(enemyScriptableObject);
-        StartCoroutine(changeToIdel());
-        playerDetectCoroutine = StartCoroutine(playerDetect());
+        if(Controller.Model!= null && Controller.Model.CurrHealth!= Controller.Model.MaxHealth) 
+            Controller.ResetHealth();
+        Controller.ChangeState(IdelState);
+        PlayerDetectCoroutine = StartCoroutine(playerDetect());
 
     }
-    private IEnumerator changeToIdel()
-    {
-        yield return null;
-        ChangeState(IdelState);
-
-    }
+    
     private IEnumerator playerDetect()
     {
         Controller.PlayerDetect();
-        if (Model.PlayerTransform != null)
+        if (Controller.Model.PlayerTransform != null)
             Controller.CheckIfPlayerIsInSight();
         
-        yield return new WaitForSeconds(Model.DetectionDelay);
-        playerDetectCoroutine = StartCoroutine(playerDetect());
+        yield return new WaitForSeconds(Controller.Model.DetectionDelay);
+        PlayerDetectCoroutine = StartCoroutine(playerDetect());
 
     }
 
@@ -63,20 +56,11 @@ public class EnemyView : MonoBehaviour, IDamageable
     {
         Controller.ReduceHealth();
     }
-    public void ChangeState(EnemyState state)
+    public void Died()
     {
-        CurrentState?.OnStateExit();
-        CurrentState = state;
-        CurrentState.OnStateEnter();
+        Controller.EnemyDied();
     }
-    public void EnemyDied()
-    {
-        EnemyPoolService.Instance.ReturnEnemy(this);
-        EventService.Instance.InvokeEnemyDied(this);
-        StopCoroutine(playerDetectCoroutine);
-        CurrentState?.OnStateExit();
-
-    }
+    
     private void OnDrawGizmos()
     {
         if (!Application.isPlaying)
@@ -84,16 +68,16 @@ public class EnemyView : MonoBehaviour, IDamageable
 
         if (!ShowGizmos)
             return;
-        if(Model == null)
+        if(Controller.Model == null)
         {
             return;
         }
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, Model.ObstacelDetectionRadius);
+        Gizmos.DrawWireSphere(transform.position, Controller.Model.ObstacelDetectionRadius);
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, Model.ChaseRadius);
+        Gizmos.DrawWireSphere(transform.position, Controller.Model.ChaseRadius);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, Model.FightRadius);
+        Gizmos.DrawWireSphere(transform.position, Controller.Model.FightRadius);
         Controller?.DrawDetectionGizmos();
 
     }
