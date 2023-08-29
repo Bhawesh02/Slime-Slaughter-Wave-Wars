@@ -7,8 +7,6 @@ public class PlayerView : MonoBehaviour
     [SerializeField]
     private PlayerScriptableObject playerScriptableObject;
 
-    public PlayerModel Model { get;private set; }
-
     public PlayerController Controller { get; private set; }
     public Rigidbody2D PlayerRigidBody { get; private set; }
 
@@ -37,8 +35,7 @@ public class PlayerView : MonoBehaviour
     private float nextSwingTime;
     private void Awake()
     {
-        Model = new(playerScriptableObject);
-        Controller = new(Model, this);
+        Controller = new(playerScriptableObject, this);
         PlayerRigidBody = GetComponent<Rigidbody2D>();
         AttackPointInitialYOffset = AttackPoint.transform.position.y;
         inputs = new();
@@ -46,7 +43,7 @@ public class PlayerView : MonoBehaviour
     private void Start()
     {
         Controller.SetLookAndAttackPointDirection(LookDirection.Down);
-        ChangeState(PlayerIdelState);
+        Controller.ChangeState(PlayerIdelState);
         nextSwingTime = Time.time;
         GameManager.Instance.Player = this;
     }
@@ -70,7 +67,7 @@ public class PlayerView : MonoBehaviour
         if (Time.time >= nextSwingTime)
         {
             Controller.PlayerAttack();
-            nextSwingTime = Time.time + Model.AttackRate;
+            nextSwingTime = Time.time + Controller.Model.AttackRate;
         }
 
     }
@@ -82,13 +79,13 @@ public class PlayerView : MonoBehaviour
 
         MoveVector = value.ReadValue<Vector2>();
         changeLookDirectionBasedOnInput();
-        ChangeState(PlayerRunningState);
+        Controller.ChangeState(PlayerRunningState);
     }
 
     private void OnMovementCancelled(InputAction.CallbackContext value)
     {
         MoveVector = Vector2.zero;
-        ChangeState(PlayerIdelState);
+        Controller.ChangeState(PlayerIdelState);
     }
     private void changeLookDirectionBasedOnInput()
     {
@@ -114,20 +111,14 @@ public class PlayerView : MonoBehaviour
     }
 
     #endregion
-    public void ChangeState(PlayerState playerState)
-    {
-        CurrentState?.OnStateExit();
-        CurrentState = playerState;
-        CurrentState.OnStateEnter();
-    }
-
+    
 
 
     private void OnDrawGizmos()
     {
         if (!Application.isPlaying)
             return;
-        Gizmos.DrawWireSphere(AttackPoint.position, Model.AttackRadius);
+        Gizmos.DrawWireSphere(AttackPoint.position, Controller.Model.AttackRadius);
     }
 
     public void TakeDamage(int attackPower)

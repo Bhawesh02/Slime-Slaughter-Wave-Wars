@@ -6,64 +6,71 @@ using UnityEngine;
 
 public class PlayerController
 {
-    private PlayerModel playerModel;
-    private PlayerView playerView;
+    public PlayerModel Model { get; }
+    private PlayerView view;
     private float newXPosForAttackPoint;
     private float newYPosForAttackPoint;
     private Vector2 movementDirection;
     private CancellationTokenSource cancellationTokenSource = new();
     private bool isAttacking = false;
-    public PlayerController(PlayerModel playerModel, PlayerView playerView)
+    public PlayerController(PlayerScriptableObject playerScriptableObject, PlayerView playerView)
     {
-        this.playerModel = playerModel;
-        this.playerView = playerView;
+        Model = new(playerScriptableObject);
+        view = playerView;
+    }
+
+    public void ChangeState(PlayerState playerState)
+    {
+        view.CurrentState?.OnStateExit();
+        view.CurrentState = playerState;
+        view.CurrentState.OnStateEnter();
     }
 
     public void MovePlayer()
     {
-        movementDirection = playerView.MoveVector;
+        movementDirection = view.MoveVector;
         movementDirection.Normalize();
-        playerView.PlayerRigidBody.velocity = playerModel.MovementSpeed * Time.deltaTime * movementDirection;
+        view.PlayerRigidBody.velocity = Model.MovementSpeed * Time.deltaTime * movementDirection;
     }
     public void SetLookAndAttackPointDirection(LookDirection direction)
     {
-        if (direction == playerModel.CurrentLookDirection)
+        if (direction == Model.CurrentLookDirection)
             return;
         switch (direction)
         {
             case LookDirection.Down:
-                newXPosForAttackPoint = playerView.transform.position.x + playerView.Model.AttackPointDownXOffset;
-                newYPosForAttackPoint = playerView.transform.position.y + playerView.Model.AttackPointDownYOffset + playerView.AttackPointInitialYOffset;
+                newXPosForAttackPoint = view.transform.position.x + Model.AttackPointDownXOffset;
+                newYPosForAttackPoint = view.transform.position.y + Model.AttackPointDownYOffset + view.AttackPointInitialYOffset;
                 break;
             case LookDirection.Up:
-                newXPosForAttackPoint = playerView.transform.position.x + playerView.Model.AttackPointUpXOffset;
-                newYPosForAttackPoint = playerView.transform.position.y + playerView.Model.AttackPointUpYOffset + playerView.AttackPointInitialYOffset;
+                newXPosForAttackPoint = view.transform.position.x + Model.AttackPointUpXOffset;
+                newYPosForAttackPoint = view.transform.position.y + Model.AttackPointUpYOffset + view.AttackPointInitialYOffset;
 
 
                 break;
             case LookDirection.Left:
-                newXPosForAttackPoint = playerView.transform.position.x + playerView.Model.AttackPointLeftXOffset;
-                newYPosForAttackPoint = playerView.transform.position.y + playerView.Model.AttackPointLeftYOffset + playerView.AttackPointInitialYOffset;
+                newXPosForAttackPoint = view.transform.position.x + Model.AttackPointLeftXOffset;
+                newYPosForAttackPoint = view.transform.position.y + Model.AttackPointLeftYOffset + view.AttackPointInitialYOffset;
 
 
-                playerView.PlayerSpriteRenderer.flipX = true;
+                view.PlayerSpriteRenderer.flipX = true;
                 break;
             case LookDirection.Right:
-                newXPosForAttackPoint = playerView.transform.position.x + playerView.Model.AttackPointRightXOffset;
-                newYPosForAttackPoint = playerView.transform.position.y + playerView.Model.AttackPointRightYOffset + playerView.AttackPointInitialYOffset;
+                newXPosForAttackPoint = view.transform.position.x + Model.AttackPointRightXOffset;
+                newYPosForAttackPoint = view.transform.position.y + Model.AttackPointRightYOffset + view.AttackPointInitialYOffset;
 
-                playerView.PlayerSpriteRenderer.flipX = false;
+                view.PlayerSpriteRenderer.flipX = false;
                 break;
         }
-        playerView.AttackPoint.position = new(newXPosForAttackPoint, newYPosForAttackPoint);
-        playerModel.CurrentLookDirection = direction;
+        view.AttackPoint.position = new(newXPosForAttackPoint, newYPosForAttackPoint);
+        Model.CurrentLookDirection = direction;
     }
 
     #region Player Animation Change
 
     private float GetAnimationClipLength(PlayerAnimationStates animation)
     {
-        Animator anim = playerView.PlayerAnimator;
+        Animator anim = view.PlayerAnimator;
         string clipName = animation.ToString();
         foreach (AnimationClip clip in anim.runtimeAnimatorController.animationClips)
         {
@@ -78,16 +85,16 @@ public class PlayerController
     }
     public void ChangePlayerAnimation(PlayerAnimationStates animation)
     {
-        if (isAttacking||animation == playerModel.CurrentAnimation||playerModel.CurrentAnimation == PlayerAnimationStates.Dead)
+        if (isAttacking||animation == Model.CurrentAnimation||Model.CurrentAnimation == PlayerAnimationStates.Dead)
             return;
         
-        playerView.PlayerAnimator.Play(animation.ToString());
-        playerModel.CurrentAnimation = animation;
+        view.PlayerAnimator.Play(animation.ToString());
+        Model.CurrentAnimation = animation;
     }
 
     private void PlayPlayerFightAnimation()
     {
-        switch (playerModel.CurrentLookDirection)
+        switch (Model.CurrentLookDirection)
         {
 
             case LookDirection.Down:
@@ -106,7 +113,7 @@ public class PlayerController
 
     public void PlayPlayerIdelAnimation()
     {
-        switch (playerModel.CurrentLookDirection)
+        switch (Model.CurrentLookDirection)
         {
             case LookDirection.Down:
                 ChangePlayerAnimation(PlayerAnimationStates.Down_Idel);
@@ -123,7 +130,7 @@ public class PlayerController
 
     public void PlayPlayerRunningAnimation()
     {
-        switch (playerModel.CurrentLookDirection)
+        switch (Model.CurrentLookDirection)
         {
             case LookDirection.Down:
                 ChangePlayerAnimation(PlayerAnimationStates.Down_Running);
@@ -138,13 +145,14 @@ public class PlayerController
         }
     }
 
+    //Can't use invoke since non-monoehaivour script
     private async void ResetPlayerAnimation()
     {
         try
         {
-            await Task.Delay((int)(1000f * GetAnimationClipLength(playerModel.CurrentAnimation)), cancellationTokenSource.Token);
+            await Task.Delay((int)(1000f * GetAnimationClipLength(Model.CurrentAnimation)), cancellationTokenSource.Token);
             isAttacking = false;
-            if (playerView.CurrentState == playerView.PlayerIdelState)
+            if (view.CurrentState == view.PlayerIdelState)
                 PlayPlayerIdelAnimation();
             else
                 PlayPlayerRunningAnimation();
@@ -159,7 +167,7 @@ public class PlayerController
         PlayPlayerFightAnimation();
         isAttacking = true;
         SoundService.Instance.PlaySfx(SoundService.Instance.Slash);
-        Collider2D[] hits = Physics2D.OverlapCircleAll(playerView.AttackPoint.position, playerModel.AttackRadius);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(view.AttackPoint.position, Model.AttackRadius);
         for (int i = 0; i < hits.Length; i++)
         {
             hits[i].GetComponent<IDamageable>()?.TakeDamage();
@@ -171,8 +179,8 @@ public class PlayerController
     {
         ChangePlayerAnimation(PlayerAnimationStates.Took_Damage);
         SoundService.Instance.PlaySfx(SoundService.Instance.Hurt);
-        playerModel.CurrentHealth -= attackPower;
-        if (playerModel.CurrentHealth <= 0)
+        Model.CurrentHealth -= attackPower;
+        if (Model.CurrentHealth <= 0)
         {
             PlayerDead();
             return;
@@ -188,7 +196,7 @@ public class PlayerController
     {
         cancellationTokenSource?.Cancel();
         ChangePlayerAnimation(PlayerAnimationStates.Dead);
-        playerView.enabled = false;
+        view.enabled = false;
         GameManager.Instance.PlayedDied();
     }
 

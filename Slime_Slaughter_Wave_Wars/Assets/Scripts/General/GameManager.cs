@@ -211,11 +211,11 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     private IEnumerator setPlayerMaxHealthInSlider()
     {
         yield return null;
-        playerHealthSlider.maxValue = Player.Model.MaxHealth;
+        playerHealthSlider.maxValue = Player.Controller.Model.MaxHealth;
     }
     public void SetPlayerHealthInSlider()
     {
-        playerHealthSlider.value = Player.Model.CurrentHealth;
+        playerHealthSlider.value = Player.Controller.Model.CurrentHealth;
     }
     #endregion
 
