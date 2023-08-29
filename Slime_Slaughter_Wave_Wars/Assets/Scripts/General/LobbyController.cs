@@ -32,11 +32,7 @@ public class LobbyController : MonoBehaviour
     private void quitGame()
     {
         SoundService.Instance.PlaySfx(SoundService.Instance.Click);
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
         Application.Quit();
-#endif
     }
 
     private void playGame()
