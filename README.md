@@ -60,7 +60,7 @@ Enemy AI is managed through three distinct states:
 
 ## GamePlay
 
-https://www.loom.com/embed/70ae88a73d8b445e933a51e54ebbf9b3
+https://www.loom.com/share/70ae88a73d8b445e933a51e54ebbf9b3
 
 ## Contributions
 
