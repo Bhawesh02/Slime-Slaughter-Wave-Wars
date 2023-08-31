@@ -17,6 +17,7 @@ public class EnemyModel
     public float DetectionDelay { get; }
     public LayerMask ObstacleLayerMask { get; }
     public LayerMask PlayerLayerMask { get; }
+    public LayerMask PlayerHideMask { get; }
 
     public EnemyState CurrentState;
 
@@ -37,6 +38,6 @@ public class EnemyModel
         DetectionDelay = scriptableObject.DetectionDelay;
         ObstacleLayerMask = scriptableObject.ObstacleLayerMask;
         PlayerLayerMask = scriptableObject.PlayerLayerMask;
-
+        PlayerHideMask = scriptableObject.PlayerHideMask;
     }
 }

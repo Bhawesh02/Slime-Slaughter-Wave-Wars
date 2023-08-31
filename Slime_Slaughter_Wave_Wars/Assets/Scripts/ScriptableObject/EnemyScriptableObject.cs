@@ -17,4 +17,5 @@ public class EnemyScriptableObject : ScriptableObject
     public float DetectionDelay;
     public LayerMask ObstacleLayerMask;
     public LayerMask PlayerLayerMask;
+    public LayerMask PlayerHideMask;
 }

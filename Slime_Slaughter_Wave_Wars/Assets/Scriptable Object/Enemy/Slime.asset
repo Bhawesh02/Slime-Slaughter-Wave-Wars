@@ -19,7 +19,7 @@ MonoBehaviour:
   ObstacelDetectionRadius: 0.5
   ChaseRadius: 0.8
   FightRadius: 0.15
-  ColliderSize: 0.1
+  ColliderSize: 0.05
   DetectionDelay: 0.05
   ObstacleLayerMask:
     serializedVersion: 2
@@ -27,3 +27,6 @@ MonoBehaviour:
   PlayerLayerMask:
     serializedVersion: 2
     m_Bits: 8
+  PlayerHideMask:
+    serializedVersion: 2
+    m_Bits: 320

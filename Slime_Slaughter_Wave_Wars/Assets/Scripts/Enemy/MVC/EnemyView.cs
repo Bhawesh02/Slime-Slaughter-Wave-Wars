@@ -45,7 +45,10 @@ public class EnemyView : MonoBehaviour, IDamageable
     {
         Controller.PlayerDetect();
         if (Controller.Model.PlayerTransform != null)
+        {
+
             Controller.CheckIfPlayerIsInSight();
+        }
         
         yield return new WaitForSeconds(Controller.Model.DetectionDelay);
         PlayerDetectCoroutine = StartCoroutine(PlayerDetect());

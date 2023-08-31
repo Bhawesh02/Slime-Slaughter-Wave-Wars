@@ -39,12 +39,14 @@ public class EnemyController
     {
         
         Vector2 direction = (Model.PlayerTransform.position - view.transform.position).normalized;
-        Vector2 position = (Vector2)(view.transform.position) + direction * Model.ColliderSize;
-        RaycastHit2D hit = Physics2D.Raycast(position, direction, Model.ChaseRadius,Model.ObstacleLayerMask);
+        Vector2 position = (Vector2)(view.transform.position);
+        RaycastHit2D hit = Physics2D.Raycast(position, direction, Model.ChaseRadius,Model.PlayerHideMask);
 
         if (hit.collider != null && hit.collider.gameObject != Model.PlayerTransform.gameObject)
         {
+
             Model.PlayerTransform = null;
+
             return;
         }
     }
