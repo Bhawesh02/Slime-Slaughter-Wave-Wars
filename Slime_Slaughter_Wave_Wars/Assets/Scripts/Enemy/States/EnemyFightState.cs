@@ -36,7 +36,7 @@ public class EnemyFightState : EnemyState
         if(Time.time >= nextAttackTime)
         {
             AttackPlayer();
-            nextAttackTime = Time.time + Model.DetectionDelay;
+            nextAttackTime = Time.time + Model.AttackDelay;
         }
     }
     private void PlayerCheck()
