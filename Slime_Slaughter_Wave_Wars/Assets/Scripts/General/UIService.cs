@@ -9,7 +9,7 @@ public class UIService : MonoSingletonGeneric<UIService>
 {
 
     private GameManager gameManager ;
-
+    private EnemySpawner enemySpawner ;
 
     [Header("UI Elements")]
     [Header("Always Visisble")]
@@ -66,6 +66,7 @@ public class UIService : MonoSingletonGeneric<UIService>
     private void Start()
     {
         gameManager = GameManager.Instance;
+        enemySpawner = EnemySpawner.Instance;
     }
     #region Button Functions
     private void ShowSettings()
@@ -102,9 +103,9 @@ public class UIService : MonoSingletonGeneric<UIService>
     {
         float elapsedTime = 0f;
         Color initialColor = WaveNotification.color;
-        while (elapsedTime < gameManager.WaveSystem.WaveNotificationFadeDuration)
+        while (elapsedTime < enemySpawner.WaveSystem.WaveNotificationFadeDuration)
         {
-            float normalizedTime = elapsedTime / gameManager.WaveSystem.WaveNotificationFadeDuration;
+            float normalizedTime = elapsedTime / enemySpawner.WaveSystem.WaveNotificationFadeDuration;
             Color newColor = initialColor;
             newColor.a = Mathf.Lerp(initialColor.a, newAlpha, normalizedTime);
 
@@ -123,6 +124,7 @@ public class UIService : MonoSingletonGeneric<UIService>
     {
         enemiesCount.text = ": " + gameManager.EnemyInScene.Count;
     }
+
     #region Player Health UI
     public IEnumerator SetPlayerMaxHealthInSlider()
     {
@@ -139,7 +141,7 @@ public class UIService : MonoSingletonGeneric<UIService>
 
     public void PlayerDiedUI()
     {
-        wavesCoveredInfo.text = "Waves Covered: " + (gameManager.CurrWave - 1);
+        wavesCoveredInfo.text = "Waves Covered: " + (enemySpawner.CurrWave - 1);
         playerDeadUi.SetActive(true);
     }
     public void PlayerWonUI()
