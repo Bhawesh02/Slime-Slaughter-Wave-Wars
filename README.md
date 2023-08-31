@@ -57,6 +57,11 @@ Enemy AI is managed through three distinct states:
 - **Chase State:** Activates when an enemy detects the player. The enemy dynamically follows the player's position while avoiding obstacles and other enemies which gives it a fluid movement.
 - **Fight State:** This state triggers when an enemy enters the attack range of the player. The enemy engages in battle, implementing specific attack behaviours.
 
+
+## GamePlay
+
+[Video](https://www.loom.com/share/70ae88a73d8b445e933a51e54ebbf9b3)
+
 ## Contributions
 
 Although this project primarily represents my individual efforts, I'm open to feedback, suggestions, and discussions from the community. If you're passionate about game development and would like to share your insights or thoughts, feel free to connect!
