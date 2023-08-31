@@ -20,6 +20,8 @@ public class PlayerModel
     public float AttackPointLeftYOffset { get; }
     public float AttackPointLeftXOffset { get; }
 
+    public bool IsAttacking;
+
     public PlayerModel(PlayerScriptableObject scriptableObject) 
     {
         MaxHealth = scriptableObject.MaxHealth;

@@ -1,4 +1,5 @@
 
+using System.Collections;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -12,7 +13,6 @@ public class PlayerController
     private float newYPosForAttackPoint;
     private Vector2 movementDirection;
     private CancellationTokenSource cancellationTokenSource = new();
-    private bool isAttacking = false;
     public PlayerController(PlayerScriptableObject playerScriptableObject, PlayerView playerView)
     {
         Model = new(playerScriptableObject);
@@ -85,7 +85,7 @@ public class PlayerController
     }
     public void ChangePlayerAnimation(PlayerAnimationStates animation)
     {
-        if (isAttacking||animation == Model.CurrentAnimation||Model.CurrentAnimation == PlayerAnimationStates.Dead)
+        if (Model.IsAttacking||animation == Model.CurrentAnimation||Model.CurrentAnimation == PlayerAnimationStates.Dead)
             return;
         
         view.PlayerAnimator.Play(animation.ToString());
@@ -146,34 +146,28 @@ public class PlayerController
     }
 
     //Can't use invoke since non-monoehaivour script
-    private async void ResetPlayerAnimation()
+    public IEnumerator ResetPlayerAnimation()
     {
-        try
-        {
-            await Task.Delay((int)(1000f * GetAnimationClipLength(Model.CurrentAnimation)), cancellationTokenSource.Token);
-            isAttacking = false;
-            if (view.CurrentState == view.PlayerIdelState)
-                PlayPlayerIdelAnimation();
-            else
-                PlayPlayerRunningAnimation();
-        }
-        catch (TaskCanceledException)
-        {
-        }
+        yield return new WaitForSeconds(GetAnimationClipLength(Model.CurrentAnimation));
+        Model.IsAttacking = false;
+        if (view.CurrentState == view.PlayerIdelState)
+           PlayPlayerIdelAnimation();
+        else
+           PlayPlayerRunningAnimation();
+       
     }
     #endregion
     public void PlayerAttack()
     {
         PlayPlayerFightAnimation();
-        isAttacking = true;
+        Model.IsAttacking = true;
         SoundService.Instance.PlaySfx(SoundService.Instance.Slash);
         Collider2D[] hits = Physics2D.OverlapCircleAll(view.AttackPoint.position, Model.AttackRadius);
         for (int i = 0; i < hits.Length; i++)
         {
             hits[i].GetComponent<IDamageable>()?.TakeDamage();
         }
-
-        ResetPlayerAnimation();
+        view.StartCoroutine(ResetPlayerAnimation());
     }
     public void ReduceHealth(int attackPower)
     {
@@ -196,6 +190,7 @@ public class PlayerController
     {
         cancellationTokenSource?.Cancel();
         ChangePlayerAnimation(PlayerAnimationStates.Dead);
+        view.StartCoroutine(ResetPlayerAnimation());
         view.enabled = false;
         GameManager.Instance.PlayedDied();
     }
