@@ -37,18 +37,18 @@ public class EnemyView : MonoBehaviour, IDamageable
         if(Controller.Model!= null && Controller.Model.CurrHealth!= Controller.Model.MaxHealth) 
             Controller.ResetHealth();
         Controller.ChangeState(IdelState);
-        PlayerDetectCoroutine = StartCoroutine(playerDetect());
+        PlayerDetectCoroutine = StartCoroutine(PlayerDetect());
 
     }
     
-    private IEnumerator playerDetect()
+    private IEnumerator PlayerDetect()
     {
         Controller.PlayerDetect();
         if (Controller.Model.PlayerTransform != null)
             Controller.CheckIfPlayerIsInSight();
         
         yield return new WaitForSeconds(Controller.Model.DetectionDelay);
-        PlayerDetectCoroutine = StartCoroutine(playerDetect());
+        PlayerDetectCoroutine = StartCoroutine(PlayerDetect());
 
     }
 

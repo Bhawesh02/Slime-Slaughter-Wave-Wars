@@ -19,24 +19,24 @@ public class SettingsService : MonoBehaviour
     private Resolution[] resolutions;
     private void Awake()
     {
-        backButton.onClick.AddListener(closeThis);
-        bgVolumeSlider.onValueChanged.AddListener(setBgVol);
-        sfxVolumeSlider.onValueChanged.AddListener(setSfxVol);
-        resoltionDropdown.onValueChanged.AddListener(setResolution);
+        backButton.onClick.AddListener(CloseThis);
+        bgVolumeSlider.onValueChanged.AddListener(SetBgVol);
+        sfxVolumeSlider.onValueChanged.AddListener(SetSfxVol);
+        resoltionDropdown.onValueChanged.AddListener(SetResolution);
 
 
     }
     private void Start()
     {
-        setResolutionOptions();
+        SetResolutionOptions();
     }
 
-    private void setResolution(int resolutionIndex)
+    private void SetResolution(int resolutionIndex)
     {
         Screen.SetResolution(resolutions[resolutionIndex].width, resolutions[resolutionIndex].height, UnityEngine.FullScreenMode.ExclusiveFullScreen, resolutions[resolutionIndex].refreshRateRatio);
     }
 
-    private void setResolutionOptions()
+    private void SetResolutionOptions()
     {
         resolutions = Screen.resolutions;
         resoltionDropdown.ClearOptions();
@@ -55,19 +55,19 @@ public class SettingsService : MonoBehaviour
         resoltionDropdown.RefreshShownValue();
     }
 
-    private void setSfxVol(float volume)
+    private void SetSfxVol(float volume)
     {
         SoundService.Instance.SetSfxVolume(volume);
     }
 
-    private void setBgVol(float volume)
+    private void SetBgVol(float volume)
     {
         SoundService.Instance.SetBgVolume(volume);
     }
 
     
 
-    private void closeThis()
+    private void CloseThis()
     {
         gameObject.SetActive(false);
         SoundService.Instance.PlaySfx(SoundService.Instance.Click);

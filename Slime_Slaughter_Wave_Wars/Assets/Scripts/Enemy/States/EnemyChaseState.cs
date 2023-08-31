@@ -15,7 +15,7 @@ public class EnemyChaseState : EnemyState
     private float[] danger;
 
     private float[] interest;
-    private List<Vector2> eightDirection = new List<Vector2> {
+    private readonly Vector2[] eightDirection = {
         new Vector2(0,1).normalized,
         new Vector2(1,1).normalized,
         new Vector2(1,0).normalized,
@@ -29,13 +29,13 @@ public class EnemyChaseState : EnemyState
 
     private Vector2 resultDirection;
 
-    private Coroutine aiCoroutine = null;
+    private Coroutine aiCoroutine;
 
     protected override void Awake()
     {
         base.Awake();
-        danger = new float[eightDirection.Count];
-        interest = new float[eightDirection.Count];
+        danger = new float[eightDirection.Length];
+        interest = new float[eightDirection.Length];
     }
     
     public override void OnStateEnter()
@@ -49,7 +49,7 @@ public class EnemyChaseState : EnemyState
         {
             Controller.ChangeState(View.IdelState);
         }
-        aiCoroutine = StartCoroutine(aILogic());
+        aiCoroutine = StartCoroutine(AiLogic());
         View.GetAnimator.SetBool("IsMoving", true);
     }
 
@@ -62,7 +62,7 @@ public class EnemyChaseState : EnemyState
         resultDirection = Vector2.zero;
     }
 
-    private IEnumerator aILogic()
+    private IEnumerator AiLogic()
     {
         
 
@@ -79,28 +79,28 @@ public class EnemyChaseState : EnemyState
             yield break;
         }
 
-        aiToMove();
+        AiToMove();
         View.GetRigidbody.velocity = resultDirection * Model.MovementSpeed;
         if(View.GetRigidbody.velocity.x > 0)
             View.GetSpriteRenderer.flipX = false;
         else
             View.GetSpriteRenderer.flipX = true;
         yield return new WaitForSeconds(Model.DetectionDelay);
-        aiCoroutine = StartCoroutine(aILogic());
+        aiCoroutine = StartCoroutine(AiLogic());
 
     }
-    private void aiToMove()
+    private void AiToMove()
     {
 
         
-        getObstacelsDanger();
-        getTargetIntrest();
-        getDirectionToMove();
+        GetObstacelsDanger();
+        GetTargetIntrest();
+        GetDirectionToMove();
     }
 
     
 
-    private void getObstacelsDanger()
+    private void GetObstacelsDanger()
     {
         if (Model.Obstacles == null) return;
         Vector2 directionToObstacle;
@@ -119,15 +119,15 @@ public class EnemyChaseState : EnemyState
                 ? 1 :
                 (Model.ObstacelDetectionRadius - distanceToObstacle)
                 / Model.ObstacelDetectionRadius;
-            getDangerFromObstacle(directionToObstacleNormalized, weight);
+            GetDangerFromObstacle(directionToObstacleNormalized, weight);
         }
     }
     
-    private void getDangerFromObstacle(Vector2 directionToObstacleNormalized, float weight)
+    private void GetDangerFromObstacle(Vector2 directionToObstacleNormalized, float weight)
     {
         float result;
         float valueToPut;
-        for (int i = 0; i < eightDirection.Count; i++)
+        for (int i = 0; i < eightDirection.Length; i++)
         {
             result = Vector2.Dot(directionToObstacleNormalized, eightDirection[i]);
             valueToPut = result * weight;
@@ -137,13 +137,13 @@ public class EnemyChaseState : EnemyState
         }
 
     }
-    private void getTargetIntrest()
+    private void GetTargetIntrest()
     {
         if (Model.PlayerTransform != null)
             targetPos = Model.PlayerTransform.position;
         Vector2 directionToTarget = (targetPos - (Vector2)transform.position).normalized;
         float result;
-        for (int i = 0; i < eightDirection.Count; i++)
+        for (int i = 0; i < eightDirection.Length; i++)
         {
             result = Vector2.Dot(directionToTarget, eightDirection[i]);
             if (result >= 0)
@@ -155,7 +155,7 @@ public class EnemyChaseState : EnemyState
 
 
     }
-    private void getDirectionToMove()
+    private void GetDirectionToMove()
     {
         for (int i = 0; i < interest.Length; i++)
         {
@@ -170,7 +170,7 @@ public class EnemyChaseState : EnemyState
 
     public override void OnStateExit()
     {
-        StopCoroutine(aILogic());
+        StopCoroutine(AiLogic());
         View.GetRigidbody.velocity = Vector2.zero;
         View.GetAnimator.SetBool("IsMoving", false);
         SetVariableToZero();

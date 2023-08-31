@@ -18,24 +18,24 @@ public class LobbyController : MonoBehaviour
     private void Awake()
     {
         settings.SetActive(false);
-        playButton.onClick.AddListener(playGame);
-        quitButton.onClick.AddListener(quitGame);
-        settingsButton.onClick.AddListener(showSettings);
+        playButton.onClick.AddListener(PlayGame);
+        quitButton.onClick.AddListener(QuitGame);
+        settingsButton.onClick.AddListener(ShowSettings);
     }
 
-    private void showSettings()
+    private void ShowSettings()
     {
         settings.SetActive(true);
         SoundService.Instance.PlaySfx(SoundService.Instance.Click);
     }
 
-    private void quitGame()
+    private void QuitGame()
     {
         SoundService.Instance.PlaySfx(SoundService.Instance.Click);
         Application.Quit();
     }
 
-    private void playGame()
+    private void PlayGame()
     {
         SoundService.Instance.PlaySfx(SoundService.Instance.Click);
         SceneManager.LoadScene(1);

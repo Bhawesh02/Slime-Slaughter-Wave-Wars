@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerController
 {
     public PlayerModel Model { get; }
-    private PlayerView view;
+    private readonly PlayerView view;
     private float newXPosForAttackPoint;
     private float newYPosForAttackPoint;
     private Vector2 movementDirection;

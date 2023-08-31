@@ -78,7 +78,7 @@ public class PlayerView : MonoBehaviour
     {
 
         MoveVector = value.ReadValue<Vector2>();
-        changeLookDirectionBasedOnInput();
+        ChangeLookDirectionBasedOnInput();
         Controller.ChangeState(PlayerRunningState);
     }
 
@@ -87,7 +87,7 @@ public class PlayerView : MonoBehaviour
         MoveVector = Vector2.zero;
         Controller.ChangeState(PlayerIdelState);
     }
-    private void changeLookDirectionBasedOnInput()
+    private void ChangeLookDirectionBasedOnInput()
     {
 
         if (MoveVector.x != 0)

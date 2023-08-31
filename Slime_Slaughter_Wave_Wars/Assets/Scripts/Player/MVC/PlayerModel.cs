@@ -4,36 +4,36 @@ using System;
 [Serializable]
 public class PlayerModel 
 {
-    public int MaxHealth {get;private set;}
+    public int MaxHealth { get; }
     public int CurrentHealth ;
-    public float MovementSpeed { get; private set; }
+    public float MovementSpeed { get; }
     public PlayerAnimationStates CurrentAnimation;
     public LookDirection CurrentLookDirection;
-    public float AttackRate { get; private set; }
-    public float AttackRadius { get; private set; }
-    public float AttackPointDownYOffset { get; private set; }
-    public float AttackPointDownXOffset { get; private set; }
-    public float AttackPointUpYOffset { get; private set; }
-    public float AttackPointUpXOffset { get; private set; }
-    public float AttackPointRightYOffset { get; private set; }
-    public float AttackPointRightXOffset { get; private set; }
-    public float AttackPointLeftYOffset { get; private set; }
-    public float AttackPointLeftXOffset { get; private set; }
+    public float AttackRate { get;  }
+    public float AttackRadius { get;  }
+    public float AttackPointDownYOffset { get; }
+    public float AttackPointDownXOffset { get; }
+    public float AttackPointUpYOffset { get; }
+    public float AttackPointUpXOffset { get; }
+    public float AttackPointRightYOffset { get; }
+    public float AttackPointRightXOffset { get; }
+    public float AttackPointLeftYOffset { get; }
+    public float AttackPointLeftXOffset { get; }
 
     public PlayerModel(PlayerScriptableObject scriptableObject) 
     {
-        this.MaxHealth = scriptableObject.MaxHealth;
-        this.CurrentHealth = scriptableObject.CurrentHealth;
-        this.MovementSpeed = scriptableObject.MovementSpeed;
-        this.AttackRadius = scriptableObject.AttackRadius;
-        this.AttackRate = scriptableObject.AttackRate;
-        this.AttackPointDownYOffset = scriptableObject.AttackPointDownYOffset;
-        this.AttackPointDownXOffset = scriptableObject.AttackPointDownXOffset;
-        this.AttackPointUpYOffset = scriptableObject.AttackPointUpYOffset;
-        this.AttackPointUpXOffset = scriptableObject.AttackPointUpXOffset;
-        this.AttackPointRightYOffset = scriptableObject.AttackPointRightYOffset;
-        this.AttackPointRightXOffset = scriptableObject.AttackPointRightXOffset;
-        this.AttackPointLeftYOffset = scriptableObject.AttackPointLeftYOffset; 
-        this.AttackPointLeftXOffset = scriptableObject.AttackPointLeftXOffset;
+        MaxHealth = scriptableObject.MaxHealth;
+        CurrentHealth = scriptableObject.CurrentHealth;
+        MovementSpeed = scriptableObject.MovementSpeed;
+        AttackRadius = scriptableObject.AttackRadius;
+        AttackRate = scriptableObject.AttackRate;
+        AttackPointDownYOffset = scriptableObject.AttackPointDownYOffset;
+        AttackPointDownXOffset = scriptableObject.AttackPointDownXOffset;
+        AttackPointUpYOffset = scriptableObject.AttackPointUpYOffset;
+        AttackPointUpXOffset = scriptableObject.AttackPointUpXOffset;
+        AttackPointRightYOffset = scriptableObject.AttackPointRightYOffset;
+        AttackPointRightXOffset = scriptableObject.AttackPointRightXOffset;
+        AttackPointLeftYOffset = scriptableObject.AttackPointLeftYOffset; 
+        AttackPointLeftXOffset = scriptableObject.AttackPointLeftXOffset;
     }
 }

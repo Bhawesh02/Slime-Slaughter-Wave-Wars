@@ -3,49 +3,46 @@ using UnityEngine;
 
 public class EnemyIdelState : EnemyState
 {
-    private Coroutine spriteFlip;
     private readonly float flipMaxTime = 2f;
     private int flipValue;
-    private float waitTime;
-    private Coroutine checkForPlayer;
-   
+    private float flipWaitTime;
+    private float nextCheckForPlayer;
+
+    protected override void Start()
+    {
+        base.Start();
+        nextCheckForPlayer = Time.time;
+        flipWaitTime = Time.time;
+    }
     public override void OnStateEnter()
     {
         base.OnStateEnter();
         if (Model == null || Controller == null)
             SetModelController();
-        spriteFlip = StartCoroutine(FlipTheSprite());
-
-        checkForPlayer = StartCoroutine(CheckPlayer());
-        
     }
     
-    private IEnumerator CheckPlayer()
+    private void Update()
     {
-        yield return new WaitForSeconds(Model.DetectionDelay);
-        
-        if(Model.PlayerTransform != null)
+        if (Time.time >= nextCheckForPlayer)
         {
-            Controller.ChangeState(View.ChaseState);
-            yield break;
+            if (Model.PlayerTransform != null)
+                Controller.ChangeState(View.ChaseState);
+            nextCheckForPlayer = Time.time + Model.DetectionDelay;
         }
-        checkForPlayer = StartCoroutine(CheckPlayer());
+        if(Time.time >= flipWaitTime)
+        {
+            flipValue = Random.Range(0, 2);
+            if (flipValue == 0)
+                View.GetSpriteRenderer.flipX = false;
+            else
+                View.GetSpriteRenderer.flipX = true;
+            flipWaitTime = Random.Range(0f, flipMaxTime);
+        }
     }
-    private IEnumerator FlipTheSprite()
-    {
-        flipValue = Random.Range(0, 2);
-        if(flipValue == 0)
-            View.GetSpriteRenderer.flipX = false;
-        else
-            View.GetSpriteRenderer.flipX = true;
-        waitTime = Random.Range(0f, flipMaxTime);
-        yield return new WaitForSeconds(waitTime);
-        spriteFlip = StartCoroutine(FlipTheSprite());
-    }
+    
 
     public override void OnStateExit()
     {
-        StopCoroutine(spriteFlip);
         base.OnStateExit();
     }
 }

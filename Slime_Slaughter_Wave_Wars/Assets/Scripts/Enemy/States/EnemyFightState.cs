@@ -1,71 +1,61 @@
 
 
-using System.Collections;
 using UnityEngine;
 
 public class EnemyFightState : EnemyState
 {
-    private Coroutine playerCheckCoroutine = null;
-    private Coroutine playerAttackCoroutine = null;
     private PlayerView playerView;
-   
+    private float nextPlayerCheckTime;
+    private float nextAttackTime;
+
+    protected override void Start()
+    {
+        base.Start();
+        nextPlayerCheckTime = Time.time;
+        nextAttackTime = Time.time;
+    }
+
     public override void OnStateEnter()
     {
         base.OnStateEnter();
         if (Model == null || Controller == null)
             SetModelController();
         playerView = Model.PlayerTransform.GetComponent<PlayerView>();
-        playerCheckCoroutine = StartCoroutine(playerCheck());
-
-        startAttackPlayer();
     }
-
-    private void startAttackPlayer()
+    
+    private void Update()
     {
-        if (playerAttackCoroutine != null)
+        if(Time.time >= nextPlayerCheckTime)
         {
+            PlayerCheck();
+            nextPlayerCheckTime = Time.time + Model.DetectionDelay;
+        }
+        if (Model.CurrentState != this)
             return;
-        }
-        playerAttackCoroutine = StartCoroutine(attackPlayer());
-    }
 
-    private IEnumerator attackPlayer()
-    {
-        if (Controller.Model.CurrentState != this)
+        if(Time.time >= nextAttackTime)
         {
-            yield break;
+            AttackPlayer();
+            nextAttackTime = Time.time + Model.DetectionDelay;
         }
-
-        playerView.TakeDamage(Model.AttackPower);
-        yield return new WaitForSeconds(Model.AttackDelay);
-
-        playerAttackCoroutine = StartCoroutine(attackPlayer());
-
     }
-
-
-    private IEnumerator playerCheck()
+    private void PlayerCheck()
     {
         if (Model.PlayerTransform == null || Vector2.Distance(transform.position, Model.PlayerTransform.position) > Model.FightRadius)
         {
 
             Controller.ChangeState(View.IdelState);
-            yield break;
+            
         }
-        yield return new WaitForSeconds(Model.DetectionDelay);
-        playerCheckCoroutine = StartCoroutine(playerCheck());
-
     }
 
+    private void AttackPlayer()
+    {
+        playerView.TakeDamage(Model.AttackPower);
+    }
 
     public override void OnStateExit()
     {
-        if (playerCheckCoroutine != null)
-            StopCoroutine(playerCheckCoroutine);
         base.OnStateExit();
-    }
-    private void OnDestroy()
-    {
-        StopAllCoroutines();
     }
 }

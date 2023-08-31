@@ -42,7 +42,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         StartCoroutine(uIService.SetPlayerMaxHealthInSlider());
         EventService.Instance.EnemySpawned += IncreaseEnemyInScene;
         EventService.Instance.EnemyDied += DecreaseEnemyInScene;
-        spawnWave = StartCoroutine(spawnNewWave());
+        spawnWave = StartCoroutine(SpawnNewWave());
     }
 
     private void OnEnable()
@@ -58,7 +58,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
 
 
     #region Spwan Wave
-    private IEnumerator spawnNewWave()
+    private IEnumerator SpawnNewWave()
     {
         CurrWave++;
         if (CurrWave > WaveSystem.NumOfWaves)
@@ -101,7 +101,7 @@ public class GameManager : MonoSingletonGeneric<GameManager>
         uIService.UpdateEnemyCountUI();
 
         if (EnemyInScene.Count == 0)
-            spawnWave = StartCoroutine(spawnNewWave());
+            spawnWave = StartCoroutine(SpawnNewWave());
 
     }
     
@@ -114,16 +114,16 @@ public class GameManager : MonoSingletonGeneric<GameManager>
     #region Player Won And dead
     public void PlayedDied()
     {
-        setAllEnemyIdel();
+        SetAllEnemyIdel();
         uIService.PlayerDiedUI();
     }
 
     public void PlayerWon()
     {
-        setAllEnemyIdel();
+        SetAllEnemyIdel();
         uIService.PlayerWonUI();
     }
-    private void setAllEnemyIdel()
+    private void SetAllEnemyIdel()
     {
         for (int i = 0; i < EnemyInScene.Count; i++)
         {
