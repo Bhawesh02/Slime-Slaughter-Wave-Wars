@@ -12,7 +12,7 @@ public class PlayerController
     private float newXPosForAttackPoint;
     private float newYPosForAttackPoint;
     private Vector2 movementDirection;
-    private CancellationTokenSource cancellationTokenSource = new();
+    private Coroutine resetAnimationCoroutine;
     public PlayerController(PlayerScriptableObject playerScriptableObject, PlayerView playerView)
     {
         Model = new(playerScriptableObject);
@@ -149,6 +149,7 @@ public class PlayerController
     public IEnumerator ResetPlayerAnimation()
     {
         yield return new WaitForSeconds(GetAnimationClipLength(Model.CurrentAnimation));
+        if(Model.IsAttacking)
         Model.IsAttacking = false;
         if (view.CurrentState == view.PlayerIdelState)
            PlayPlayerIdelAnimation();
@@ -167,7 +168,7 @@ public class PlayerController
         {
             hits[i].GetComponent<IDamageable>()?.TakeDamage();
         }
-        view.StartCoroutine(ResetPlayerAnimation());
+        resetAnimationCoroutine = view.StartCoroutine(ResetPlayerAnimation());
     }
     public void ReduceHealth(int attackPower)
     {
@@ -179,7 +180,8 @@ public class PlayerController
             PlayerDead();
             return;
         }
-        ResetPlayerAnimation();
+        resetAnimationCoroutine = view.StartCoroutine(ResetPlayerAnimation());
+
 
     }
 
@@ -188,9 +190,8 @@ public class PlayerController
 
     private void PlayerDead()
     {
-        cancellationTokenSource?.Cancel();
         ChangePlayerAnimation(PlayerAnimationStates.Dead);
-        view.StartCoroutine(ResetPlayerAnimation());
+        view.StopCoroutine(resetAnimationCoroutine);
         view.enabled = false;
         GameManager.Instance.PlayedDied();
     }

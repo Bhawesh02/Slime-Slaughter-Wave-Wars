@@ -36,7 +36,7 @@ public class EnemyIdelState : EnemyState
                 View.GetSpriteRenderer.flipX = false;
             else
                 View.GetSpriteRenderer.flipX = true;
-            flipWaitTime = Random.Range(0f, flipMaxTime);
+            flipWaitTime = Time.time + Random.Range(0f, flipMaxTime);
         }
     }
     
