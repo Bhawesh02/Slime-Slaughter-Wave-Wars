@@ -62,6 +62,13 @@ Enemy AI is managed through three distinct states:
 
 [Video](https://www.loom.com/share/70ae88a73d8b445e933a51e54ebbf9b3)
 
+### Screen Shots
+![image](https://github.com/Bhawesh02/Slime-Slaughter-Wave-Wars/assets/93391124/d5f5631d-0ca7-4ad7-ace2-e2f238211a7a)
+![image](https://github.com/Bhawesh02/Slime-Slaughter-Wave-Wars/assets/93391124/dce555b9-c215-4949-b11e-3efb8c5173dd)
+![image](https://github.com/Bhawesh02/Slime-Slaughter-Wave-Wars/assets/93391124/e50f993b-78ed-4a36-944e-6ff701307cc0)
+
+
+
 ## Contributions
 
 Although this project primarily represents my individual efforts, I'm open to feedback, suggestions, and discussions from the community. If you're passionate about game development and would like to share your insights or thoughts, feel free to connect!
